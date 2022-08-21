@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --no-cache --watchAll --passWithNoTests",
+    "test": "jest --no-cache --watch --passWithNoTests",
     "test:staged": "jest --passWithNoTests"
   },
   "keywords": [],

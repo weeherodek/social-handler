@@ -1,17 +1,27 @@
+import { TemplateModel } from '@/domain/models/template/template'
+import { AddTemplate } from '@/domain/usecases/template/add-template'
 import { MissingParamError } from '../../errors/'
 import { badRequest } from '../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../protocols/'
 
 export class SaveTemplateController implements Controller {
-  handle (httpRequest: HttpRequest): HttpResponse {
-    const requiredFields = ['name', 'text']
+  constructor (private readonly addTemplate: AddTemplate) {
+
+  }
+
+  handle (httpRequest: HttpRequest): HttpResponse<TemplateModel | Error> {
+    const requiredFields = ['name', 'text', 'fields']
     for (const field of requiredFields) {
       if (httpRequest.body[field] === undefined) {
         return badRequest(new MissingParamError(field))
       }
     }
+    const { name, text, fields } = httpRequest.body
+    const newTemplate = this.addTemplate.add({
+      name, text, fields
+    })
     return {
-      body: 'ok',
+      body: newTemplate,
       statusCode: 200
     }
   }
