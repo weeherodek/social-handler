@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2016",                               
+    "module": "commonjs",                            
+    "esModuleInterop": true,
+    "strict": true,
+    "baseUrl": "src",
+    "rootDir": "src",
+    "skipLibCheck": true,
+    "paths": {
+      "@/*":["*"]
+    }
+  },
+}
