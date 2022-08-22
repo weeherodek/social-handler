@@ -1,8 +1,24 @@
 import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
-import { MissingParamError } from '../../errors/'
-import { Controller } from '../../protocols/'
+import { InternalServerError, MissingParamError } from '../../errors/'
+import { Controller, HttpRequest } from '../../protocols/'
 import { SaveTemplateController } from './save-template'
+
+const makeFakeRequest = (): HttpRequest => ({
+  body: {
+    name: 'any_text',
+    text: 'any_text',
+    fields: [{
+      name: 'any_name_1',
+      required: false,
+      defaultValue: ''
+    }, {
+      name: 'any_name_2',
+      required: false,
+      defaultValue: '123'
+    }]
+  }
+})
 
 const makeAddTemplate = (): AddTemplate => {
   class AddTemplateStub implements AddTemplate {
@@ -97,25 +113,23 @@ describe('Template Controller', () => {
   test('Should call AddTemplate with correct values', () => {
     const { sut, addTemplateStub } = makeSut()
     const addAccountSpy = jest.spyOn(addTemplateStub, 'add')
-    const httpRequest = {
-      body: {
-        name: 'any_text',
-        text: 'any_text',
-        fields: [{
-          name: 'any_name_1',
-          required: false,
-          defaultValue: ''
-        }, {
-          name: 'any_name_2',
-          required: false,
-          defaultValue: '123'
-        }]
-      }
-    }
+    const httpRequest = makeFakeRequest()
 
     const { name, text, fields } = httpRequest.body
 
     sut.handle(httpRequest)
     expect(addAccountSpy).toHaveBeenCalledWith({ name, text, fields })
+  })
+
+  test('Should return status Code 500 if AddTemplate throws', () => {
+    const { sut, addTemplateStub } = makeSut()
+    jest.spyOn(addTemplateStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpRequest = makeFakeRequest()
+
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new InternalServerError())
   })
 })
