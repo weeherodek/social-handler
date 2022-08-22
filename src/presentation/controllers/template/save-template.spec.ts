@@ -4,6 +4,10 @@ import { InternalServerError, MissingParamError } from '../../errors/'
 import { Controller, HttpRequest } from '../../protocols/'
 import { SaveTemplateController } from './save-template'
 
+jest.useFakeTimers({
+  now: new Date('2020-01-01')
+})
+
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     name: 'any_text',
@@ -131,5 +135,32 @@ describe('Template Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new InternalServerError())
+  })
+
+  test('Should create template if correct params is provided', async () => {
+    const { sut } = makeSut()
+
+    const httpRequest = makeFakeRequest()
+
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(httpResponse.statusCode).toBe(201)
+    expect(httpResponse.body).toEqual({
+      id: 'any_id',
+      name: 'any_name',
+      text: 'any_text',
+      fields: [{
+        name: 'any_name_1',
+        required: true,
+        defaultValue: ''
+      },
+      {
+        name: 'any_name_2',
+        required: false,
+        defaultValue: '123'
+      }
+      ],
+      date: new Date()
+    })
   })
 })
