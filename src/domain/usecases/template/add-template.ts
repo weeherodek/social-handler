@@ -1,7 +1,7 @@
 import { TemplateModel } from '@/domain/models/template/template'
 
 export interface AddTemplate {
-  add: (template: AddTemplateModel) => TemplateModel
+  add: (template: AddTemplateModel) => Promise<TemplateModel>
 }
 
 export interface AddTemplateModel {

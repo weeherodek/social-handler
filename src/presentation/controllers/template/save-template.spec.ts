@@ -22,7 +22,7 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeAddTemplate = (): AddTemplate => {
   class AddTemplateStub implements AddTemplate {
-    add (template: AddTemplateModel): TemplateModel {
+    async add (template: AddTemplateModel): Promise<TemplateModel> {
       return {
         id: 'any_id',
         date: new Date(),
@@ -60,7 +60,7 @@ const makeSut = (): sutTypes => {
 }
 
 describe('Template Controller', () => {
-  test('Should return status Code 400 if no name is provided', () => {
+  test('Should return status Code 400 if no name is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -73,12 +73,12 @@ describe('Template Controller', () => {
       }
     }
 
-    const httpResponse = sut.handle(httpRequest)
+    const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamError('name'))
   })
 
-  test('Should return status Code 400 if no text is provided', () => {
+  test('Should return status Code 400 if no text is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -91,12 +91,12 @@ describe('Template Controller', () => {
       }
     }
 
-    const httpResponse = sut.handle(httpRequest)
+    const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamError('text'))
   })
 
-  test('Should return status Code 400 if no fields is provided', () => {
+  test('Should return status Code 400 if no fields is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -105,30 +105,30 @@ describe('Template Controller', () => {
       }
     }
 
-    const httpResponse = sut.handle(httpRequest)
+    const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new MissingParamError('fields'))
   })
 
-  test('Should call AddTemplate with correct values', () => {
+  test('Should call AddTemplate with correct values', async () => {
     const { sut, addTemplateStub } = makeSut()
     const addAccountSpy = jest.spyOn(addTemplateStub, 'add')
     const httpRequest = makeFakeRequest()
 
     const { name, text, fields } = httpRequest.body
 
-    sut.handle(httpRequest)
+    await sut.handle(httpRequest)
     expect(addAccountSpy).toHaveBeenCalledWith({ name, text, fields })
   })
 
-  test('Should return status Code 500 if AddTemplate throws', () => {
+  test('Should return status Code 500 if AddTemplate throws', async () => {
     const { sut, addTemplateStub } = makeSut()
-    jest.spyOn(addTemplateStub, 'add').mockImplementationOnce(() => {
+    jest.spyOn(addTemplateStub, 'add').mockImplementationOnce(async () => {
       throw new Error()
     })
     const httpRequest = makeFakeRequest()
 
-    const httpResponse = sut.handle(httpRequest)
+    const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new InternalServerError())
   })
