@@ -1,7 +1,7 @@
 import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate } from '@/domain/usecases/template/add-template'
 import { MissingParamError } from '../../errors/'
-import { badRequest, internalServerError, ok } from '../../helpers/http-helper'
+import { badRequest, created, internalServerError } from '../../helpers/http-helper'
 import { Controller, HttpRequest, HttpResponse } from '../../protocols/'
 
 export class SaveTemplateController implements Controller {
@@ -21,7 +21,7 @@ export class SaveTemplateController implements Controller {
       const newTemplate = await this.addTemplate.add({
         name, text, fields
       })
-      return ok(newTemplate)
+      return created(newTemplate)
     } catch (error) {
       return internalServerError()
     }
