@@ -13,10 +13,10 @@ export class DbAddAccount implements AddAccount {
 
   async add (accountData: AddAccountModel): Promise<AccountModel> {
     const cryptoPassword = await this.cryptograph.crypto(accountData.password)
-    await this.addAccountRepository.add({
+    const newAccount = await this.addAccountRepository.add({
       ...accountData,
       password: cryptoPassword
     })
-    return null as unknown as AccountModel
+    return newAccount
   }
 }
