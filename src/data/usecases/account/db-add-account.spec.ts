@@ -82,4 +82,12 @@ describe('DbAddAccount Usecase', () => {
       password: 'value_crypto'
     })
   })
+
+  test('Should throw if AddAccountRepository throws', async () => {
+    const { sut, addAccountRepositoryStub } = makeSut()
+    jest.spyOn(addAccountRepositoryStub, 'add').mockRejectedValueOnce(new Error('Fake Error'))
+    const accountData = makeFakeAccount()
+    const promise = sut.add(accountData)
+    await expect(promise).rejects.toThrow(new Error('Fake Error'))
+  })
 })
