@@ -30,7 +30,7 @@ const makeAddAccountRepositoryStub = (): AddAccountRepository => {
         id: 'any_id',
         name: 'any_name',
         email: 'any_email@mail.com',
-        password: 'hashed_password',
+        password: 'value_crypto',
         date: new Date()
       }
     }
@@ -89,5 +89,18 @@ describe('DbAddAccount Usecase', () => {
     const accountData = makeFakeAccount()
     const promise = sut.add(accountData)
     await expect(promise).rejects.toThrow(new Error('Fake Error'))
+  })
+
+  test('Should return new account on success', async () => {
+    const { sut } = makeSut()
+    const accountData = makeFakeAccount()
+    const newAccount = await sut.add(accountData)
+    expect(newAccount).toEqual({
+      id: 'any_id',
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'value_crypto',
+      date: new Date()
+    })
   })
 })
