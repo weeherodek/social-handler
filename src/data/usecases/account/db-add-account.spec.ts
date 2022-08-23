@@ -1,6 +1,12 @@
+import { AddAccountRepository } from '@/data/protocols/add-account-repository'
 import { Cryptograph } from '@/data/protocols/cryptographer'
+import { AccountModel } from '@/domain/models/account/account'
 import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
 import { DbAddAccount } from './db-add-account'
+
+jest.useFakeTimers({
+  now: new Date('2020-01-01')
+})
 
 const makeFakeAccount = (): AddAccountModel => ({
   name: 'any_name',
@@ -9,7 +15,7 @@ const makeFakeAccount = (): AddAccountModel => ({
 })
 
 const makeCryptoStub = (): Cryptograph => {
-  class CryptographStub {
+  class CryptographStub implements Cryptograph {
     async crypto (value: string): Promise<string> {
       return 'value_crypto'
     }
@@ -17,17 +23,35 @@ const makeCryptoStub = (): Cryptograph => {
   return new CryptographStub()
 }
 
+const makeAddAccountRepositoryStub = (): AddAccountRepository => {
+  class AddAccountRepositoryStub implements AddAccountRepository {
+    async add (account: AddAccountModel): Promise<AccountModel> {
+      return {
+        id: 'any_id',
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'hashed_password',
+        date: new Date()
+      }
+    }
+  }
+  return new AddAccountRepositoryStub()
+}
+
 interface sutTypes {
   sut: AddAccount
   cryptographStub: Cryptograph
+  addAccountRepositoryStub: AddAccountRepository
 }
 
 const makeSut = (): sutTypes => {
   const cryptographStub = makeCryptoStub()
-  const sut = new DbAddAccount(cryptographStub)
+  const addAccountRepositoryStub = makeAddAccountRepositoryStub()
+  const sut = new DbAddAccount(cryptographStub, addAccountRepositoryStub)
   return {
     sut,
-    cryptographStub
+    cryptographStub,
+    addAccountRepositoryStub
   }
 }
 describe('DbAddAccount Usecase', () => {
@@ -45,5 +69,17 @@ describe('DbAddAccount Usecase', () => {
     const accountData = makeFakeAccount()
     const promise = sut.add(accountData)
     await expect(promise).rejects.toThrow(new Error('Fake Error'))
+  })
+
+  test('Should call AddAccountRepository with correct values', async () => {
+    const { sut, addAccountRepositoryStub } = makeSut()
+    const addSpy = jest.spyOn(addAccountRepositoryStub, 'add')
+    const accountData = makeFakeAccount()
+    await sut.add(accountData)
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'any_name',
+      email: 'any_email',
+      password: 'value_crypto'
+    })
   })
 })
