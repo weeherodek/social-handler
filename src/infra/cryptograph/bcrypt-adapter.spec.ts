@@ -1,5 +1,4 @@
 import { Cryptograph } from '@/data/protocols/cryptographer'
-import { rejects } from 'assert'
 import bcrypt from 'bcrypt'
 import { BcryptAdapter } from './bcrypt-adapter'
 
