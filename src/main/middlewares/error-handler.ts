@@ -6,6 +6,6 @@ export const errorHandler = (error: any, req: Request, res: Response, next: Next
   res.status(error.statusCode ?? 500).send({
     error: message.length ? message : new InternalServerError().message,
     statusCode: error.statusCode ?? 500,
-    sucess: false
+    success: false
   })
 }
