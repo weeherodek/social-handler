@@ -1,6 +1,6 @@
 import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
-import { InternalServerError, MissingParamError } from '../../errors/'
+import { MissingParamError } from '../../errors/'
 import { Controller, HttpRequest } from '../../protocols/'
 import { SaveTemplateController } from './save-template'
 
@@ -64,7 +64,7 @@ const makeSut = (): sutTypes => {
 }
 
 describe('Template Controller', () => {
-  test('Should return status Code 400 if no name is provided', async () => {
+  test('Should throw MissingParamError if no name is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -77,12 +77,11 @@ describe('Template Controller', () => {
       }
     }
 
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new MissingParamError('name'))
+    const httpResponse = sut.handle(httpRequest)
+    await expect(httpResponse).rejects.toThrow(new MissingParamError('name'))
   })
 
-  test('Should return status Code 400 if no text is provided', async () => {
+  test('Should throw MissingParamErro if no text is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -95,12 +94,11 @@ describe('Template Controller', () => {
       }
     }
 
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new MissingParamError('text'))
+    const httpResponse = sut.handle(httpRequest)
+    await expect(httpResponse).rejects.toThrow(new MissingParamError('text'))
   })
 
-  test('Should return status Code 400 if no fields is provided', async () => {
+  test('Should throw MissingParamError if no fields is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = {
       body: {
@@ -109,9 +107,8 @@ describe('Template Controller', () => {
       }
     }
 
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body).toEqual(new MissingParamError('fields'))
+    const httpResponse = sut.handle(httpRequest)
+    await expect(httpResponse).rejects.toThrow(new MissingParamError('fields'))
   })
 
   test('Should call AddTemplate with correct values', async () => {
@@ -125,16 +122,15 @@ describe('Template Controller', () => {
     expect(addAccountSpy).toHaveBeenCalledWith({ name, text, fields })
   })
 
-  test('Should return status Code 500 if AddTemplate throws', async () => {
+  test('Should throw Error if AddTemplate throws', async () => {
     const { sut, addTemplateStub } = makeSut()
     jest.spyOn(addTemplateStub, 'add').mockImplementationOnce(async () => {
       throw new Error()
     })
     const httpRequest = makeFakeRequest()
 
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new InternalServerError())
+    const httpResponse = sut.handle(httpRequest)
+    await expect(httpResponse).rejects.toThrow(new Error())
   })
 
   test('Should create template if correct params is provided', async () => {
