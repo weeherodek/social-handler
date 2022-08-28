@@ -1,8 +1,8 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { AddAccount } from '@/domain/usecases/account/add-acount'
-import { InvalidParamError, MissingParamError } from '../../errors/'
-import { created } from '../../helpers/http-helper'
-import { Controller, HttpRequest, HttpResponse, EmailValidator } from '../../protocols/'
+import { InvalidParamError, MissingParamError } from '@/presentation/errors/'
+import { created } from '@/presentation/helpers/http-helper'
+import { Controller, HttpRequest, HttpResponse, EmailValidator } from '@/presentation/protocols/'
 
 export class SignUpController implements Controller {
   constructor (

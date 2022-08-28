@@ -1,8 +1,8 @@
 import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate } from '@/domain/usecases/template/add-template'
-import { MissingParamError } from '../../errors/'
-import { created } from '../../helpers/http-helper'
-import { Controller, HttpRequest, HttpResponse } from '../../protocols/'
+import { MissingParamError } from '@/presentation/errors/'
+import { created } from '@/presentation/helpers/http-helper'
+import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols/'
 
 export class SaveTemplateController implements Controller {
   constructor (private readonly addTemplate: AddTemplate) {
