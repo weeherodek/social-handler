@@ -10,7 +10,7 @@ describe('Error Handler Middleware', () => {
     }, errorHandler)
     await request(app)
       .get('/test_invalid_param_error')
-      .expect({ error: 'Invalid param: Custom Error' })
+      .expect({ error: 'Invalid param: Custom Error', statusCode: 400, success: false })
       .expect(400)
   })
 
@@ -20,7 +20,7 @@ describe('Error Handler Middleware', () => {
     }, errorHandler)
     await request(app)
       .get('/test_missing_param_error')
-      .expect({ error: 'Missing param: Custom Error' })
+      .expect({ error: 'Missing param: Custom Error', statusCode: 400, success: false })
       .expect(400)
   })
 
@@ -30,7 +30,7 @@ describe('Error Handler Middleware', () => {
     }, errorHandler)
     await request(app)
       .get('/test_internal_server_error')
-      .expect({ error: 'Internal Server Error' })
+      .expect({ error: 'Internal Server Error', statusCode: 500, success: false })
       .expect(500)
   })
 
@@ -40,7 +40,7 @@ describe('Error Handler Middleware', () => {
     }, errorHandler)
     await request(app)
       .get('/test_generic_error')
-      .expect({ error: 'Internal Server Error' })
+      .expect({ error: 'Internal Server Error', statusCode: 500, success: false })
       .expect(500)
   })
 })
