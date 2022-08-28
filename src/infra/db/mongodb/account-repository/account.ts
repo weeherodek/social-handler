@@ -10,7 +10,7 @@ export class AccountMongoRepository implements AddAccountRepository {
       date: new Date(),
       ...account
     }
-    const newAccount = await accountCollection.insertOne(accountData)
+    const newAccount = await accountCollection.insertOne({ ...accountData })
     return {
       id: newAccount.insertedId.toString(),
       ...accountData

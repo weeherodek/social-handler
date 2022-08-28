@@ -29,6 +29,7 @@ describe('Account Mongo Repository', () => {
     })
     expect(newAccount).toBeDefined()
     expect(newAccount.id).toBeDefined()
+    expect(newAccount).not.toHaveProperty('_id')
     expect(newAccount.name).toBe('any_name')
     expect(newAccount.email).toBe('any_email')
     expect(newAccount.password).toBe('any_password')
