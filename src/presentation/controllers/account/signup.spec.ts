@@ -1,7 +1,9 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors/'
-import { Controller, EmailValidator, HttpRequest } from '@/presentation/protocols/'
+import { Controller } from '@/presentation/protocols/controller'
+import { EmailValidator } from '@/presentation/protocols/email-validator'
+import { HttpRequest } from '@/presentation/protocols/http'
 import { SignUpController } from './signup'
 
 jest.useFakeTimers({

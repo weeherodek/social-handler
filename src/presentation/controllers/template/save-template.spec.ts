@@ -1,7 +1,8 @@
 import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
 import { MissingParamError } from '@/presentation/errors/'
-import { Controller, HttpRequest } from '@/presentation/protocols/'
+import { Controller } from '@/presentation/protocols/controller'
+import { HttpRequest } from '@/presentation/protocols/http'
 import { SaveTemplateController } from './save-template'
 
 jest.useFakeTimers({
