@@ -9,5 +9,6 @@ module.exports = {
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1'
   },
-  preset: '@shelf/jest-mongodb'
+  preset: '@shelf/jest-mongodb',
+  watchPathIgnorePatterns: ['globalConfig']
 }
