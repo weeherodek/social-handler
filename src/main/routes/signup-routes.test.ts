@@ -1,10 +1,11 @@
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import request from 'supertest'
 import app from '../config/app'
+import env from '../config/env'
 
 describe('Signup Route', () => {
   beforeAll(async () => {
-    await MongoHelper.connect('test')
+    await MongoHelper.connect(env.mongoUrl)
   })
 
   afterAll(async () => {
@@ -19,7 +20,12 @@ describe('Signup Route', () => {
   test('Should call signup route and return an new account', async () => {
     await request(app)
       .post('/api/signup')
-      .expect({ ok: 'ok' })
-      .expect(200)
+      .send({
+        name: 'Philipe Herodek',
+        email: 'philipe.herodek@email.com.br',
+        password: '123',
+        passwordConfirmation: '123'
+      })
+      .expect(201)
   })
 })
