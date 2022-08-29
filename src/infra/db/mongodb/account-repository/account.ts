@@ -4,8 +4,10 @@ import { AddAccountModel } from '@/domain/usecases/account/add-acount'
 import { MongoHelper } from '../helpers/mongo-helper'
 
 export class AccountMongoRepository implements AddAccountRepository {
+  constructor (private readonly accountCollection: string) {}
+
   async add (account: AddAccountModel): Promise<AccountModel> {
-    const accountCollection = MongoHelper.getCollection('accounts')
+    const accountCollection = MongoHelper.getCollection(this.accountCollection)
     const accountData = {
       date: new Date(),
       ...account

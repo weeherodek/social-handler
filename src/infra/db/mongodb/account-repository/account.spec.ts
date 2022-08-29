@@ -1,8 +1,10 @@
 import { MongoHelper } from '../helpers/mongo-helper'
 import { AccountMongoRepository } from './account'
 
+const accountCollection = 'accounts'
+
 const makeSut = (): AccountMongoRepository => {
-  const sut = new AccountMongoRepository()
+  const sut = new AccountMongoRepository(accountCollection)
   return sut
 }
 
@@ -16,7 +18,7 @@ describe('Account Mongo Repository', () => {
   })
 
   beforeEach(async () => {
-    const collectionAccounts = MongoHelper.getCollection('accounts')
+    const collectionAccounts = MongoHelper.getCollection(accountCollection)
     await collectionAccounts.deleteMany({})
   })
 
