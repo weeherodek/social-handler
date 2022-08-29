@@ -52,11 +52,30 @@ const makeSut = (): sutTypes => {
 }
 
 describe('DbAddTemplate Usecase', () => {
-  test('Should call cryptographer with correct password', async () => {
+  test('Should call AddTemplateRepository with correct values', async () => {
     const { sut, addTemplateRepository } = makeSut()
     const addSpy = jest.spyOn(addTemplateRepository, 'add')
     const fakeTemplate = makeFakeTemplate()
     await sut.add(fakeTemplate)
     expect(addSpy).toHaveBeenCalledWith(fakeTemplate)
+  })
+
+  test('Should return a new template on success', async () => {
+    const { sut } = makeSut()
+    const template = makeFakeTemplate()
+    const newTemplate = await sut.add(template)
+    expect(newTemplate).toEqual({
+      ...template,
+      id: 'any_id',
+      date: new Date()
+    })
+  })
+
+  test('Should throw if AddTemplateRepository throws', async () => {
+    const { sut, addTemplateRepository } = makeSut()
+    jest.spyOn(addTemplateRepository, 'add').mockRejectedValueOnce(new Error('Mock Error'))
+    const template = makeFakeTemplate()
+    const promise = sut.add(template)
+    await expect(promise).rejects.toThrow(new Error('Mock Error'))
   })
 })
