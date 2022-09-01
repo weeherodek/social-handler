@@ -13,7 +13,7 @@ describe('Template Route', () => {
   })
 
   afterEach(async () => {
-    const accountCollection = MongoHelper.getCollection(env.templateCollection)
+    const accountCollection = await MongoHelper.getCollection(env.templateCollection)
     await accountCollection.deleteMany({})
   })
 
