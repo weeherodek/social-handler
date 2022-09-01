@@ -1,7 +1,14 @@
 import { InternalServerError } from '@/presentation/errors'
 import { Request, Response, NextFunction } from 'express'
 
-export const errorHandler = (error: any, req: Request, res: Response, next: NextFunction): void => {
+interface ErrorType {
+  message: string
+  name: string
+  stack?: string
+  statusCode?: number
+}
+
+export const errorHandler = (error: ErrorType, req: Request, res: Response, next: NextFunction): void => {
   const { message } = error
   res.status(error.statusCode ?? 500).send({
     error: message.length ? message : new InternalServerError().message,
