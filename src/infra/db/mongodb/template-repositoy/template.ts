@@ -7,7 +7,7 @@ export class TemplateMongoRepository implements AddTemplateRepository {
   constructor (private readonly templateCollection: string) {}
 
   async add (template: AddTemplateModel): Promise<TemplateModel> {
-    const templateCollection = MongoHelper.getCollection(this.templateCollection)
+    const templateCollection = await MongoHelper.getCollection(this.templateCollection)
     const templateData = {
       ...template,
       date: new Date()

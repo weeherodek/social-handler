@@ -7,7 +7,7 @@ export class AccountMongoRepository implements AddAccountRepository {
   constructor (private readonly accountCollection: string) {}
 
   async add (account: AddAccountModel): Promise<AccountModel> {
-    const accountCollection = MongoHelper.getCollection(this.accountCollection)
+    const accountCollection = await MongoHelper.getCollection(this.accountCollection)
     const accountData = {
       date: new Date(),
       ...account
