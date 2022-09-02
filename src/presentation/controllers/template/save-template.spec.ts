@@ -143,21 +143,25 @@ describe('Template Controller', () => {
 
     expect(httpResponse.statusCode).toBe(201)
     expect(httpResponse.body).toEqual({
-      id: 'any_id',
-      name: 'any_name',
-      text: 'any_text',
-      fields: [{
-        name: 'any_name_1',
-        required: true,
-        defaultValue: ''
+      data: {
+        id: 'any_id',
+        name: 'any_name',
+        text: 'any_text',
+        fields: [{
+          name: 'any_name_1',
+          required: true,
+          defaultValue: ''
+        },
+        {
+          name: 'any_name_2',
+          required: false,
+          defaultValue: '123'
+        }
+        ],
+        date: new Date()
       },
-      {
-        name: 'any_name_2',
-        required: false,
-        defaultValue: '123'
-      }
-      ],
-      date: new Date()
+      statusCode: 201,
+      success: true
     })
   })
 })

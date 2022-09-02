@@ -198,11 +198,15 @@ describe('Template Controller', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(201)
     expect(httpResponse.body).toEqual({
-      id: 'any_id',
-      name: 'any_name',
-      email: 'any_email',
-      password: 'any_password',
-      date: new Date()
+      data: {
+        id: 'any_id',
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+        date: new Date()
+      },
+      statusCode: 201,
+      success: true
     })
   })
 })
