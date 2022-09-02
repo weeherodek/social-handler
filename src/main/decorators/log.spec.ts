@@ -1,3 +1,5 @@
+import { LogErrorRepository } from '@/data/protocols/log-error-repository'
+import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { LogControllerDecorator } from './log'
@@ -20,17 +22,29 @@ const makeGenericController = (): Controller => {
   return new GenericControllerStub()
 }
 
+const makeLogErrorRepository = (): LogErrorRepository => {
+  class LogErrorRepositoryStub implements LogErrorRepository {
+    async log (stackError: string): Promise<void> {
+      return await Promise.resolve()
+    }
+  }
+  return new LogErrorRepositoryStub()
+}
+
 interface sutTypes {
   genericControllerStub: Controller
+  logErrorRepositoryStub: LogErrorRepository
   sut: LogControllerDecorator
 }
 
 const makeSut = (): sutTypes => {
   const genericControllerStub = makeGenericController()
-  const sut = new LogControllerDecorator(genericControllerStub)
+  const logErrorRepositoryStub = makeLogErrorRepository()
+  const sut = new LogControllerDecorator(genericControllerStub, logErrorRepositoryStub)
   return {
     sut,
-    genericControllerStub
+    genericControllerStub,
+    logErrorRepositoryStub
   }
 }
 
@@ -58,8 +72,28 @@ describe('Log Controller Decorator', () => {
 
   test('Should throw the error if the controller throws', async () => {
     const { sut, genericControllerStub } = makeSut()
-    jest.spyOn(genericControllerStub, 'handle').mockRejectedValueOnce(new Error('Fake Error'))
+    jest.spyOn(genericControllerStub, 'handle').mockRejectedValueOnce(new MissingParamError('Fake Error'))
     const promise = sut.handle(makeGenericRequest())
-    await expect(promise).rejects.toThrow(new Error('Fake Error'))
+    await expect(promise).rejects.toThrow(new MissingParamError('Fake Error'))
+  })
+
+  test('Should save the error before throws the error if is a unexpected error', async () => {
+    const { sut, genericControllerStub, logErrorRepositoryStub } = makeSut()
+    const fakeError = new Error('Fake Error')
+    fakeError.stack = 'Fake Error Stack'
+    jest.spyOn(genericControllerStub, 'handle').mockRejectedValueOnce(fakeError)
+    const spyLog = jest.spyOn(logErrorRepositoryStub, 'log')
+    const promise = sut.handle(makeGenericRequest())
+    await expect(promise).rejects.toThrowError(fakeError)
+    expect(spyLog).toHaveBeenCalledWith('Fake Error Stack')
+  })
+
+  test('Should not save the log if error is a not instance of generic error', async () => {
+    const { sut, genericControllerStub, logErrorRepositoryStub } = makeSut()
+    jest.spyOn(genericControllerStub, 'handle').mockRejectedValueOnce(new InvalidParamError('Fake Error'))
+    const spyLog = jest.spyOn(logErrorRepositoryStub, 'log')
+    sut.handle(makeGenericRequest()).catch(() => {
+      expect(spyLog).not.toHaveBeenCalled()
+    })
   })
 })
