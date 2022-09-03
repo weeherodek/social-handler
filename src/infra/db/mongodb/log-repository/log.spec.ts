@@ -13,6 +13,10 @@ const makeFakeErrorLog = (): AddLogErrorModel => ({
   stack: 'fake_error_stack'
 })
 
+const makeSut = (): LogMongoRepository => {
+  return new LogMongoRepository(env.errorLogCollection)
+}
+
 describe('', () => {
   let errorCollection: Collection
 
@@ -30,7 +34,7 @@ describe('', () => {
   })
 
   test('Should create an error log on success', async () => {
-    const sut = new LogMongoRepository(env.errorLogCollection)
+    const sut = makeSut()
     await sut.logError(makeFakeErrorLog())
     const logResult = await errorCollection.find<LogErrorModel>({}).toArray()
     expect(logResult.length).toBe(1)
