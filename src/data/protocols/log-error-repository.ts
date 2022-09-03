@@ -1,3 +1,5 @@
+import { AddLogErrorModel } from '@/domain/usecases/log/error'
+
 export interface LogErrorRepository {
-  log: (stackError: string) => Promise<void>
+  logError: (errorData: AddLogErrorModel) => Promise<void>
 }
