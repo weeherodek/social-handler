@@ -1,8 +1,8 @@
-export class InvalidParamError extends Error {
-  public statusCode: number = 400
+import { ApplicationError } from './application-error'
 
+export class InvalidParamError extends ApplicationError {
   constructor (paramName: string) {
-    super(`Invalid param: ${paramName}`)
+    super(`Invalid param: ${paramName}`, 400)
     this.name = 'InvalidParamError'
   }
 }

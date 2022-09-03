@@ -1,8 +1,8 @@
-export class MissingParamError extends Error {
-  public statusCode: number = 400
+import { ApplicationError } from './application-error'
 
+export class MissingParamError extends ApplicationError {
   constructor (paramName: string) {
-    super(`Missing param: ${paramName}`)
+    super(`Missing param: ${paramName}`, 400)
     this.name = 'MissingParamError'
   }
 }

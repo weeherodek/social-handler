@@ -1,8 +1,8 @@
-export class InternalServerError extends Error {
-  public statusCode: number = 500
+import { ApplicationError } from './application-error'
 
+export class InternalServerError extends ApplicationError {
   constructor () {
-    super('Internal Server Error')
+    super('Internal Server Error', 500)
     this.name = 'InternalServerError'
   }
 }
