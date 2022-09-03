@@ -1,7 +1,8 @@
+import env from '@/main/config/env'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { AccountMongoRepository } from './account'
 
-const accountCollection = 'accounts'
+const accountCollection = env.accountCollection
 
 const makeSut = (): AccountMongoRepository => {
   const sut = new AccountMongoRepository(accountCollection)

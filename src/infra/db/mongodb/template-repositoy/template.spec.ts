@@ -1,7 +1,8 @@
+import env from '@/main/config/env'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { TemplateMongoRepository } from './template'
 
-const templateCollection = 'templates'
+const templateCollection = env.templateCollection
 
 const makeSut = (): TemplateMongoRepository => {
   const sut = new TemplateMongoRepository(templateCollection)
