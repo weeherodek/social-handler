@@ -14,7 +14,7 @@ export class LogControllerDecorator implements Controller {
       const httpResponse = await this.controller.handle(httpRequest)
       return httpResponse
     } catch (error) {
-      if (error instanceof Error && error.name === 'Error') {
+      if (error instanceof Error && !error.constructor.toString().includes('extends Error')) {
         await this.logErroRepository.logError({
           stack: error.stack as string,
           params: httpRequest,
