@@ -1,6 +1,7 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
-import { InvalidParamError, MissingParamError } from '@/presentation/errors/'
+import { ApplicationError, InvalidParamError, MissingParamError } from '@/presentation/errors/'
+import { created } from '@/presentation/helpers/http-helper'
 import { Validation } from '@/presentation/helpers/validators/validation'
 import { Controller } from '@/presentation/protocols/controller'
 import { EmailValidator } from '@/presentation/protocols/email-validator'
@@ -75,62 +76,6 @@ const makeSut = (): sutTypes => {
 }
 
 describe('Template Controller', () => {
-  test('Should throw MissingParamError if no name is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        email: 'any_email',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
-    }
-
-    const httpResponse = sut.handle(httpRequest)
-    await expect(httpResponse).rejects.toThrow(new MissingParamError('name'))
-  })
-
-  test('Should throw MissingParamError if no email is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'any_text',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
-    }
-
-    const httpResponse = sut.handle(httpRequest)
-    await expect(httpResponse).rejects.toThrow(new MissingParamError('email'))
-  })
-
-  test('Should throw MissingParamError if no password is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'any_text',
-        email: 'any_email',
-        passwordConfirmation: 'any_password'
-      }
-    }
-
-    const httpResponse = sut.handle(httpRequest)
-    await expect(httpResponse).rejects.toThrow(new MissingParamError('password'))
-  })
-
-  test('Should throw MissingParamError if no passwordConfirmation is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'any_text',
-        email: 'any_email',
-        password: 'any_password'
-      }
-    }
-
-    const httpResponse = sut.handle(httpRequest)
-    await expect(httpResponse).rejects.toThrow(new MissingParamError('passwordConfirmation'))
-  })
-
   test('Should call EmailValidator with correct params', async () => {
     const { sut, emailValidatorStub: emailValidator } = makeSut()
     const isValidSpy = jest.spyOn(emailValidator, 'isValid')
@@ -204,23 +149,17 @@ describe('Template Controller', () => {
     await expect(httpResponse).rejects.toThrow(new Error())
   })
 
-  test('Should return Status Code 201 if valid data is provided', async () => {
+  test('Should created if valid data is provided', async () => {
     const { sut } = makeSut()
     const httpRequest = makeFakeRequest()
-
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(201)
-    expect(httpResponse.body).toEqual({
-      data: {
-        id: 'any_id',
-        name: 'any_name',
-        email: 'any_email',
-        password: 'any_password',
-        date: new Date()
-      },
-      statusCode: 201,
-      success: true
-    })
+    expect(httpResponse).toEqual(created({
+      id: 'any_id',
+      name: 'any_name',
+      email: 'any_email',
+      password: 'any_password',
+      date: new Date()
+    }))
   })
 
   test('Should call Validation with correct values', async () => {
@@ -229,5 +168,12 @@ describe('Template Controller', () => {
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('Should return Status Code 201 if valid data is provided', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new ApplicationError('any_field', 400))
+    const promise = sut.handle(makeFakeRequest())
+    await expect(promise).rejects.toThrow(new ApplicationError('any_field', 400))
   })
 })
