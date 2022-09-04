@@ -3,7 +3,7 @@ import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-te
 import { MissingParamError } from '@/presentation/errors/'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest } from '@/presentation/protocols/http'
-import { SaveTemplateController } from './save-template'
+import { AddTemplateController } from './save-template'
 
 jest.useFakeTimers({
   now: new Date('2020-01-01')
@@ -57,7 +57,7 @@ interface sutTypes {
 
 const makeSut = (): sutTypes => {
   const addTemplateStub = makeAddTemplate()
-  const sut = new SaveTemplateController(addTemplateStub)
+  const sut = new AddTemplateController(addTemplateStub)
   return {
     sut,
     addTemplateStub

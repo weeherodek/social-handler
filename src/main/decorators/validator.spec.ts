@@ -3,7 +3,7 @@ import { ok } from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols/validation'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
-import { ValidatorDecorator } from './validator'
+import { ValidatorControllerDecorator } from './validator'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -30,7 +30,7 @@ const makeValidation = (): Validation => {
 }
 
 interface sutTypes {
-  sut: ValidatorDecorator
+  sut: ValidatorControllerDecorator
   genericControllerStub: Controller
   validationStub: Validation
 }
@@ -38,7 +38,7 @@ interface sutTypes {
 const makeSut = (): sutTypes => {
   const genericControllerStub = makeGenericController()
   const validationStub = makeValidation()
-  const sut = new ValidatorDecorator(genericControllerStub, validationStub)
+  const sut = new ValidatorControllerDecorator(genericControllerStub, validationStub)
   return {
     sut,
     genericControllerStub,
