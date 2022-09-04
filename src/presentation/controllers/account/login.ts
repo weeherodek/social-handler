@@ -1,5 +1,5 @@
 import { Authentication, AuthResponse } from '@/domain/usecases/account/authentication'
-import { InvalidParamError, MissingParamError } from '@/presentation/errors'
+import { InvalidParamError, MissingParamError, UnauthorizedError } from '@/presentation/errors'
 import { ok } from '@/presentation/helpers/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { EmailValidator } from '@/presentation/protocols/email-validator'
@@ -27,6 +27,10 @@ export class LoginController implements Controller {
     }
 
     const accessToken = await this.authentication.auth(email, password)
+
+    if (!accessToken) {
+      throw new UnauthorizedError()
+    }
 
     return ok(accessToken)
   }
