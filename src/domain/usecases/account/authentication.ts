@@ -5,3 +5,8 @@ export interface Authentication {
 export interface AuthResponse {
   accessToken: string
 }
+
+export interface LoginModel {
+  email: string
+  password: string
+}
