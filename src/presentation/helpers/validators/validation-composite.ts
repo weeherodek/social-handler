@@ -13,6 +13,6 @@ export class ValidationComposite implements Validation {
         errors.push(error)
       }
     }
-    return errors.join(',')
+    return errors.join(', ')
   }
 }
