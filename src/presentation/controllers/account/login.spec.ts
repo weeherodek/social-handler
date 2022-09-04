@@ -36,21 +36,17 @@ const makeSut = (): sutTypes => {
 describe('Login Controller', () => {
   test('Should throw MissingParamError if no email is provided', async () => {
     const { sut } = makeSut()
-    const promise = sut.handle({
-      body: {
-        password: 'any_password'
-      }
-    })
+    const request = makeFakeRequest()
+    delete request.body.email
+    const promise = sut.handle(request)
     await expect(promise).rejects.toThrow(new MissingParamError('email'))
   })
 
   test('Should throw MissingParamError if no password is provided', async () => {
     const { sut } = makeSut()
-    const promise = sut.handle({
-      body: {
-        email: 'any_email'
-      }
-    })
+    const request = makeFakeRequest()
+    delete request.body.password
+    const promise = sut.handle(request)
     await expect(promise).rejects.toThrow(new MissingParamError('password'))
   })
 
@@ -66,5 +62,14 @@ describe('Login Controller', () => {
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
     const promise = sut.handle(makeFakeRequest())
     await expect(promise).rejects.toThrow(new InvalidParamError('email'))
+  })
+
+  test('Should throw is EmailValidator throws', async () => {
+    const { sut, emailValidatorStub } = makeSut()
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
+      throw new Error('Fake Error')
+    })
+    const promise = sut.handle(makeFakeRequest())
+    await expect(promise).rejects.toThrow(new Error('Fake Error'))
   })
 })
