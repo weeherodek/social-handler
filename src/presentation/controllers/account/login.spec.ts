@@ -1,6 +1,7 @@
 import { Authentication } from '@/domain/usecases/account/authentication'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { UnauthorizedError } from '@/presentation/errors/unauthorized-error'
+import { ok } from '@/presentation/helpers/http-helper'
 import { EmailValidator } from '@/presentation/protocols/email-validator'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { LoginController } from './login'
@@ -107,5 +108,11 @@ describe('Login Controller', () => {
     jest.spyOn(authenticationStub, 'auth').mockRejectedValueOnce(new Error('Fake Error'))
     const promise = sut.handle(makeFakeRequest())
     await expect(promise).rejects.toThrow(new Error('Fake Error'))
+  })
+
+  test('Should return the acess token', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok({ accessToken: 'any_token' }))
   })
 })
