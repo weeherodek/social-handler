@@ -1,6 +1,6 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
-import { ApplicationError, InvalidParamError, MissingParamError } from '@/presentation/errors/'
+import { ApplicationError, InvalidParamError } from '@/presentation/errors/'
 import { created } from '@/presentation/helpers/http-helper'
 import { Validation } from '@/presentation/helpers/validators/validation'
 import { Controller } from '@/presentation/protocols/controller'
@@ -32,8 +32,8 @@ const makeEmailValidator = (): EmailValidator => {
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
-    validate (data: any): Error | null {
-      return null
+    validate (data: any): string {
+      return ''
     }
   }
   return new ValidationStub()
@@ -172,7 +172,7 @@ describe('Template Controller', () => {
 
   test('Should return Status Code 201 if valid data is provided', async () => {
     const { sut, validationStub } = makeSut()
-    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new ApplicationError('any_field', 400))
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce('any_field')
     const promise = sut.handle(makeFakeRequest())
     await expect(promise).rejects.toThrow(new ApplicationError('any_field', 400))
   })
