@@ -5,17 +5,21 @@ import { created } from '@/presentation/helpers/http-helper'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { EmailValidator } from '@/presentation/protocols/email-validator'
 import { Controller } from '@/presentation/protocols/controller'
+import { Validation } from '@/presentation/helpers/validators/validation'
 
 export class SignUpController implements Controller {
   constructor (
     private readonly emailValidator: EmailValidator,
-    private readonly addAccount: AddAccount
+    private readonly addAccount: AddAccount,
+    private readonly validation: Validation
   ) {
 
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse<AccountModel>> {
     const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
+
+    this.validation.validate(httpRequest.body)
     for (const field of requiredFields) {
       if (httpRequest.body[field] === undefined) {
         throw new MissingParamError(field)
