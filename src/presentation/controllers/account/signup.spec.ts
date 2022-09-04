@@ -112,21 +112,6 @@ describe('Template Controller', () => {
     await expect(httpResponse).rejects.toThrow(new InvalidParamError('email'))
   })
 
-  test('Should throw InvalidParamError if passwordConfirmation do not match with password', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'any_text',
-        email: 'any_email',
-        password: 'any_password',
-        passwordConfirmation: 'different_password'
-      }
-    }
-
-    const httpResponse = sut.handle(httpRequest)
-    await expect(httpResponse).rejects.toEqual(new InvalidParamError('passwordConfirmation'))
-  })
-
   test('Should throw Error if email validator throws', async () => {
     const { sut, emailValidatorStub: emailValidator } = makeSut()
     jest.spyOn(emailValidator, 'isValid').mockImplementationOnce(() => {
