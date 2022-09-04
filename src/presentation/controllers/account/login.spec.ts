@@ -79,7 +79,7 @@ describe('Login Controller', () => {
     await expect(promise).rejects.toThrow(new InvalidParamError('email'))
   })
 
-  test('Should throw is EmailValidator throws', async () => {
+  test('Should throw if EmailValidator throws', async () => {
     const { sut, emailValidatorStub } = makeSut()
     jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
       throw new Error('Fake Error')
@@ -100,5 +100,12 @@ describe('Login Controller', () => {
     jest.spyOn(authenticationStub, 'auth').mockResolvedValueOnce(null)
     const promise = sut.handle(makeFakeRequest())
     await expect(promise).rejects.toThrow(new UnauthorizedError())
+  })
+
+  test('Should throw if Authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockRejectedValueOnce(new Error('Fake Error'))
+    const promise = sut.handle(makeFakeRequest())
+    await expect(promise).rejects.toThrow(new Error('Fake Error'))
   })
 })
