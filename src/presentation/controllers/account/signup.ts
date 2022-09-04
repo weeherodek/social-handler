@@ -1,6 +1,6 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { AddAccount } from '@/domain/usecases/account/add-acount'
-import { InvalidParamError, MissingParamError } from '@/presentation/errors/'
+import { ApplicationError, InvalidParamError, MissingParamError } from '@/presentation/errors/'
 import { created } from '@/presentation/helpers/http-helper'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { EmailValidator } from '@/presentation/protocols/email-validator'
@@ -21,7 +21,7 @@ export class SignUpController implements Controller {
 
     const error = this.validation.validate(httpRequest.body)
     if (error) {
-      throw error
+      throw new ApplicationError(error, 400)
     }
     for (const field of requiredFields) {
       if (httpRequest.body[field] === undefined) {
