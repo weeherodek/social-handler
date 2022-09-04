@@ -1,5 +1,5 @@
 export interface Authentication {
-  auth: (email: string, password: string) => Promise<string | null>
+  auth: (authentication: LoginModel) => Promise<string | null>
 }
 
 export interface AuthResponse {

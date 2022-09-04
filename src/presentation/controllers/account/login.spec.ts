@@ -1,4 +1,4 @@
-import { Authentication } from '@/domain/usecases/account/authentication'
+import { Authentication, LoginModel } from '@/domain/usecases/account/authentication'
 import { UnauthorizedError } from '@/presentation/errors/unauthorized-error'
 import { ok } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -13,7 +13,7 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeAuthenticationStub = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth (email: string, password: string): Promise<string> {
+    async auth (authentication: LoginModel): Promise<string> {
       return 'any_token'
     }
   }
@@ -40,7 +40,7 @@ describe('Login Controller', () => {
     const { sut, authenticationStub } = makeSut()
     const spyAuth = jest.spyOn(authenticationStub, 'auth')
     await sut.handle(makeFakeRequest())
-    expect(spyAuth).toHaveBeenCalledWith('any_email', 'any_password')
+    expect(spyAuth).toHaveBeenCalledWith({ email: 'any_email', password: 'any_password' })
   })
 
   test('Should throw UnauthorizedError if auth returns falsy', async () => {
