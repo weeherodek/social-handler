@@ -1,5 +1,5 @@
 import { LogMongoRepository } from '@/infra/db/mongodb/log-repository/log'
-import { ValidatorDecorator } from '@/main/decorators/validator'
+import { ValidatorControllerDecorator } from '@/main/decorators/validator'
 import { LoginController } from '@/presentation/controllers/account/login'
 
 import { Controller } from '@/presentation/protocols/controller'
@@ -11,5 +11,5 @@ export const makeLoginController = (): Controller => {
   const loginController = new LoginController()
   const logMongoRepository = new LogMongoRepository(env.errorLogCollection)
   const logController = new LogControllerDecorator(loginController, logMongoRepository)
-  return new ValidatorDecorator(logController, makeLoginValidation())
+  return new ValidatorControllerDecorator(logController, makeLoginValidation())
 }

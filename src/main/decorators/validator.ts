@@ -3,7 +3,7 @@ import { Validation } from '@/presentation/protocols/validation'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 
-export class ValidatorDecorator implements Controller {
+export class ValidatorControllerDecorator implements Controller {
   constructor (
     private readonly controller: Controller,
     private readonly validation: Validation) {

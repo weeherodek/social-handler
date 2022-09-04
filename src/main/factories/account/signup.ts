@@ -2,7 +2,7 @@ import { DbAddAccount } from '@/data/usecases/account/db-add-account'
 import { BcryptAdapter } from '@/infra/cryptograph/bcrypt-adapter'
 import { AccountMongoRepository } from '@/infra/db/mongodb/account-repository/account'
 import { LogMongoRepository } from '@/infra/db/mongodb/log-repository/log'
-import { ValidatorDecorator } from '@/main/decorators/validator'
+import { ValidatorControllerDecorator } from '@/main/decorators/validator'
 import { SignUpController } from '@/presentation/controllers/account/signup'
 import { Controller } from '@/presentation/protocols/controller'
 import env from '../../config/env'
@@ -17,5 +17,5 @@ export const makeSignupController = (): Controller => {
   const signUpController = new SignUpController(addAccount)
   const logMongoRepository = new LogMongoRepository(env.errorLogCollection)
   const logController = new LogControllerDecorator(signUpController, logMongoRepository)
-  return new ValidatorDecorator(logController, makeSignupValidation())
+  return new ValidatorControllerDecorator(logController, makeSignupValidation())
 }

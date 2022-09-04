@@ -5,7 +5,7 @@ import { created } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 
-export class SaveTemplateController implements Controller {
+export class AddTemplateController implements Controller {
   constructor (private readonly addTemplate: AddTemplate) {
 
   }
