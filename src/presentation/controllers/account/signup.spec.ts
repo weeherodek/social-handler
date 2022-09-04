@@ -1,6 +1,6 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
-import { created } from '@/presentation/helpers/http-helper'
+import { created } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { SignUpController } from './signup'

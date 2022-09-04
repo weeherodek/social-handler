@@ -1,7 +1,7 @@
 import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate } from '@/domain/usecases/template/add-template'
 import { MissingParamError } from '@/presentation/errors/'
-import { created } from '@/presentation/helpers/http-helper'
+import { created } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 

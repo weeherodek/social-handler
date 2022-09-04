@@ -1,6 +1,6 @@
 import { Authentication } from '@/domain/usecases/account/authentication'
 import { UnauthorizedError } from '@/presentation/errors/unauthorized-error'
-import { ok } from '@/presentation/helpers/http-helper'
+import { ok } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { LoginController } from './login'
 

@@ -1,6 +1,6 @@
 import { ApplicationError } from '@/presentation/errors'
-import { ok } from '@/presentation/helpers/http-helper'
-import { Validation } from '@/presentation/helpers/validators/validation'
+import { ok } from '@/presentation/helpers/http/http-helper'
+import { Validation } from '@/presentation/protocols/validation'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { ValidatorDecorator } from './validator'
