@@ -1,14 +1,16 @@
+import { Authentication, AuthResponse } from '@/domain/usecases/account/authentication'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
+import { ok } from '@/presentation/helpers/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { EmailValidator } from '@/presentation/protocols/email-validator'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 
 export class LoginController implements Controller {
-  constructor (private readonly emailValidator: EmailValidator) {
+  constructor (
+    private readonly emailValidator: EmailValidator,
+    private readonly authentication: Authentication) {}
 
-  }
-
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle (httpRequest: HttpRequest): Promise<HttpResponse<AuthResponse>> {
     const requiredFields = ['email', 'password']
     for (const field of requiredFields) {
       if (httpRequest.body[field] === undefined) {
@@ -16,7 +18,7 @@ export class LoginController implements Controller {
       }
     }
 
-    const { email } = httpRequest.body
+    const { email, password } = httpRequest.body
 
     const isValid = this.emailValidator.isValid(email)
 
@@ -24,13 +26,8 @@ export class LoginController implements Controller {
       throw new InvalidParamError('email')
     }
 
-    return await Promise.resolve({
-      body: {
-        anyBody: 'test',
-        statusCode: 200,
-        success: true
-      },
-      statusCode: 200
-    })
+    const accessToken = await this.authentication.auth(email, password)
+
+    return ok(accessToken)
   }
 }

@@ -8,3 +8,12 @@ export const created = (body: any): HttpResponse<typeof body> => ({
     data: body
   }
 })
+
+export const ok = (body: any): HttpResponse<typeof body> => ({
+  statusCode: 200,
+  body: {
+    statusCode: 200,
+    success: true,
+    data: body
+  }
+})
