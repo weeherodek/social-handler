@@ -52,7 +52,7 @@ describe('Validator Decorator', () => {
     const validationSpy = jest.spyOn(validationStub, 'validate')
     const request = makeFakeRequest()
     await sut.handle(request)
-    expect(validationSpy).toHaveBeenCalledWith(request)
+    expect(validationSpy).toHaveBeenCalledWith(request.body)
   })
 
   test('Should call the controller with correct values', async () => {
