@@ -4,10 +4,11 @@ import { Validation } from '@/presentation/protocols/validation'
 
 export const makeAddTemplateValidation = (): ValidationComposite => {
   const validations: Validation[] = []
-  for (const field of ['name', 'text', 'fields']) {
+  for (const field of ['name', 'text']) {
     validations.push(new RequiredFieldValidation(field))
     validations.push(new TypeofValidation(field, 'string'))
   }
+  validations.push(new RequiredFieldValidation('fields'))
   validations.push(new ArrayFieldsValidation('fields', ['name', 'required']))
   return new ValidationComposite(validations)
 }

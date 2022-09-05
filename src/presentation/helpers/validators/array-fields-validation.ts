@@ -13,13 +13,17 @@ export class ArrayFieldsValidation implements Validation {
     if (!Array.isArray(data[this.fieldName])) {
       return new TypeofError(this.fieldName, 'array').message
     }
-    Array(data[this.fieldName]).forEach((dataArray) => {
+    const errors: string[] = []
+    data[this.fieldName].forEach((dataArray: any, index: number) => {
       for (const field of this.requiredFields) {
         if (dataArray[field] === undefined) {
-          return new MissingParamError(dataArray[field]).message
+          errors.push(new MissingParamError(`${this.fieldName}[${index}].${field}`).message)
         }
       }
     })
+    if (errors.length) {
+      return errors.join(', ')
+    }
     return null
   }
 }
