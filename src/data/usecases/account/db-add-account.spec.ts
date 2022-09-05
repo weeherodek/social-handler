@@ -1,5 +1,5 @@
-import { AddAccountRepository } from '@/data/protocols/add-account-repository'
-import { Cryptograph } from '@/data/protocols/cryptographer'
+import { AddAccountRepository } from '@/data/protocols/db/account/add-account-repository'
+import { Cryptograph } from '@/data/protocols/cryptograph/cryptographer'
 import { AccountModel } from '@/domain/models/account/account'
 import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
 import { DbAddAccount } from './db-add-account'

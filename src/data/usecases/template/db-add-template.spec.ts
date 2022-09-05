@@ -1,4 +1,4 @@
-import { AddTemplateRepository } from '@/data/protocols/add-template-repository'
+import { AddTemplateRepository } from '@/data/protocols/db/template/add-template-repository'
 import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
 import { DbAddTemplate } from './db-add-template'

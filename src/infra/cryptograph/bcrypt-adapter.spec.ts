@@ -1,4 +1,4 @@
-import { Cryptograph } from '@/data/protocols/cryptographer'
+import { Cryptograph } from '@/data/protocols/cryptograph/cryptographer'
 import bcrypt from 'bcrypt'
 import { BcryptAdapter } from './bcrypt-adapter'
 

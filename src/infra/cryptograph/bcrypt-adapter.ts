@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 
-import { Cryptograph } from '@/data/protocols/cryptographer'
+import { Cryptograph } from '@/data/protocols/cryptograph/cryptographer'
 
 export class BcryptAdapter implements Cryptograph {
   constructor (private readonly salt: number) {}
