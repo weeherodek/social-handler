@@ -1,12 +1,12 @@
 import { DbAddTemplate } from '@/data/usecases/template/db-add-template'
-import { LogMongoRepository } from '@/infra/db/mongodb/log-repository/log'
-import { TemplateMongoRepository } from '@/infra/db/mongodb/template-repositoy/template'
-import { ValidatorControllerDecorator } from '@/main/decorators/validator'
-import { AddTemplateController } from '@/presentation/controllers/template/save-template'
+import { LogMongoRepository } from '@/infra/db/mongodb/log/log-mongo-repository'
+import { TemplateMongoRepository } from '@/infra/db/mongodb/template/template-mongo-repository'
+import { ValidatorControllerDecorator } from '@/main/decorators/validator-controller-decorator'
+import { AddTemplateController } from '@/presentation/controllers/template/save-template-controller'
 import { Controller } from '@/presentation/protocols/controller'
 import env from '../../config/env'
-import { LogControllerDecorator } from '../../decorators/log'
-import { makeAddTemplateValidation } from './add-template-validation'
+import { LogControllerDecorator } from '../../decorators/log-controller-decorator'
+import { makeAddTemplateValidation } from './add-template-validation-factory'
 
 export const makeAddTemplateController = (): Controller => {
   const templateRepository = new TemplateMongoRepository(env.templateCollection)

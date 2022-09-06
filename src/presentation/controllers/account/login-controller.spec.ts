@@ -2,7 +2,7 @@ import { Authentication, LoginModel } from '@/domain/usecases/account/authentica
 import { UnauthorizedError } from '@/presentation/errors/unauthorized-error'
 import { ok } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
-import { LoginController } from './login'
+import { LoginController } from './login-controller'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {

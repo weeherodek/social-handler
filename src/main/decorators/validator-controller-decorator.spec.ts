@@ -3,7 +3,7 @@ import { ok } from '@/presentation/helpers/http/http-helper'
 import { Validation } from '@/presentation/protocols/validation'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
-import { ValidatorControllerDecorator } from './validator'
+import { ValidatorControllerDecorator } from './validator-controller-decorator'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {

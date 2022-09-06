@@ -1,7 +1,7 @@
 import { RequiredFieldValidation, TypeofValidation, ValidationComposite } from '@/presentation/helpers/validators/'
 import { ArrayFieldsValidation } from '@/presentation/helpers/validators/array-fields-validation'
 import { Validation } from '@/presentation/protocols/validation'
-import { makeAddTemplateValidation } from './add-template-validation'
+import { makeAddTemplateValidation } from './add-template-validation-factory'
 
 jest.mock('@/presentation/helpers/validators/validation-composite')
 

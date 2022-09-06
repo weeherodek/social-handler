@@ -3,7 +3,7 @@ import { AddLogErrorModel } from '@/domain/usecases/log/error'
 import env from '@/main/config/env'
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
-import { LogMongoRepository } from './log'
+import { LogMongoRepository } from './log-mongo-repository'
 
 const makeFakeErrorLog = (): AddLogErrorModel => ({
   controller: 'fake_controller',

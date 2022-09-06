@@ -2,7 +2,7 @@ import { LogErrorRepository } from '@/data/protocols/db/log/log-error-repository
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
-import { LogControllerDecorator } from './log'
+import { LogControllerDecorator } from './log-controller-decorator'
 
 const makeGenericRequest = (): HttpRequest => ({ body: 'fake_body' })
 
