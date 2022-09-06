@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { adaptRoute } from '../adapters/express-route-adapter'
+import { adaptRoute } from '../adapters/express/express-route-adapter'
 import { makeAddTemplateController } from '../factories/template/template-factory'
 
 export default (router: Router): void => {
