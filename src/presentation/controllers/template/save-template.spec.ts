@@ -1,5 +1,6 @@
 import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
+import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -9,9 +10,9 @@ jest.useFakeTimers({
   now: new Date('2020-01-01')
 })
 
-const makeFakeRequest = (): HttpRequest => ({
+const makeFakeRequest = (): HttpRequest<AddTemplateModel> => ({
   body: {
-    name: 'any_text',
+    name: 'any_name',
     text: 'any_text',
     fields: [{
       name: 'any_name_1',
@@ -111,5 +112,13 @@ describe('Template Controller', () => {
       ],
       date: new Date()
     }))
+  })
+
+  test('Should throw AlreadyExistsError if addTemplate returns null', async () => {
+    const { sut, addTemplateStub } = makeSut()
+    jest.spyOn(addTemplateStub, 'add').mockResolvedValueOnce(null)
+    const request = makeFakeRequest()
+    const promise = sut.handle(request)
+    await expect(promise).rejects.toThrow(new AlreadyExistsError('Template', request.body.name))
   })
 })
