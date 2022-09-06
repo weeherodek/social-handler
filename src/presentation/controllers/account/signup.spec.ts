@@ -1,5 +1,6 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
+import { UserAlreadyExistsError } from '@/presentation/errors/user-already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -20,7 +21,7 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add (account: AddAccountModel): Promise<AccountModel> {
+    async add (account: AddAccountModel): Promise<AccountModel | null> {
       const fakeAccount: AccountModel = {
         id: 'any_id',
         name: 'any_name',
@@ -82,5 +83,13 @@ describe('Template Controller', () => {
       password: 'any_password',
       date: new Date()
     }))
+  })
+
+  test('Should throw UserAlreadyExists if AddAccount returns null', async () => {
+    const { sut, addAccountStub } = makeSut()
+    jest.spyOn(addAccountStub, 'add').mockResolvedValueOnce(null)
+    const httpRequest = makeFakeRequest()
+    const httpResponse = sut.handle(httpRequest)
+    await expect(httpResponse).rejects.toThrow(new UserAlreadyExistsError(httpRequest.body.email))
   })
 })
