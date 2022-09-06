@@ -9,8 +9,9 @@ export class DbAddTemplate implements AddTemplate {
     private readonly loadTemplateByNameRepository: LoadTemplateByNameRepository
   ) {}
 
-  async add (template: AddTemplateModel): Promise<TemplateModel> {
-    await this.loadTemplateByNameRepository.loadByName(template.name)
+  async add (template: AddTemplateModel): Promise<TemplateModel | null> {
+    const templateAlreadyExists = await this.loadTemplateByNameRepository.loadByName(template.name)
+    if (templateAlreadyExists) return null
     const newTemplate = await this.addTemplateRepository.add(template)
     return newTemplate
   }
