@@ -1,10 +1,19 @@
 import { AddTemplateRepository } from '@/data/protocols/db/template/add-template-repository'
+import { LoadTemplateByNameRepository } from '@/data/protocols/db/template/load-template-by-name-repository'
 import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
 import { DbAddTemplate } from './db-add-template'
 
 jest.useFakeTimers({
   now: new Date('2020-01-01')
+})
+
+const makeFakeTemplateModel = (): TemplateModel => ({
+  id: 'any_id',
+  text: 'any_text',
+  name: 'any_text',
+  fields: [],
+  date: new Date()
 })
 
 const makeFakeTemplate = (): AddTemplateModel => ({
@@ -23,7 +32,17 @@ const makeFakeTemplate = (): AddTemplateModel => ({
   ]
 })
 
-const makeAddTemplateRepositoryStub = (): AddTemplateRepository => {
+const makeLoadTemplateByNameRepository = (): LoadTemplateByNameRepository => {
+  class LoadTemplateByNameRepositoryStub implements LoadTemplateByNameRepository {
+    async loadByName (name: string): Promise<TemplateModel | null> {
+      return null
+    }
+  }
+
+  return new LoadTemplateByNameRepositoryStub()
+}
+
+const makeAddTemplateRepository = (): AddTemplateRepository => {
   class AddTemplateRepositoryStub implements AddTemplateRepository {
     async add (template: AddTemplateModel): Promise<TemplateModel> {
       return {
@@ -39,22 +58,25 @@ const makeAddTemplateRepositoryStub = (): AddTemplateRepository => {
 
 interface sutTypes {
   sut: AddTemplate
-  addTemplateRepository: AddTemplateRepository
+  addTemplateRepositoryStub: AddTemplateRepository
+  loadTemplateByNameRepositoryStub: LoadTemplateByNameRepository
 }
 
 const makeSut = (): sutTypes => {
-  const addTemplateRepository = makeAddTemplateRepositoryStub()
-  const sut = new DbAddTemplate(addTemplateRepository)
+  const loadTemplateByNameRepositoryStub = makeLoadTemplateByNameRepository()
+  const addTemplateRepositoryStub = makeAddTemplateRepository()
+  const sut = new DbAddTemplate(addTemplateRepositoryStub, loadTemplateByNameRepositoryStub)
   return {
     sut,
-    addTemplateRepository
+    addTemplateRepositoryStub,
+    loadTemplateByNameRepositoryStub
   }
 }
 
 describe('DbAddTemplate Usecase', () => {
   test('Should call AddTemplateRepository with correct values', async () => {
-    const { sut, addTemplateRepository } = makeSut()
-    const addSpy = jest.spyOn(addTemplateRepository, 'add')
+    const { sut, addTemplateRepositoryStub } = makeSut()
+    const addSpy = jest.spyOn(addTemplateRepositoryStub, 'add')
     const fakeTemplate = makeFakeTemplate()
     await sut.add(fakeTemplate)
     expect(addSpy).toHaveBeenCalledWith(fakeTemplate)
@@ -72,10 +94,18 @@ describe('DbAddTemplate Usecase', () => {
   })
 
   test('Should throw if AddTemplateRepository throws', async () => {
-    const { sut, addTemplateRepository } = makeSut()
-    jest.spyOn(addTemplateRepository, 'add').mockRejectedValueOnce(new Error('Mock Error'))
+    const { sut, addTemplateRepositoryStub } = makeSut()
+    jest.spyOn(addTemplateRepositoryStub, 'add').mockRejectedValueOnce(new Error('Mock Error'))
     const template = makeFakeTemplate()
     const promise = sut.add(template)
     await expect(promise).rejects.toThrow(new Error('Mock Error'))
+  })
+
+  test('Should call loadByName with correct value', async () => {
+    const { sut, loadTemplateByNameRepositoryStub } = makeSut()
+    const loadByNameSpy = jest.spyOn(loadTemplateByNameRepositoryStub, 'loadByName')
+    const template = makeFakeTemplate()
+    await sut.add(template)
+    expect(loadByNameSpy).toHaveBeenCalledWith(template.name)
   })
 })
