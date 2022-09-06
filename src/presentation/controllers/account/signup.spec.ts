@@ -1,6 +1,6 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
-import { UserAlreadyExistsError } from '@/presentation/errors/user-already-exists-error'
+import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -90,6 +90,6 @@ describe('Template Controller', () => {
     jest.spyOn(addAccountStub, 'add').mockResolvedValueOnce(null)
     const httpRequest = makeFakeRequest()
     const httpResponse = sut.handle(httpRequest)
-    await expect(httpResponse).rejects.toThrow(new UserAlreadyExistsError(httpRequest.body.email))
+    await expect(httpResponse).rejects.toThrow(new AlreadyExistsError('User', httpRequest.body.email))
   })
 })

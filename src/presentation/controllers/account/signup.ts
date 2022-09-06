@@ -3,7 +3,7 @@ import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acoun
 import { created } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
-import { UserAlreadyExistsError } from '@/presentation/errors/user-already-exists-error'
+import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 
 export class SignUpController implements Controller {
   constructor (
@@ -16,6 +16,6 @@ export class SignUpController implements Controller {
     if (account) {
       return created(account)
     }
-    throw new UserAlreadyExistsError(email)
+    throw new AlreadyExistsError('User', email)
   }
 }
