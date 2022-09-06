@@ -1,4 +1,4 @@
-import { Collection, MongoClient } from 'mongodb'
+import { Collection, MongoClient, WithId, Document } from 'mongodb'
 
 export const MongoHelper = {
 
@@ -21,5 +21,11 @@ export const MongoHelper = {
       await this.connect(this.url)
     }
     return this.client.db().collection(name)
+  },
+
+  map (data: WithId<Document>): any {
+    const { _id, ...rest } = data
+    const object = Object.assign({}, rest, { id: _id.toString() })
+    return object
   }
 }
