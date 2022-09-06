@@ -96,8 +96,7 @@ describe('DbAddTemplate Usecase', () => {
   test('Should throw if AddTemplateRepository throws', async () => {
     const { sut, addTemplateRepositoryStub } = makeSut()
     jest.spyOn(addTemplateRepositoryStub, 'add').mockRejectedValueOnce(new Error('Mock Error'))
-    const template = makeFakeTemplate()
-    const promise = sut.add(template)
+    const promise = sut.add(makeFakeTemplate())
     await expect(promise).rejects.toThrow(new Error('Mock Error'))
   })
 
@@ -114,5 +113,12 @@ describe('DbAddTemplate Usecase', () => {
     jest.spyOn(loadTemplateByNameRepositoryStub, 'loadByName').mockResolvedValueOnce(makeFakeTemplateModel())
     const newTemplate = await sut.add(makeFakeTemplate())
     expect(newTemplate).toBeNull()
+  })
+
+  test('Should throw if LoadTemplateByNameRepository throws', async () => {
+    const { sut, loadTemplateByNameRepositoryStub } = makeSut()
+    jest.spyOn(loadTemplateByNameRepositoryStub, 'loadByName').mockRejectedValueOnce(new Error('Mock Error'))
+    const promise = sut.add(makeFakeTemplate())
+    await expect(promise).rejects.toThrow(new Error('Mock Error'))
   })
 })
