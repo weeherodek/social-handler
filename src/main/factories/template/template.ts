@@ -9,8 +9,8 @@ import { LogControllerDecorator } from '../../decorators/log'
 import { makeAddTemplateValidation } from './add-template-validation'
 
 export const makeAddTemplateController = (): Controller => {
-  const addTemplateRepository = new TemplateMongoRepository(env.templateCollection)
-  const addTemplate = new DbAddTemplate(addTemplateRepository)
+  const templateRepository = new TemplateMongoRepository(env.templateCollection)
+  const addTemplate = new DbAddTemplate(templateRepository, templateRepository)
   const saveTemplateController = new AddTemplateController(addTemplate)
   const logMongoRepository = new LogMongoRepository(env.errorLogCollection)
   const logControllerDecorator = new LogControllerDecorator(saveTemplateController, logMongoRepository)
