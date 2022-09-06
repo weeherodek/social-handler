@@ -108,4 +108,11 @@ describe('DbAddTemplate Usecase', () => {
     await sut.add(template)
     expect(loadByNameSpy).toHaveBeenCalledWith(template.name)
   })
+
+  test('Should return null if template already exists', async () => {
+    const { sut, loadTemplateByNameRepositoryStub } = makeSut()
+    jest.spyOn(loadTemplateByNameRepositoryStub, 'loadByName').mockResolvedValueOnce(makeFakeTemplateModel())
+    const newTemplate = await sut.add(makeFakeTemplate())
+    expect(newTemplate).toBeNull()
+  })
 })
