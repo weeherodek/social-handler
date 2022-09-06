@@ -1,6 +1,6 @@
 import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
-import { MissingParamError } from '@/presentation/errors/'
+import { created } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { AddTemplateController } from './save-template'
@@ -65,53 +65,6 @@ const makeSut = (): sutTypes => {
 }
 
 describe('Template Controller', () => {
-  test('Should throw MissingParamError if no name is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        text: 'any_text',
-        fields: [{
-          name: 'any_name_1',
-          required: true,
-          defaultValue: ''
-        }]
-      }
-    }
-
-    const httpResponse = sut.handle(httpRequest)
-    await expect(httpResponse).rejects.toThrow(new MissingParamError('name'))
-  })
-
-  test('Should throw MissingParamErro if no text is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        fields: [{
-          name: 'any_name_1',
-          required: true,
-          defaultValue: ''
-        }]
-      }
-    }
-
-    const httpResponse = sut.handle(httpRequest)
-    await expect(httpResponse).rejects.toThrow(new MissingParamError('text'))
-  })
-
-  test('Should throw MissingParamError if no fields is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        text: 'any_text'
-      }
-    }
-
-    const httpResponse = sut.handle(httpRequest)
-    await expect(httpResponse).rejects.toThrow(new MissingParamError('fields'))
-  })
-
   test('Should call AddTemplate with correct values', async () => {
     const { sut, addTemplateStub } = makeSut()
     const addAccountSpy = jest.spyOn(addTemplateStub, 'add')
@@ -141,27 +94,22 @@ describe('Template Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest)
 
-    expect(httpResponse.statusCode).toBe(201)
-    expect(httpResponse.body).toEqual({
-      data: {
-        id: 'any_id',
-        name: 'any_name',
-        text: 'any_text',
-        fields: [{
-          name: 'any_name_1',
-          required: true,
-          defaultValue: ''
-        },
-        {
-          name: 'any_name_2',
-          required: false,
-          defaultValue: '123'
-        }
-        ],
-        date: new Date()
+    expect(httpResponse).toEqual(created({
+      id: 'any_id',
+      name: 'any_name',
+      text: 'any_text',
+      fields: [{
+        name: 'any_name_1',
+        required: true,
+        defaultValue: ''
       },
-      statusCode: 201,
-      success: true
-    })
+      {
+        name: 'any_name_2',
+        required: false,
+        defaultValue: '123'
+      }
+      ],
+      date: new Date()
+    }))
   })
 })
