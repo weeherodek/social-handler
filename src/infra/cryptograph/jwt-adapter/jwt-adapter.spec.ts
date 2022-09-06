@@ -18,4 +18,12 @@ describe('JWT Adapter', () => {
     const token = sut.encrypt('any_value')
     expect(token).toBe('any_token')
   })
+
+  test('Should throw if jwt throws', () => {
+    const sut = new JwtAdapter('secret')
+    jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
+      throw new Error('Fake Error')
+    })
+    expect(() => sut.encrypt('any_value')).toThrow(new Error('Fake Error'))
+  })
 })
