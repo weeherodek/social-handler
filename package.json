@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/main/server.js",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/main/server.js",
     "dev": "ts-node-dev -r tsconfig-paths/register src/main/server.ts",
     "build": "rimraf dist && tsc",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
@@ -23,6 +23,7 @@
     "express-async-errors": "^3.1.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.9.0",
+    "ts-node": "^10.9.1",
     "validator": "^13.7.0"
   },
   "devDependencies": {
