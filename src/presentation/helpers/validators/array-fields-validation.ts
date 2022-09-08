@@ -21,9 +21,6 @@ export class ArrayFieldsValidation implements Validation {
         }
       }
     })
-    if (errors.length) {
-      return errors.join(', ')
-    }
-    return null
+    return errors.length ? errors.join(', ') : null
   }
 }
