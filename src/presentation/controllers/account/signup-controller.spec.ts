@@ -95,7 +95,8 @@ describe('Template Controller', () => {
       name: 'any_name',
       email: 'any_email',
       password: 'any_password',
-      date: new Date()
+      date: new Date(),
+      accessToken: 'any_token'
     }))
   })
 
