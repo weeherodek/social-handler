@@ -22,7 +22,7 @@ describe('Template Route', () => {
       .post('/api/template')
       .send({
         name: 'any_name',
-        text: 'any_text',
+        text: 'any text: {{any_field_name_2}}',
         fields: [
           {
             name: 'any_field_name',

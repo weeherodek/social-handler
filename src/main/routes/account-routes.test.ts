@@ -27,8 +27,8 @@ describe('Login Routes', () => {
         .send({
           name: 'Philipe Herodek',
           email: 'philipe.herodek@email.com.br',
-          password: '123',
-          passwordConfirmation: '123'
+          password: 'a1@2B!',
+          passwordConfirmation: 'a1@2B!'
         })
         .expect(201)
     })
@@ -36,7 +36,7 @@ describe('Login Routes', () => {
 
   describe('POST /login', () => {
     test('Should retun 200 on login', async () => {
-      const password = await hash('123', 12)
+      const password = await hash('a1@2B!', 12)
 
       await accountCollection.insertOne({
         name: 'Philipe Herodek',
@@ -47,7 +47,7 @@ describe('Login Routes', () => {
         .post('/api/login')
         .send({
           email: 'philipe.herodek@email.com.br',
-          password: '123'
+          password: 'a1@2B!'
         })
         .expect(200)
     })
@@ -57,7 +57,7 @@ describe('Login Routes', () => {
         .post('/api/login')
         .send({
           email: 'philipe.herodek@email.com.br',
-          password: '123'
+          password: 'a1@2B!'
         })
         .expect(401)
     })
