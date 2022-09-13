@@ -16,8 +16,8 @@ export class SignUpController implements Controller {
     const { email, password, name } = httpRequest.body
     const account = await this.addAccount.add({ name, email, password })
     if (account) {
-      await this.authentication.auth({ email, password })
-      return created(account)
+      const accessToken = await this.authentication.auth({ email, password })
+      return created({ ...account, accessToken })
     }
     throw new AlreadyExistsError('User', email)
   }
