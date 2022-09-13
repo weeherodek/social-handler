@@ -113,4 +113,11 @@ describe('Template Controller', () => {
     await sut.handle(makeFakeRequest())
     expect(spyAuth).toHaveBeenCalledWith({ email: 'any_email', password: 'any_password' })
   })
+
+  test('Should throw if Authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockRejectedValueOnce(new Error('Fake Error'))
+    const promise = sut.handle(makeFakeRequest())
+    await expect(promise).rejects.toThrow(new Error('Fake Error'))
+  })
 })
