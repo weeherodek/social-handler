@@ -1,7 +1,8 @@
-import { CompareFieldsValidation, EmailValidation, RequiredFieldValidation, TypeofValidation, ValidationComposite } from '@/presentation/helpers/validators/'
+import { CompareFieldsValidation, EmailValidation, RequiredFieldValidation, TypeofValidation, ValidationComposite, StrongPasswordValidation } from '@/presentation/helpers/validators/'
 import { Validation } from '@/presentation/protocols/validation'
 import { EmailValidator } from '@/presentation/protocols/email-validator'
 import { makeSignupValidation } from './signup-validation-factory'
+import { StrongPasswordValidator } from '@/presentation/protocols/strong-password-validator'
 
 jest.mock('@/presentation/helpers/validators/validation-composite')
 
@@ -14,6 +15,15 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub()
 }
 
+const makeStrongPasswordValidator = (): StrongPasswordValidator => {
+  class StrongPasswordValidatorStub implements StrongPasswordValidator {
+    isStrongPassword (password: string): boolean {
+      return true
+    }
+  }
+  return new StrongPasswordValidatorStub()
+}
+
 describe('SignupValidation Factory', () => {
   test('Should call ValidationComposite  with all validations', () => {
     makeSignupValidation()
@@ -24,6 +34,7 @@ describe('SignupValidation Factory', () => {
     }
     validations.push(new CompareFieldsValidation('password', 'passwordConfirmation'))
     validations.push(new EmailValidation('email', makeEmailValidator()))
+    validations.push(new StrongPasswordValidation('password', makeStrongPasswordValidator()))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })
