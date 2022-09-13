@@ -57,7 +57,7 @@ describe('Login Controller', () => {
     await expect(promise).rejects.toThrow(new Error('Fake Error'))
   })
 
-  test('Should return the acess token', async () => {
+  test('Should return the access token', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(ok({ accessToken: 'any_token' }))
