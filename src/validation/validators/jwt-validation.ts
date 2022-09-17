@@ -1,6 +1,6 @@
 import { InvalidParamError } from '@/presentation/errors'
 import { Validation } from '../../presentation/protocols/validation'
-import { JwtValidator } from '../protocols'
+import { JwtValidator } from '../protocols/jwt-validator'
 
 export class JwtValidation implements Validation {
   constructor (

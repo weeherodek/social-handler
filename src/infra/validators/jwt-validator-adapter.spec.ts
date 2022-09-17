@@ -1,5 +1,5 @@
 import validator from 'validator'
-import { JwtValidator } from '@/validation/protocols'
+import { JwtValidator } from '@/validation/protocols/jwt-validator'
 import { JwtValidatorAdapter } from './jwt-validator-adapter'
 
 jest.mock('validator', () => ({

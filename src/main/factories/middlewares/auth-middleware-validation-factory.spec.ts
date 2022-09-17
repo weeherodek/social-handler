@@ -1,8 +1,8 @@
 import { RequiredFieldValidation, TypeofValidation, ValidationComposite } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols/validation'
 import { makeAuthMiddlewareValidation } from './auth-middleware-validation-factory'
-import { JwtValidator } from '@/validation/protocols'
 import { JwtValidation } from '@/validation/validators/jwt-validation'
+import { JwtValidator } from '@/validation/protocols/jwt-validator'
 
 jest.mock('@/validation/validators/validation-composite')
 

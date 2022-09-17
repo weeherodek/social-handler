@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@/presentation/errors'
-import { JwtValidator } from '../protocols'
+import { JwtValidator } from '../protocols/jwt-validator'
 import { JwtValidation } from './jwt-validation'
 
 const makeJwtValidator = (): JwtValidator => {
