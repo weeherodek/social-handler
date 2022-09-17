@@ -13,5 +13,10 @@ module.exports = {
     '@/(.*)': '<rootDir>/src/$1'
   },
   preset: '@shelf/jest-mongodb',
-  watchPathIgnorePatterns: ['globalConfig']
+  watchPathIgnorePatterns: ['globalConfig'],
+  fakeTimers: {
+    enableGlobally: true,
+    now: new Date('2020-01-01').getTime(),
+    doNotFake: ['nextTick']
+  }
 }

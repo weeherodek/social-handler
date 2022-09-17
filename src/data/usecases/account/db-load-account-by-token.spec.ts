@@ -3,10 +3,6 @@ import { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-a
 import { AccountModel } from '@/domain/models/account/account'
 import { DbLoadAccountByToken } from './db-load-account-by-token'
 
-jest.useFakeTimers({
-  now: new Date('2020-01-01')
-})
-
 const makeFakeAccountModel = (): AccountModel => ({
   id: 'any_id',
   name: 'any_name',

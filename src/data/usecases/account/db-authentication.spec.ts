@@ -6,10 +6,6 @@ import { AccountModel } from '@/domain/models/account/account'
 import { LoginModel } from '@/domain/usecases/account/authentication'
 import { DbAuthentication } from './db-authentication'
 
-jest.useFakeTimers({
-  now: new Date('2020-01-01')
-})
-
 const makeFakeLoginModel = (): LoginModel => ({
   email: 'any_email',
   password: 'any_password'

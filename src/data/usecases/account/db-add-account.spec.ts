@@ -5,10 +5,6 @@ import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acoun
 import { DbAddAccount } from './db-add-account'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
 
-jest.useFakeTimers({
-  now: new Date('2020-01-01')
-})
-
 const makeFakeAccountModel = (): AccountModel => ({
   id: 'any_id',
   name: 'any_name',
