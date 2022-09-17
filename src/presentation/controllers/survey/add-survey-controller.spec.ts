@@ -46,4 +46,11 @@ describe('Add Survey Controller', () => {
     await sut.handle(request)
     expect(spyAdd).toHaveBeenCalledWith(request.body)
   })
+
+  test('Should throw if addSurvey throws', async () => {
+    const { sut, addSurveyStub } = makeSut()
+    jest.spyOn(addSurveyStub, 'add').mockImplementation(async () => await Promise.reject(new Error('Fake Error')))
+    const promise = sut.handle(makeFakeRequest())
+    await expect(promise).rejects.toThrow(new Error('Fake Error'))
+  })
 })
