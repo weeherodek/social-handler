@@ -76,6 +76,13 @@ describe('Auth Middleware', () => {
   test('Should return accountId on success', async () => {
     const { sut } = makeSut()
     const accountId = await sut.handle(makeRequestAccessToken())
-    expect(accountId).toEqual(ok({ accountId }))
+    expect(accountId).toEqual(ok({ accountId: accountId.body.data?.accountId }))
+  })
+
+  test('Should throw if LoadAccountByToken throws', async () => {
+    const { sut, loadAccountByTokenStub } = makeSut()
+    jest.spyOn(loadAccountByTokenStub, 'load').mockImplementation(async () => await Promise.reject(new Error('Fake Error')))
+    const promise = sut.handle(makeRequestAccessToken())
+    await expect(promise).rejects.toThrow(new Error('Fake Error'))
   })
 })
