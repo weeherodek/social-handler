@@ -16,6 +16,6 @@ export class LoginController implements Controller {
 
     if (!accessToken) throw new UnauthorizedError()
 
-    return ok({ accessToken })
+    return ok<AuthResponse>({ accessToken })
   }
 }

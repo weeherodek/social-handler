@@ -1,6 +1,6 @@
 import { HttpResponse } from '../../protocols/http'
 
-export const created = (body: any): HttpResponse<typeof body> => ({
+export const created = <T = any>(body: T): HttpResponse<T> => ({
   statusCode: 201,
   body: {
     statusCode: 201,
@@ -9,7 +9,15 @@ export const created = (body: any): HttpResponse<typeof body> => ({
   }
 })
 
-export const ok = (body: any): HttpResponse<typeof body> => ({
+export const noContent = (): HttpResponse<void> => ({
+  statusCode: 204,
+  body: {
+    statusCode: 204,
+    success: true
+  }
+})
+
+export const ok = <T = any>(body: T): HttpResponse<T> => ({
   statusCode: 200,
   body: {
     statusCode: 200,
