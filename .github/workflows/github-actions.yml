@@ -5,11 +5,12 @@ jobs:
     runs-on: windows-latest
     steps:
 
-      - name: Setup node and tests
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
-        run: npm i jest -G&&npm run test:ci
+      - run: npm i jest -G
+      - run: npm run test:ci
 
       - name: Coveralls
         uses: coveralls/app/github-action@master
