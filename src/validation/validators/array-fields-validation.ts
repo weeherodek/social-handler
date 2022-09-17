@@ -1,6 +1,6 @@
 import { MissingParamError } from '@/presentation/errors'
 import { TypeofError } from '@/presentation/errors/typeof-error'
-import { Validation } from '../../protocols/validation'
+import { Validation } from '../../presentation/protocols/validation'
 
 export class ArrayFieldsValidation implements Validation {
   constructor (

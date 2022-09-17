@@ -1,6 +1,6 @@
-import { EmailValidatorAdapter } from '@/main/adapters/validators/email-validator-adapter'
-import { StrongPasswordValidatorAdapter } from '@/main/adapters/validators/strong-password-validator-adapter'
-import { CompareFieldsValidation, EmailValidation, RequiredFieldValidation, StrongPasswordValidation, TypeofValidation, ValidationComposite } from '@/presentation/helpers/validators/'
+import { EmailValidatorAdapter } from '@/infra/validators/email-validator-adapter'
+import { StrongPasswordValidatorAdapter } from '@/infra/validators/strong-password-validator-adapter'
+import { CompareFieldsValidation, EmailValidation, RequiredFieldValidation, StrongPasswordValidation, TypeofValidation, ValidationComposite } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols/validation'
 
 export const makeSignupValidation = (): ValidationComposite => {

@@ -1,5 +1,5 @@
 import { StrongPasswordError } from '@/presentation/errors/strong-password-error'
-import { StrongPasswordValidator } from '@/presentation/protocols/strong-password-validator'
+import { StrongPasswordValidator } from '@/validation/protocols/strong-password-validator'
 import { StrongPasswordValidation } from './strong-password-validation'
 
 const makeStrongPasswordValidator = (): StrongPasswordValidator => {

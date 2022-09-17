@@ -1,6 +1,6 @@
 import { StrongPasswordError } from '@/presentation/errors/strong-password-error'
-import { StrongPasswordValidator } from '@/presentation/protocols/strong-password-validator'
 import { Validation } from '@/presentation/protocols/validation'
+import { StrongPasswordValidator } from '../protocols/strong-password-validator'
 
 export class StrongPasswordValidation implements Validation {
   constructor (private readonly fieldName: string,

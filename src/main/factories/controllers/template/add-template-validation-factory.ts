@@ -1,6 +1,6 @@
-import { RequiredFieldValidation, TypeofValidation, ValidationComposite } from '@/presentation/helpers/validators/'
-import { ArrayFieldsValidation } from '@/presentation/helpers/validators/array-fields-validation'
-import { TextVariablesValidation } from '@/presentation/helpers/validators/text-variables-validation'
+import { RequiredFieldValidation, TypeofValidation, ValidationComposite } from '@/validation/validators'
+import { ArrayFieldsValidation } from '@/validation/validators/array-fields-validation'
+import { TextVariablesValidation } from '@/validation/validators/text-variables-validation'
 import { Validation } from '@/presentation/protocols/validation'
 
 export const makeAddTemplateValidation = (): ValidationComposite => {

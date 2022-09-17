@@ -1,5 +1,5 @@
 import { TypeofError } from '@/presentation/errors/typeof-error'
-import { Validation } from '../../protocols/validation'
+import { Validation } from '../../presentation/protocols/validation'
 
 export class TypeofValidation implements Validation {
   constructor (private readonly fieldName: string, private readonly fieldType: string) {}
