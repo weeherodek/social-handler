@@ -4,6 +4,6 @@ import { Controller } from '@/presentation/protocols/controller'
 import { Middleware } from '@/presentation/protocols/middleware'
 import { makeLogErrorRepository } from '../adapters/db/log/db-log-error-repository-factory'
 
-export const makeLogDecoratorController = (handler: Controller | Middleware): Controller => {
+export const makeLogDecoratorHandler = (handler: Controller | Middleware): Controller | Middleware => {
   return new LogHandlerDecorator(handler, makeLogErrorRepository())
 }
