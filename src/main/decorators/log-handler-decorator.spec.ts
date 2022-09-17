@@ -2,7 +2,7 @@ import { LogErrorRepository } from '@/data/protocols/db/log/log-error-repository
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
-import { LogControllerDecorator } from './log-controller-decorator'
+import { LogHandlerDecorator } from './log-handler-decorator'
 
 const makeGenericRequest = (): HttpRequest => ({ body: 'fake_body' })
 
@@ -34,13 +34,13 @@ const makeLogErrorRepository = (): LogErrorRepository => {
 interface sutTypes {
   genericControllerStub: Controller
   logErrorRepositoryStub: LogErrorRepository
-  sut: LogControllerDecorator
+  sut: LogHandlerDecorator
 }
 
 const makeSut = (): sutTypes => {
   const genericControllerStub = makeGenericController()
   const logErrorRepositoryStub = makeLogErrorRepository()
-  const sut = new LogControllerDecorator(genericControllerStub, logErrorRepositoryStub)
+  const sut = new LogHandlerDecorator(genericControllerStub, logErrorRepositoryStub)
   return {
     sut,
     genericControllerStub,
