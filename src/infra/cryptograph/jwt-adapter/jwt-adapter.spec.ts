@@ -2,32 +2,67 @@ import jwt from 'jsonwebtoken'
 import { JwtAdapter } from './jwt-adapter'
 
 jest.mock('jsonwebtoken', () => ({
-  sign: () => 'any_token'
+  sign: () => 'any_token',
+  verify: () => 'decrypted_token'
 }))
 
+const secretKey = 'secret'
+
 const makeSut = (): JwtAdapter => {
-  return new JwtAdapter('secret')
+  return new JwtAdapter(secretKey)
 }
 
 describe('JWT Adapter', () => {
-  test('Should call sign with correct values', () => {
-    const sut = makeSut()
-    const signSpy = jest.spyOn(jwt, 'sign')
-    sut.encrypt('any_value')
-    expect(signSpy).toHaveBeenCalledWith({ id: 'any_value' }, 'secret')
-  })
-
-  test('Should return a token on success', () => {
-    const sut = makeSut()
-    const token = sut.encrypt('any_value')
-    expect(token).toBe('any_token')
-  })
-
-  test('Should throw if jwt throws', () => {
-    const sut = makeSut()
-    jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
-      throw new Error('Fake Error')
+  describe('encrypt()', () => {
+    test('Should call sign with correct values', () => {
+      const sut = makeSut()
+      const spySign = jest.spyOn(jwt, 'sign')
+      sut.encrypt('any_value')
+      expect(spySign).toHaveBeenCalledWith({ id: 'any_value' }, secretKey)
     })
-    expect(() => sut.encrypt('any_value')).toThrow(new Error('Fake Error'))
+
+    test('Should return a token on success', () => {
+      const sut = makeSut()
+      const token = sut.encrypt('any_value')
+      expect(token).toBe('any_token')
+    })
+
+    test('Should throw if sign throws', () => {
+      const sut = makeSut()
+      jest.spyOn(jwt, 'sign').mockImplementationOnce(() => {
+        throw new Error('Fake Error')
+      })
+      expect(() => sut.encrypt('any_value')).toThrow(new Error('Fake Error'))
+    })
+  })
+
+  describe('decrypt()', () => {
+    test('Should call sign with correct values', () => {
+      const sut = makeSut()
+      const spyVerify = jest.spyOn(jwt, 'verify')
+      sut.decrypt('any_token')
+      expect(spyVerify).toHaveBeenCalledWith('any_token', secretKey)
+    })
+
+    test('Should return null if verify returns null', () => {
+      const sut = makeSut()
+      jest.spyOn(jwt, 'verify').mockImplementationOnce(() => null)
+      const decryptToken = sut.decrypt('any_token')
+      expect(decryptToken).toBeNull()
+    })
+
+    test('Should return null if verify returns null', () => {
+      const sut = makeSut()
+      const decryptToken = sut.decrypt('any_token')
+      expect(decryptToken).toBe('decrypted_token')
+    })
+
+    test('Should throw if verify throws', () => {
+      const sut = makeSut()
+      jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
+        throw new Error('Fake Error')
+      })
+      expect(() => sut.decrypt('any_token')).toThrow(new Error('Fake Error'))
+    })
   })
 })
