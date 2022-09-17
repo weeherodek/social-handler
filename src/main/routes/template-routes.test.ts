@@ -3,7 +3,7 @@ import request from 'supertest'
 import app from '../config/app'
 import env from '../config/env'
 
-describe('Template Route', () => {
+describe('Template Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoUrl)
   })
