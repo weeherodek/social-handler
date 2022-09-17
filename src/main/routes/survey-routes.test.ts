@@ -74,5 +74,39 @@ describe('Survey Routes', () => {
         })
         .expect(204)
     })
+
+    test('Should return 403 on create survey with invalid token', async () => {
+      const { insertedId } = await accountCollection.insertOne({
+        name: 'Philipe',
+        email: 'philipe.herodek@email.com.br',
+        password: 'any_password',
+        role: 'admin'
+      })
+
+      const accessToken = sign({ id: insertedId.toString() }, env.jwtSecret)
+      const invalidAccessToken = sign({ id: '123' }, env.jwtSecret)
+
+      await accountCollection.updateOne({ _id: insertedId }, {
+        $set: {
+          accessToken
+        }
+      })
+
+      await request(app)
+        .post('/api/survey')
+        .set('x-access-token', invalidAccessToken)
+        .send({
+          question: 'any_question',
+          answers: [{
+            answer: 'Answer 1',
+            image: 'any_image'
+          },
+          {
+            answer: 'Answer 2'
+          }
+          ]
+        })
+        .expect(403)
+    })
   })
 })
