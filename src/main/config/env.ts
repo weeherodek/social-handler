@@ -5,6 +5,7 @@ export default {
   templateCollection: process.env.TEMPLATE_COLLECTION ?? 'templates',
   messageCollection: process.env.MESSAGE_COLLECTION ?? 'messages',
   errorLogCollection: process.env.ERROR_LOG_COLLECTION ?? 'errorsLog',
+  surveyCollection: process.env.SURVEY_COLLECTION ?? 'surveys',
   salt: Number(process.env.SALT) ?? 12,
   jwtSecret: process.env.JWT_SECRET ?? 'AjiuAJdijaij$iaijda@i12312CasokPS'
 }
