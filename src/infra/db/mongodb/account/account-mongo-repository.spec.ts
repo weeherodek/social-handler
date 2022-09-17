@@ -90,4 +90,49 @@ describe('Account Mongo Repository', () => {
       expect(accountWithAccessToken?.accessToken).toBe('any_token')
     })
   })
+
+  describe('loadByAccessToken()', () => {
+    test('Should return an account on success without role', async () => {
+      const sut = makeSut()
+      await collectionAccounts.insertOne({
+        ...makeFakeAccount(),
+        accessToken: 'any_token',
+        date: new Date()
+      })
+      const newAccount = await sut.loadByToken('any_token')
+      expect(newAccount).toBeDefined()
+      expect(newAccount?.id).toBeDefined()
+      expect(newAccount).not.toHaveProperty('_id')
+      expect(newAccount?.name).toBe('any_name')
+      expect(newAccount?.email).toBe('any_email')
+      expect(newAccount?.password).toBe('any_password')
+      expect(newAccount?.accessToken).toBe('any_token')
+      expect(newAccount?.date).toBeInstanceOf(Date)
+    })
+
+    test('Should return an account on success with role', async () => {
+      const sut = makeSut()
+      await collectionAccounts.insertOne({
+        ...makeFakeAccount(),
+        accessToken: 'any_token',
+        role: 'any_role',
+        date: new Date()
+      })
+      const newAccount = await sut.loadByToken('any_token', 'any_role')
+      expect(newAccount).toBeDefined()
+      expect(newAccount?.id).toBeDefined()
+      expect(newAccount).not.toHaveProperty('_id')
+      expect(newAccount?.name).toBe('any_name')
+      expect(newAccount?.email).toBe('any_email')
+      expect(newAccount?.password).toBe('any_password')
+      expect(newAccount?.accessToken).toBe('any_token')
+      expect(newAccount?.date).toBeInstanceOf(Date)
+    })
+
+    test('Should return null if loadByToken fails', async () => {
+      const sut = makeSut()
+      const result = await sut.loadByToken('any_token')
+      expect(result).toBeNull()
+    })
+  })
 })
