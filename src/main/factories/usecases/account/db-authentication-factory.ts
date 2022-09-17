@@ -5,5 +5,6 @@ import { makeHashComparer } from '../../adapters/cryptograph/hasher-comparer'
 import { makeAccountRepository } from '../../adapters/db/account/db-account-repository-factory'
 
 export const makeDbAuthentication = (): Authentication => {
-  return new DbAuthentication(makeAccountRepository(), makeHashComparer(), makeEncrypter(), makeAccountRepository())
+  const accountRepository = makeAccountRepository()
+  return new DbAuthentication(accountRepository, makeHashComparer(), makeEncrypter(), accountRepository)
 }
