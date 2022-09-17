@@ -1,8 +1,7 @@
 import { DbAddTemplate } from '@/data/usecases/template/db-add-template'
 import { AddTemplate } from '@/domain/usecases/template/add-template'
-import { makeAddTemplateRepository } from '../../adapters/db/template/db-add-template-repository-factory'
-import { makeLoadTemplateByNameRepository } from '../../adapters/db/template/db-load-template-by-name-repository-factory'
+import { makeTemplateRepository } from '../../adapters/db/template/db-template-repository-factory'
 
 export const makeAddTemplate = (): AddTemplate => {
-  return new DbAddTemplate(makeAddTemplateRepository(), makeLoadTemplateByNameRepository())
+  return new DbAddTemplate(makeTemplateRepository(), makeTemplateRepository())
 }

@@ -1,7 +1,7 @@
 import { DbAddSurvey } from '@/data/usecases/survey/db-add-survey'
 import { AddSurvey } from '@/domain/usecases/survey/add-survey'
-import { makeAddSurveyRepository } from '../../adapters/db/survey/db-add-survey-repository-factory'
+import { makeSurveyRepository } from '../../adapters/db/survey/db-survey-repository-factory'
 
 export const makeAddSurvey = (): AddSurvey => {
-  return new DbAddSurvey(makeAddSurveyRepository())
+  return new DbAddSurvey(makeSurveyRepository())
 }
