@@ -86,4 +86,10 @@ describe('Auth Middleware', () => {
     const promise = sut.handle(makeRequestAccessToken())
     await expect(promise).rejects.toThrow(new Error('Fake Error'))
   })
+
+  test('Should return ForbiddenError if headers is undefined', async () => {
+    const { sut } = makeSut()
+    const promise = sut.handle({ body: {} })
+    await expect(promise).rejects.toThrow(new ForbiddenError())
+  })
 })
