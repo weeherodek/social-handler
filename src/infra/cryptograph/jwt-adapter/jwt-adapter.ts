@@ -1,5 +1,5 @@
 
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { Encrypter } from '@/data/protocols/cryptograph/encrypter'
 import { Decrypter } from '@/data/protocols/cryptograph/decrypter'
 
@@ -15,6 +15,7 @@ export class JwtAdapter implements Encrypter, Decrypter {
 
   decrypt (value: string): string | null {
     const decryptedToken = jwt.verify(value, this.secret)
-    return decryptedToken ? decryptedToken as string : null
+    const payload = decryptedToken as JwtPayload
+    return decryptedToken ? payload.id : null
   }
 }

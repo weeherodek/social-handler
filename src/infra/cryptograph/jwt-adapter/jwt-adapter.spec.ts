@@ -1,10 +1,15 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { JwtAdapter } from './jwt-adapter'
 
-jest.mock('jsonwebtoken', () => ({
-  sign: () => 'any_token',
-  verify: () => 'decrypted_token'
-}))
+jest.mock('jsonwebtoken', () => {
+  const payload: JwtPayload = {
+    id: 'decrypted_token'
+  }
+  return {
+    sign: () => 'any_token',
+    verify: () => payload
+  }
+})
 
 const secretKey = 'secret'
 
