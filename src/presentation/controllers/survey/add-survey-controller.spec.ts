@@ -1,4 +1,5 @@
 import { AddSurvey, AddSurveyModel } from '@/data/usecases/survey/add-survey'
+import { noContent } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { AddSurveyController } from './add-survey-controller'
 
@@ -52,5 +53,11 @@ describe('Add Survey Controller', () => {
     jest.spyOn(addSurveyStub, 'add').mockImplementation(async () => await Promise.reject(new Error('Fake Error')))
     const promise = sut.handle(makeFakeRequest())
     await expect(promise).rejects.toThrow(new Error('Fake Error'))
+  })
+
+  test('Should return noContent on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle(makeFakeRequest())
+    expect(response).toEqual(noContent())
   })
 })
