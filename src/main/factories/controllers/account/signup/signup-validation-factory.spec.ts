@@ -25,7 +25,7 @@ const makeStrongPasswordValidator = (): StrongPasswordValidator => {
 }
 
 describe('SignupValidation Factory', () => {
-  test('Should call ValidationComposite  with all validations', () => {
+  test('Should call ValidationComposite with all validations', () => {
     makeSignupValidation()
     const validations: Validation[] = []
     for (const field of ['name', 'email', 'password', 'passwordConfirmation']) {
