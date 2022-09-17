@@ -9,4 +9,5 @@ jobs:
         with:
           node-version: 16
       - run: npm i jest -G
+      - run: npm i coveralls
       - run: npm run test:coveralls
