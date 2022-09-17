@@ -1,0 +1,9 @@
+name: github-actions
+on: [push]
+jobs:
+  run-all-tests:
+    runs-on: windows-latest
+    steps:
+      - with:
+          node-version: 16
+      - run: npm run test:coveralls
