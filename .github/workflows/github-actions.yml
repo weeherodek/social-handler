@@ -13,6 +13,6 @@ jobs:
       - run: npm run test:ci
 
       - name: Coveralls
-        uses: coveralls/app/github-action@master
+        uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
