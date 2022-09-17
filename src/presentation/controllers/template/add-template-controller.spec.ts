@@ -4,7 +4,7 @@ import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest } from '@/presentation/protocols/http'
-import { AddTemplateController } from './save-template-controller'
+import { AddTemplateController } from './add-template-controller'
 
 jest.useFakeTimers({
   now: new Date('2020-01-01')

@@ -1,4 +1,4 @@
-import { AddTemplateController } from '@/presentation/controllers/template/save-template-controller'
+import { AddTemplateController } from '@/presentation/controllers/template/add-template-controller'
 import { Controller } from '@/presentation/protocols/controller'
 import { makeLogDecoratorController } from '../../decorators/log-controller-decorator-factory'
 import { makeValidatorDecoratorController } from '../../decorators/validator-controller-decorator-factory'
