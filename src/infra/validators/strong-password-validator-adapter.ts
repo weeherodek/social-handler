@@ -1,4 +1,4 @@
-import { StrongPasswordValidator } from '@/validation/protocols/strong-password-validator'
+import { StrongPasswordValidator } from '@/validation/protocols/'
 import validator from 'validator'
 
 export class StrongPasswordValidatorAdapter implements StrongPasswordValidator {

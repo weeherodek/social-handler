@@ -25,7 +25,7 @@ describe('Survey Routes', () => {
   })
 
   describe('POST /survey', () => {
-    test('Should return 403 on create survey', async () => {
+    test('Should return 400 on create survey missing x-access-token', async () => {
       await request(app)
         .post('/api/survey')
         .send({
@@ -39,7 +39,7 @@ describe('Survey Routes', () => {
           }
           ]
         })
-        .expect(403)
+        .expect(400)
     })
 
     test('Should return 204 on create survey with valid token', async () => {
@@ -107,6 +107,24 @@ describe('Survey Routes', () => {
           ]
         })
         .expect(403)
+    })
+
+    test('Should return 400 on create survey with broken jwt', async () => {
+      await request(app)
+        .post('/api/survey')
+        .set('x-access-token', '123')
+        .send({
+          question: 'any_question',
+          answers: [{
+            answer: 'Answer 1',
+            image: 'any_image'
+          },
+          {
+            answer: 'Answer 2'
+          }
+          ]
+        })
+        .expect(400)
     })
   })
 })

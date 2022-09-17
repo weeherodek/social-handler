@@ -25,7 +25,7 @@ const makeSut = (): sutTypes => {
   }
 }
 
-describe('Template Controller', () => {
+describe('Email Validation', () => {
   test('Should call EmailValidator with correct values', async () => {
     const { sut, emailValidatorStub } = makeSut()
     const validateSpy = jest.spyOn(emailValidatorStub, 'isValid')

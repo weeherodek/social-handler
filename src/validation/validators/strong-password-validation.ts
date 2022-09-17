@@ -10,7 +10,7 @@ export class StrongPasswordValidation implements Validation {
 
   validate (data: any): string | null {
     const isStrongPassword = this.strongPasswordValidator.isStrongPassword(data[this.fieldName])
-    if (isStrongPassword) return null
+    if (data[this.fieldName] && isStrongPassword) return null
     return new StrongPasswordError().message
   }
 }

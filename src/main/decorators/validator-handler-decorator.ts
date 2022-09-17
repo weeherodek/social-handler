@@ -2,20 +2,21 @@ import { ApplicationError } from '@/presentation/errors'
 import { Validation } from '@/presentation/protocols/validation'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
+import { Middleware } from '@/presentation/protocols/middleware'
 
-export class ValidatorControllerDecorator implements Controller {
+export class ValidatorHandlerDecorator implements Controller, Middleware {
   constructor (
-    private readonly controller: Controller,
+    private readonly handler: Controller | Middleware,
     private readonly validation: Validation) {
 
   }
 
   async handle (httpRequest: HttpRequest<any>): Promise<HttpResponse<any>> {
-    const error = this.validation.validate(httpRequest.body)
+    const error = this.validation.validate({ ...httpRequest.body, ...httpRequest.headers })
     if (error) {
       throw new ApplicationError(error, 400)
     }
-    const httpResponse = await this.controller.handle(httpRequest)
+    const httpResponse = await this.handler.handle(httpRequest)
     return httpResponse
   }
 }
