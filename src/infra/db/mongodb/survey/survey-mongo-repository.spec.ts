@@ -33,13 +33,14 @@ describe('Survey Mongo Repository', () => {
   beforeEach(async () => {
     await collectionSurveys.deleteMany({})
   })
+  describe('add()', () => {
+    test('Should add a new survey', async () => {
+      const sut = makeSut()
+      const newSurvey = await sut.add(makeFakeSurvey())
+      expect(newSurvey).toBeUndefined()
 
-  test('Should add a new survey', async () => {
-    const sut = makeSut()
-    const newSurvey = await sut.add(makeFakeSurvey())
-    expect(newSurvey).toBeUndefined()
-
-    const survey = await collectionSurveys.findOne({ question: 'any_question' })
-    expect(survey).toBeDefined()
+      const survey = await collectionSurveys.findOne({ question: 'any_question' })
+      expect(survey).toBeDefined()
+    })
   })
 })

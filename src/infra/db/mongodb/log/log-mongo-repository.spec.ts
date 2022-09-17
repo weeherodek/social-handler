@@ -33,16 +33,18 @@ describe('', () => {
     await errorCollection.deleteMany({})
   })
 
-  test('Should create an error log on success', async () => {
-    const sut = makeSut()
-    await sut.logError(makeFakeErrorLog())
-    const logResult = await errorCollection.find<LogErrorModel>({}).toArray()
-    expect(logResult.length).toBe(1)
-    expect(logResult[0])
-    expect(logResult[0].controller).toBe('fake_controller')
-    expect(logResult[0].params).toEqual({
-      fakeParam: 'fake_param'
+  describe('logError()', () => {
+    test('Should create an error log on success', async () => {
+      const sut = makeSut()
+      await sut.logError(makeFakeErrorLog())
+      const logResult = await errorCollection.find<LogErrorModel>({}).toArray()
+      expect(logResult.length).toBe(1)
+      expect(logResult[0])
+      expect(logResult[0].controller).toBe('fake_controller')
+      expect(logResult[0].params).toEqual({
+        fakeParam: 'fake_param'
+      })
+      expect(logResult[0].date).toBeInstanceOf(Date)
     })
-    expect(logResult[0].date).toBeInstanceOf(Date)
   })
 })
