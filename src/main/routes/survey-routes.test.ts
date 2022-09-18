@@ -127,4 +127,12 @@ describe('Survey Routes', () => {
         .expect(400)
     })
   })
+
+  describe('GET /surveys', () => {
+    test('Should return 400 on get surveys missing x-access-token', async () => {
+      await request(app)
+        .get('/api/surveys')
+        .expect(400)
+    })
+  })
 })
