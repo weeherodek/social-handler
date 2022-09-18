@@ -52,6 +52,16 @@ describe('Survey Mongo Repository', () => {
       await collectionSurveys.insertMany([makeFakeSurvey(), makeFakeSurvey()])
       const surveys = await sut.loadAll()
       expect(surveys.length).toBe(2)
+      expect(surveys[0]).not.toHaveProperty('_id')
+      expect(surveys[0]).toHaveProperty('id')
+      expect(surveys[1]).not.toHaveProperty('_id')
+      expect(surveys[1]).toHaveProperty('id')
+    })
+
+    test('Should retun a empty list', async () => {
+      const sut = makeSut()
+      const surveys = await sut.loadAll()
+      expect(surveys.length).toBe(0)
     })
   })
 })
