@@ -1,6 +1,3 @@
+import { LogErrorModel } from '@/domain/models/log/error'
 
-export type AddLogErrorModel = {
-  stack: string
-  params: Record<any, any>
-  controller: string
-}
+export type AddLogErrorModel = Omit<LogErrorModel, 'id' | 'date'>

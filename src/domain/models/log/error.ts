@@ -1,6 +1,7 @@
-import { AddLogErrorModel } from '@/domain/usecases/log/error'
-
 export type LogErrorModel = {
   id: string
   date: Date
-} & AddLogErrorModel
+  stack: string
+  params: Record<any, any>
+  controller: string
+}
