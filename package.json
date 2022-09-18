@@ -13,7 +13,7 @@
     "test:verbose": "jest --passWithNoTests",
     "test:unit": "npm test -- --watch -c jest.unit.config.js",
     "test:integration": "npm test -- --watch -c jest.integration.config.js",
-    "test:staged": "npm test -- --no-cache --watch -findRelatedTests",
+    "test:staged": "npm test -- --no-cache --bail --findRelatedTests",
     "test:ci": "npm test -- --coverage",
     "prepare": "husky install"
   },
