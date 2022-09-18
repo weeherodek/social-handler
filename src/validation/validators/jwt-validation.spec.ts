@@ -29,8 +29,8 @@ describe('Jwt Validation', () => {
   test('Should call JwtValidator with correct values', async () => {
     const { sut, jwtValidatorStub } = makeSut()
     const validateSpy = jest.spyOn(jwtValidatorStub, 'isValid')
-    sut.validate({ 'x-access-token': 'any_email' })
-    expect(validateSpy).toHaveBeenCalledWith('any_email')
+    sut.validate({ 'x-access-token': 'any_token' })
+    expect(validateSpy).toHaveBeenCalledWith('any_token')
   })
 
   test('Should return InvalidParamError if JwtValidator returns false', async () => {
@@ -46,5 +46,12 @@ describe('Jwt Validation', () => {
       throw new Error()
     })
     expect(sut.validate).toThrow()
+  })
+
+  test('Should not call JwtValidator if field not exists', () => {
+    const { sut, jwtValidatorStub } = makeSut()
+    const spyIsValid = jest.spyOn(jwtValidatorStub, 'isValid')
+    sut.validate({ not_exists: 'any_token' })
+    expect(spyIsValid).not.toHaveBeenCalled()
   })
 })

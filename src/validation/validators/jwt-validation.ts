@@ -10,8 +10,11 @@ export class JwtValidation implements Validation {
   }
 
   validate (data: any): string | null {
-    const isValidJwt = this.jwtValidator.isValid(data[this.fieldName])
-    if (data[this.fieldName] && !isValidJwt) {
+    if (data[this.fieldName] !== undefined) {
+      const isValidJwt = this.jwtValidator.isValid(data[this.fieldName])
+      if (isValidJwt) {
+        return null
+      }
       return new InvalidParamError(this.fieldName).message
     }
     return null
