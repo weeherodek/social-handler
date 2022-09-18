@@ -1,6 +1,6 @@
 import { SurveyModel } from '@/domain/models/survey/survey'
 import { LoadSurveys } from '@/domain/usecases/survey/load-surveys'
-import { ok } from '@/presentation/helpers/http/http-helper'
+import { noContent, ok } from '@/presentation/helpers/http/http-helper'
 import { LoadSurveysController } from './load-surveys-controller'
 
 const makeFakeSurveyModel = (id: string): SurveyModel => ({
@@ -52,6 +52,13 @@ describe('LoadSurveys Controller', () => {
     const { sut } = makeSut()
     const surveys = await sut.handle({ body: {} })
     expect(surveys).toEqual(ok([makeFakeSurveyModel('1'), makeFakeSurveyModel('2')]))
+  })
+
+  test('Should return no content if list of surveys is empty', async () => {
+    const { sut, loadSurveysStub } = makeSut()
+    jest.spyOn(loadSurveysStub, 'loadAll').mockResolvedValue([])
+    const surveys = await sut.handle({ body: {} })
+    expect(surveys).toEqual(noContent())
   })
 
   test('Should throw if loadSurveys throws', async () => {
