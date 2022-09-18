@@ -9,7 +9,7 @@ export const created = <T = any>(body: T): HttpResponse<T> => ({
   }
 })
 
-export const noContent = (): HttpResponse<void> => ({
+export const noContent = (): HttpResponse<null> => ({
   statusCode: 204,
   body: {
     statusCode: 204,

@@ -6,7 +6,7 @@ import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 export class AddSurveyController implements Controller {
   constructor (private readonly addSurvey: AddSurvey) {}
 
-  async handle (httpRequest: HttpRequest<AddSurveyModel>): Promise<HttpResponse<void>> {
+  async handle (httpRequest: HttpRequest<AddSurveyModel>): Promise<HttpResponse<null>> {
     const { answers, question } = httpRequest.body
     await this.addSurvey.add({ answers, question })
     return noContent()
