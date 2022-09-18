@@ -26,12 +26,12 @@ const makeLoadSurveys = (): LoadSurveys => {
   return new LoadSurveysStub()
 }
 
-interface sutTypes {
+type SutTypes = {
   loadSurveysStub: LoadSurveys
   sut: LoadSurveysController
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const loadSurveysStub = makeLoadSurveys()
   const sut = new LoadSurveysController(loadSurveysStub)
   return {

@@ -4,13 +4,13 @@ export interface AddTemplate {
   add: (template: AddTemplateModel) => Promise<TemplateModel | null>
 }
 
-export interface AddTemplateModel {
+export type AddTemplateModel = {
   name: string
   text: string
   fields: AddTemplateField[]
 }
 
-interface AddTemplateField {
+type AddTemplateField = {
   name: string
   required: boolean
   defaultValue?: string

@@ -25,12 +25,12 @@ const makeAddSurvey = (): AddSurvey => {
   return new AddSurveyStub()
 }
 
-interface sutTypes {
+type SutTypes = {
   addSurveyStub: AddSurvey
   sut: AddSurveyController
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const addSurveyStub = makeAddSurvey()
   const sut = new AddSurveyController(addSurveyStub)
   return {

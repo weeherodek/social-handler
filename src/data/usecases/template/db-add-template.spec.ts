@@ -56,13 +56,13 @@ const makeAddTemplateRepository = (): AddTemplateRepository => {
   return new AddTemplateRepositoryStub()
 }
 
-interface sutTypes {
+type SutTypes = {
   sut: AddTemplate
   addTemplateRepositoryStub: AddTemplateRepository
   loadTemplateByNameRepositoryStub: LoadTemplateByNameRepository
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const loadTemplateByNameRepositoryStub = makeLoadTemplateByNameRepository()
   const addTemplateRepositoryStub = makeAddTemplateRepository()
   const sut = new DbAddTemplate(addTemplateRepositoryStub, loadTemplateByNameRepositoryStub)

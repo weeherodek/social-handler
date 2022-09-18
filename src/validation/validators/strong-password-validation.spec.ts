@@ -11,13 +11,13 @@ const makeStrongPasswordValidator = (): StrongPasswordValidator => {
   return new StrongPasswordValidatorStub()
 }
 
-interface sutTypes {
+type SutTypes = {
   sut: StrongPasswordValidation
   strongPasswordValidatorStub: StrongPasswordValidator
 
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const strongPasswordValidatorStub = makeStrongPasswordValidator()
   const sut = new StrongPasswordValidation('password', strongPasswordValidatorStub)
   return {

@@ -51,12 +51,12 @@ const makeAddTemplate = (): AddTemplate => {
   return new AddTemplateStub()
 }
 
-interface sutTypes {
+type SutTypes = {
   sut: Controller
   addTemplateStub: AddTemplate
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const addTemplateStub = makeAddTemplate()
   const sut = new AddTemplateController(addTemplateStub)
   return {

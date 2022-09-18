@@ -1,6 +1,6 @@
 import { AddSurveyModel } from '@/domain/usecases/survey/add-survey'
 
-export interface SurveyModel extends AddSurveyModel {
+export type SurveyModel = {
   id: string
   date: Date
-}
+} & AddSurveyModel

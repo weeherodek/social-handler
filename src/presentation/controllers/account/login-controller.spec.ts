@@ -21,12 +21,12 @@ const makeAuthenticationStub = (): Authentication => {
   return new AuthenticationStub()
 }
 
-interface sutTypes {
+type SutTypes = {
   authenticationStub: Authentication
   sut: LoginController
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const authenticationStub = makeAuthenticationStub()
   const sut = new LoginController(authenticationStub)
   return {

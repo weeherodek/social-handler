@@ -11,12 +11,12 @@ const makeJwtValidator = (): JwtValidator => {
   return new JwtValidatorStub()
 }
 
-interface sutTypes {
+type SutTypes = {
   sut: JwtValidation
   jwtValidatorStub: JwtValidator
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const jwtValidatorStub = makeJwtValidator()
   const sut = new JwtValidation('x-access-token', jwtValidatorStub)
   return {

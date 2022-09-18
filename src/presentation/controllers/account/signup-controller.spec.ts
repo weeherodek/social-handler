@@ -46,13 +46,13 @@ const makeAddAccount = (): AddAccount => {
   return new AddAccountStub()
 }
 
-interface sutTypes {
+type SutTypes = {
   sut: Controller
   addAccountStub: AddAccount
   authenticationStub: Authentication
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const authenticationStub = makeAuthenticationStub()
   const addAccountStub = makeAddAccount()
   const sut = new SignUpController(addAccountStub, authenticationStub)

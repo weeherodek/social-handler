@@ -1,6 +1,6 @@
 import { AddLogErrorModel } from '@/domain/usecases/log/error'
 
-export interface LogErrorModel extends AddLogErrorModel {
+export type LogErrorModel = {
   id: string
   date: Date
-}
+} & AddLogErrorModel

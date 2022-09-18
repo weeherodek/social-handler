@@ -1,4 +1,4 @@
-export interface HttpResponse<T = any> {
+export type HttpResponse<T = any> = {
   statusCode: number
   body: {
     data?: T
@@ -8,7 +8,7 @@ export interface HttpResponse<T = any> {
   }
 }
 
-export interface HttpRequest<T = any> {
+export type HttpRequest<T = any> = {
   body: T
   headers?: Record<string, string>
 }

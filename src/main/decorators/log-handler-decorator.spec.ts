@@ -31,13 +31,13 @@ const makeLogErrorRepository = (): LogErrorRepository => {
   return new LogErrorRepositoryStub()
 }
 
-interface sutTypes {
+type SutTypes = {
   genericControllerStub: Controller
   logErrorRepositoryStub: LogErrorRepository
   sut: LogHandlerDecorator
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const genericControllerStub = makeGenericController()
   const logErrorRepositoryStub = makeLogErrorRepository()
   const sut = new LogHandlerDecorator(genericControllerStub, logErrorRepositoryStub)

@@ -1,6 +1,6 @@
 import { AddTemplateModel } from '@/domain/usecases/template/add-template'
 
-export interface TemplateModel extends AddTemplateModel {
+export type TemplateModel = {
   id: string
   date: Date
-}
+} & AddTemplateModel

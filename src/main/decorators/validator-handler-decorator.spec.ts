@@ -29,13 +29,13 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
-interface sutTypes {
+type SutTypes = {
   sut: ValidatorHandlerDecorator
   genericControllerStub: Controller
   validationStub: Validation
 }
 
-const makeSut = (): sutTypes => {
+const makeSut = (): SutTypes => {
   const genericControllerStub = makeGenericController()
   const validationStub = makeValidation()
   const sut = new ValidatorHandlerDecorator(genericControllerStub, validationStub)
