@@ -18,5 +18,11 @@ module.exports = {
     enableGlobally: true,
     now: new Date('2020-01-01').getTime(),
     doNotFake: ['nextTick']
+  },
+  coverageThreshold: {
+    branches: 90,
+    functions: 90,
+    lines: 90,
+    statements: 90
   }
 }
