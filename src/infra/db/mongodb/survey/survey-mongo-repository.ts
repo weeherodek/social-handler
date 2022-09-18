@@ -6,6 +6,6 @@ export class SurveyMongoRepository implements AddSurveyRepository {
   constructor (private readonly surveyCollection: string) {}
   async add (surveyData: AddSurveyModel): Promise<void> {
     const surveyCollection = await MongoHelper.getCollection(this.surveyCollection)
-    await surveyCollection.insertOne(surveyData)
+    await surveyCollection.insertOne({ ...surveyData, date: new Date() })
   }
 }
