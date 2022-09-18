@@ -1,3 +1,4 @@
+import { SurveyModel } from '@/domain/models/survey/survey'
 import { AddSurveyModel } from '@/domain/usecases/survey/add-survey'
 import env from '@/main/config/env'
 import { Collection } from 'mongodb'
@@ -39,8 +40,9 @@ describe('Survey Mongo Repository', () => {
       const newSurvey = await sut.add(makeFakeSurvey())
       expect(newSurvey).toBeUndefined()
 
-      const survey = await collectionSurveys.findOne({ question: 'any_question' })
+      const survey = await collectionSurveys.findOne<SurveyModel>({ question: 'any_question' })
       expect(survey).toBeDefined()
+      expect(survey?.date).toBeInstanceOf(Date)
     })
   })
 })
