@@ -45,4 +45,13 @@ describe('Survey Mongo Repository', () => {
       expect(survey?.date).toBeInstanceOf(Date)
     })
   })
+
+  describe('loadAll()', () => {
+    test('Should retun a list of survey', async () => {
+      const sut = makeSut()
+      await collectionSurveys.insertMany([makeFakeSurvey(), makeFakeSurvey()])
+      const surveys = await sut.loadAll()
+      expect(surveys.length).toBe(2)
+    })
+  })
 })
