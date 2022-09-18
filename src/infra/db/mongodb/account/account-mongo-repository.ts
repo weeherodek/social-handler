@@ -25,7 +25,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
   async loadByEmail (email: string): Promise<AccountModel | null> {
     const accountCollection = await MongoHelper.getCollection(this.accountCollection)
     const result = await accountCollection.findOne({ email })
-    return result && MongoHelper.map(result)
+    return await (result && MongoHelper.map(result))
   };
 
   async updateAccessToken (id: string, accessToken: string): Promise<void> {
@@ -50,6 +50,6 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
           role: 'admin'
         }]
     })
-    return result && MongoHelper.map(result)
+    return await (result && MongoHelper.map(result))
   }
 }

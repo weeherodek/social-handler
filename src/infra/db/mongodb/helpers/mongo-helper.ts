@@ -23,10 +23,14 @@ export const MongoHelper = {
     return this.client.db().collection(name)
   },
 
-  map (data: WithId<Document>): any {
+  map<T> (data: WithId<Document>): T {
     const { _id, ...rest } = data
-    const object = Object.assign({}, rest, { id: _id.toString() })
+    const object = Object.assign({}, rest as T, { id: _id.toString() })
     return object
+  },
+
+  mapArray<T>(list: Array<WithId<Document>>): T[] {
+    return list.map((data) => this.map(data))
   },
 
   mapId (id: string): ObjectId {

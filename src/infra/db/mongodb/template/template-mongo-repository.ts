@@ -23,6 +23,6 @@ export class TemplateMongoRepository implements AddTemplateRepository, LoadTempl
   async loadByName (name: string): Promise<TemplateModel | null> {
     const templateCollection = await MongoHelper.getCollection(this.templateCollection)
     const result = await templateCollection.findOne({ name })
-    return result && MongoHelper.map(result)
+    return await (result && MongoHelper.map(result))
   }
 }
