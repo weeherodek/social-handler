@@ -9,7 +9,7 @@ import { MongoHelper } from '../helpers/mongo-helper'
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAcessTokenRepository, LoadAccountByTokenRepository {
   constructor (private readonly accountCollection: string) {}
 
-  async add (account: AddAccountModel): Promise<AccountModel> {
+  async add (account: AddAccountModel): Promise<Omit<AccountModel, 'accessToken'>> {
     const accountCollection = await MongoHelper.getCollection(this.accountCollection)
     const accountData = {
       date: new Date(),

@@ -1,6 +1,13 @@
-import { AddTemplateModel } from '@/domain/usecases/template/add-template'
+type AddTemplateField = {
+  name: string
+  required: boolean
+  defaultValue?: string
+}
 
 export type TemplateModel = {
   id: string
   date: Date
-} & AddTemplateModel
+  name: string
+  text: string
+  fields: AddTemplateField[]
+}

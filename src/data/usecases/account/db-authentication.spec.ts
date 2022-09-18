@@ -48,6 +48,7 @@ const makeLoadAccountByRepository = (): LoadAccountByEmailRepository => {
         id: 'any_id',
         name: 'any_name',
         password: 'hashed_password',
+        accessToken: 'any_token',
         email: 'any_email',
         date: new Date()
       }

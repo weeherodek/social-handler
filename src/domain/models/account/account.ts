@@ -1,7 +1,8 @@
-import { AddAccountModel } from '@/domain/usecases/account/add-acount'
-
 export type AccountModel = {
   id: string
-  accessToken?: string
+  accessToken: string
   date: Date
-} & AddAccountModel
+  name: string
+  email: string
+  password: string
+}

@@ -5,7 +5,7 @@ import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acoun
 import { DbAddAccount } from './db-add-account'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
 
-const makeFakeAccountModel = (): AccountModel => ({
+const makeFakeAccountModel = (): Omit<AccountModel, 'accessToken'> => ({
   id: 'any_id',
   name: 'any_name',
   email: 'any_email',
@@ -39,7 +39,7 @@ const makeHasher = (): Hasher => {
 
 const makeAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async add (account: AddAccountModel): Promise<AccountModel> {
+    async add (account: AddAccountModel): Promise<Omit<AccountModel, 'accessToken'>> {
       return {
         id: 'any_id',
         name: 'any_name',
@@ -131,7 +131,7 @@ describe('DbAddAccount Usecase', () => {
 
   test('Should return null if user is found on LoadAccountByEmailRepository', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockResolvedValueOnce(makeFakeAccountModel())
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockResolvedValueOnce({ ...makeFakeAccountModel(), accessToken: 'any_token' })
     const account = await sut.add(makeFakeAccount())
     expect(account).toBeNull()
   })

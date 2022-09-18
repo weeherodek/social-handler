@@ -13,7 +13,7 @@ export class DbAddAccount implements AddAccount {
 
   }
 
-  async add (accountData: AddAccountModel): Promise<AccountModel | null> {
+  async add (accountData: AddAccountModel): Promise<Omit<AccountModel, 'accessToken'> | null> {
     const alreadyHasAccount = await this.loadAccountByEmailRepository.loadByEmail(accountData.email)
     if (alreadyHasAccount) return null
     const cryptoPassword = await this.cryptograph.hash(accountData.password)

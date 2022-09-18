@@ -32,15 +32,14 @@ const makeAuthenticationStub = (): Authentication => {
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add (account: AddAccountModel): Promise<AccountModel | null> {
-      const fakeAccount: AccountModel = {
+    async add (account: AddAccountModel): Promise<Omit<AccountModel, 'accessToken'> | null> {
+      return {
         id: 'any_id',
         name: 'any_name',
         email: 'any_email',
         password: 'any_password',
         date: new Date()
       }
-      return fakeAccount
     }
   }
   return new AddAccountStub()
