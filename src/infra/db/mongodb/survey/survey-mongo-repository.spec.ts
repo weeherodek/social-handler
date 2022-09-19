@@ -1,7 +1,7 @@
 import { SurveyModel } from '@/domain/models/survey/survey'
 import { AddSurveyModel } from '@/domain/usecases/survey/add-survey'
 import env from '@/main/config/env'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { SurveyMongoRepository } from './survey-mongo-repository'
 
@@ -58,10 +58,30 @@ describe('Survey Mongo Repository', () => {
       expect(surveys[1]).toHaveProperty('id')
     })
 
-    test('Should retun a empty list', async () => {
+    test('Should return a empty list', async () => {
       const sut = makeSut()
       const surveys = await sut.loadAll()
       expect(surveys.length).toBe(0)
+    })
+  })
+
+  describe('loadById()', () => {
+    test('Should return the expected survey', async () => {
+      const sut = makeSut()
+      const newSurvey = makeFakeSurvey()
+      const insertedSurvey = await collectionSurveys.insertOne(newSurvey)
+      const id = insertedSurvey.insertedId.toString()
+      const survey = await sut.loadById(id)
+      expect(survey).toBeDefined()
+      expect(survey?.id).toBe(id)
+      expect(survey?.answers).toEqual(newSurvey.answers)
+      expect(survey?.question).toEqual(newSurvey.question)
+    })
+
+    test('Should return null if result is not found', async () => {
+      const sut = makeSut()
+      const survey = await sut.loadById(new ObjectId().toString())
+      expect(survey).toBeNull()
     })
   })
 })
