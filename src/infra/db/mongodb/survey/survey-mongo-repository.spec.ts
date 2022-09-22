@@ -74,6 +74,7 @@ describe('Survey Mongo Repository', () => {
       const survey = await sut.loadById(id)
       expect(survey).toBeDefined()
       expect(survey?.id).toBe(id)
+      expect(survey).not.toHaveProperty('_id')
       expect(survey?.answers).toEqual(newSurvey.answers)
       expect(survey?.question).toEqual(newSurvey.question)
     })
