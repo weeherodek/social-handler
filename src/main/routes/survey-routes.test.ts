@@ -44,7 +44,7 @@ describe('Survey Routes', () => {
   })
 
   describe('POST /survey', () => {
-    test('Should return 400 on create survey missing x-access-token', async () => {
+    test('Should return 401 on create survey missing x-access-token', async () => {
       await request(app)
         .post('/api/survey')
         .send({
@@ -58,7 +58,7 @@ describe('Survey Routes', () => {
           }
           ]
         })
-        .expect(400)
+        .expect(401)
     })
 
     test('Should return 204 on create survey with valid token', async () => {
@@ -122,10 +122,10 @@ describe('Survey Routes', () => {
   })
 
   describe('GET /surveys', () => {
-    test('Should return 400 on get surveys missing x-access-token', async () => {
+    test('Should return 401 on get surveys missing x-access-token', async () => {
       await request(app)
         .get('/api/surveys')
-        .expect(400)
+        .expect(401)
     })
 
     test('Should return 204 with valid x-access-token and if has no surveys', async () => {
