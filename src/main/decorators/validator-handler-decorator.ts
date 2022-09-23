@@ -11,8 +11,8 @@ export class ValidatorHandlerDecorator implements Controller, Middleware {
 
   }
 
-  async handle (httpRequest: HttpRequest<any>): Promise<HttpResponse<any>> {
-    const error = this.validation.validate({ ...httpRequest.body, ...httpRequest.headers })
+  async handle (httpRequest: HttpRequest<any, any, any>): Promise<HttpResponse> {
+    const error = this.validation.validate({ ...httpRequest.body, ...httpRequest.headers, ...httpRequest.params })
     if (error) {
       throw new ApplicationError(error, 400)
     }

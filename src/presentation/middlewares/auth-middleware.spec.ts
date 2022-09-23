@@ -5,7 +5,7 @@ import { ok } from '../helpers/http/http-helper'
 import { HttpRequest } from '../protocols/http'
 import { AuthMiddleware } from './auth-middleware'
 
-const makeRequestAccessToken = (): HttpRequest => {
+const makeRequestAccessToken = (): HttpRequest<{}, Record<'x-access-token', string>> => {
   return {
     body: {},
     headers: {
@@ -50,7 +50,7 @@ const makeSut = (role?: string): SutTypes => {
 describe('Auth Middleware', () => {
   test('Should return Forbidden if no x-access-token exists in headers', async () => {
     const { sut } = makeSut()
-    const request: HttpRequest<any> = {
+    const request: HttpRequest<any, any> = {
       body: {},
       headers: { not_exists: 'not_exists' }
     }
@@ -89,7 +89,7 @@ describe('Auth Middleware', () => {
 
   test('Should return ForbiddenError if headers is undefined', async () => {
     const { sut } = makeSut()
-    const promise = sut.handle({ body: {} })
+    const promise = sut.handle({ body: {}, headers: { 'x-access-token': undefined } })
     await expect(promise).rejects.toThrow(new ForbiddenError())
   })
 })

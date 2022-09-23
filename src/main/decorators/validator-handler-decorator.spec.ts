@@ -5,10 +5,12 @@ import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { ValidatorHandlerDecorator } from './validator-handler-decorator'
 
-const makeFakeRequest = (): HttpRequest => ({
+const makeFakeRequest = (): HttpRequest<any, any, any> => ({
   body: {
     anyField: 'anyField'
-  }
+  },
+  headers: {},
+  params: {}
 })
 
 const makeGenericController = (): Controller => {

@@ -4,7 +4,7 @@ import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { LogHandlerDecorator } from './log-handler-decorator'
 
-const makeGenericRequest = (): HttpRequest => ({ body: 'fake_body' })
+const makeGenericRequest = (): HttpRequest<any, any, any> => ({ body: 'fake_body', headers: {}, params: {} })
 
 const makeGenericController = (): Controller => {
   class GenericControllerStub implements Controller {
@@ -83,9 +83,10 @@ describe('Log Controller Decorator', () => {
     fakeError.stack = 'Fake Error Stack'
     jest.spyOn(genericControllerStub, 'handle').mockRejectedValueOnce(fakeError)
     const spyLog = jest.spyOn(logErrorRepositoryStub, 'logError')
-    const promise = sut.handle(makeGenericRequest())
+    const request = makeGenericRequest()
+    const promise = sut.handle(request)
     await expect(promise).rejects.toThrowError(fakeError)
-    expect(spyLog).toHaveBeenCalledWith({ params: { body: 'fake_body' }, stack: 'Fake Error Stack', controller: 'GenericControllerStub' })
+    expect(spyLog).toHaveBeenCalledWith({ params: { ...request }, stack: 'Fake Error Stack', controller: 'GenericControllerStub' })
   })
 
   test('Should not save the log if error is a not instance of generic error', async () => {
