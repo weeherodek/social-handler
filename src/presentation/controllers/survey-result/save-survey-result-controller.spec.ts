@@ -6,14 +6,14 @@ import { ForbiddenError } from '@/presentation/errors/'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { SaveSurveyResultController } from './save-survey-result-controller'
 
-const makeFakeRequest = (): HttpRequest<Omit<SaveSurveyResultModel, 'surveyId'>, never, Record<'surveyId', string>> => ({
+const makeFakeRequest = (): HttpRequest<Pick<SaveSurveyResultModel, 'answer'>, never, Record<'surveyId', string>> => ({
   body: {
-    accountId: 'any_account_id',
     answer: 'any_answer'
   },
   params: {
     surveyId: 'any_survey_id'
-  }
+  },
+  accountId: 'any_account_id'
 })
 
 const makeSaveSurveyResult = (): SaveSurveyResult => {
@@ -97,7 +97,8 @@ describe('Save Survey Result Controller', () => {
     const { sut, saveSurveyResultStub } = makeSut()
     const spySaveResult = jest.spyOn(saveSurveyResultStub, 'saveResult')
     const request = makeFakeRequest()
-    const { accountId, answer } = request.body
+    const { answer } = request.body
+    const accountId = request.accountId as string
     const { surveyId } = request.params
     await sut.handle(request)
     expect(spySaveResult).toHaveBeenCalledWith({ accountId, answer, surveyId })
