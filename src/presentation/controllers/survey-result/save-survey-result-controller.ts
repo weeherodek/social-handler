@@ -13,11 +13,12 @@ export class SaveSurveyResultController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest<
-  Omit<SaveSurveyResultModel, 'surveyId'>,
+  Pick<SaveSurveyResultModel, 'answer'>,
   never,
   Record<'surveyId', string>>): Promise<HttpResponse<Pick<SurveyResultModel, 'answer'>>> {
     const { surveyId } = httpRequest.params
-    const { accountId, answer } = httpRequest.body
+    const { answer } = httpRequest.body
+    const accountId = httpRequest.accountId as string
     const survey = await this.loadSurveyById.loadById(surveyId)
     if (!survey) {
       throw new ForbiddenError()

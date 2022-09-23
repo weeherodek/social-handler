@@ -10,6 +10,7 @@ export type HttpResponse<T = any> = {
 
 export type HttpRequest<T = any, Headers = never, Params = never> = {
   body: T
+  accountId?: string
 } & HttpRequestHeader<Headers> & HttpRequestParam<Params>
 
 type HttpRequestHeader<H> = [H] extends [never] ? {} : { headers: H }
