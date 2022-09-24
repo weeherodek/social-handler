@@ -1,17 +1,9 @@
 import { LogErrorModel } from '@/domain/models/log/error'
-import { AddLogErrorModel } from '@/domain/usecases/log/error'
+import { mockAddLogErrorParams } from '@/domain/test'
 import env from '@/main/config/env'
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { LogMongoRepository } from './log-mongo-repository'
-
-const makeFakeErrorLog = (): AddLogErrorModel => ({
-  controller: 'fake_controller',
-  params: {
-    fakeParam: 'fake_param'
-  },
-  stack: 'fake_error_stack'
-})
 
 const makeSut = (): LogMongoRepository => {
   return new LogMongoRepository(env.errorLogCollection)
@@ -36,13 +28,13 @@ describe('', () => {
   describe('logError()', () => {
     test('Should create an error log on success', async () => {
       const sut = makeSut()
-      await sut.logError(makeFakeErrorLog())
+      await sut.logError(mockAddLogErrorParams())
       const logResult = await errorCollection.find<LogErrorModel>({}).toArray()
       expect(logResult.length).toBe(1)
       expect(logResult[0])
-      expect(logResult[0].controller).toBe('fake_controller')
+      expect(logResult[0].controller).toBe('any_controller')
       expect(logResult[0].params).toEqual({
-        fakeParam: 'fake_param'
+        any_params: 'any_params_value'
       })
       expect(logResult[0].date).toBeInstanceOf(Date)
     })

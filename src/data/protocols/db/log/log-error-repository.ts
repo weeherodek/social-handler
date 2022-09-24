@@ -1,5 +1,5 @@
-import { AddLogErrorModel } from '@/domain/usecases/log/error'
+import { AddLogErrorParams } from '@/domain/usecases/log/error'
 
 export interface LogErrorRepository {
-  logError: (errorData: AddLogErrorModel) => Promise<void>
+  logError: (errorData: AddLogErrorParams) => Promise<void>
 }

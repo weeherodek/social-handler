@@ -1,27 +1,14 @@
 import { LoadSurveysRepository } from '@/data/protocols/db/survey/load-surveys-repository'
 import { SurveyModel } from '@/domain/models/survey/survey'
+import { mockSurveyModel } from '@/domain/test'
 import { DbLoadSurveys } from './db-load-surveys'
-
-const makeFakeSurveyModel = (id: string): SurveyModel => ({
-  id,
-  question: 'fake question',
-  answers: [{
-    answer: 'Fake Answer 1',
-    image: 'Fake Image'
-  },
-  {
-    answer: 'Fake Answer 2',
-    image: 'Fake Image'
-  }],
-  date: new Date()
-})
 
 const makeLoadSurveysRepository = (): LoadSurveysRepository => {
   class LoadSurveysRepositoryStub implements LoadSurveysRepository {
     async loadAll (): Promise<SurveyModel[]> {
       return await Promise.resolve([
-        makeFakeSurveyModel('1'),
-        makeFakeSurveyModel('2')
+        mockSurveyModel('1'),
+        mockSurveyModel('2')
       ])
     }
   }
@@ -54,8 +41,8 @@ describe('DbLoadSurveys Usecase', () => {
     const { sut } = makeSut()
     const surveys = await sut.loadAll()
     expect(surveys).toEqual([
-      makeFakeSurveyModel('1'),
-      makeFakeSurveyModel('2')
+      mockSurveyModel('1'),
+      mockSurveyModel('2')
     ])
   })
 

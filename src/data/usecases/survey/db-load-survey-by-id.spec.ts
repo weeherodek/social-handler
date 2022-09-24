@@ -1,25 +1,12 @@
 import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository'
 import { SurveyModel } from '@/domain/models/survey/survey'
+import { mockSurveyModel } from '@/domain/test'
 import { DbLoadSurveyById } from './db-load-survey-by-id'
-
-const makeFakeSurveyModel = (id: string): SurveyModel => ({
-  id,
-  question: 'fake question',
-  answers: [{
-    answer: 'Fake Answer 1',
-    image: 'Fake Image'
-  },
-  {
-    answer: 'Fake Answer 2',
-    image: 'Fake Image'
-  }],
-  date: new Date()
-})
 
 const makeLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
   class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
     async loadById (id: string): Promise<SurveyModel | null> {
-      return await Promise.resolve(makeFakeSurveyModel('1'))
+      return await Promise.resolve(mockSurveyModel('1'))
     }
   }
   return new LoadSurveyByIdRepositoryStub()
@@ -57,7 +44,7 @@ describe('DbLoadSurveyById Usecase', () => {
   test('Should return SurveyModel if LoadSurveyByIdRepository returns a survey', async () => {
     const { sut } = makeSut()
     const survey = await sut.loadById('1')
-    expect(survey).toEqual(makeFakeSurveyModel('1'))
+    expect(survey).toEqual(mockSurveyModel('1'))
   })
 
   test('Should return null if LoadSurveyByIdRepository returns null', async () => {
