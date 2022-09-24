@@ -1,8 +1,8 @@
 {
   "name": "social-handler",
   "version": "1.5.1",
-  "description": "",
-  "main": "index.js",
+  "description": "API Social Handler",
+  "main": "dist/main/server.js",
   "scripts": {
     "start": "node dist/main/server.js",
     "dev": "ts-node-dev -r tsconfig-paths/register src/main/server-dev.ts",
