@@ -13,7 +13,7 @@ export default {
   info: {
     title: 'Social Handler',
     description: 'API Social Handler',
-    version: '1.5.1'
+    version: '1.6.1'
   },
   license: {
     name: 'GPL-3.0-or-later',
