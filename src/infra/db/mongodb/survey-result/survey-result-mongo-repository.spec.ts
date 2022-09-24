@@ -1,5 +1,6 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { SurveyModel } from '@/domain/models/survey/survey'
+import { mockAccountModel, mockSurveyModel } from '@/domain/test'
 import env from '@/main/config/env'
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
@@ -14,37 +15,17 @@ let surveyResultCollection: Collection
 let accountCollection: Collection
 
 const makeAccount = async (): Promise<AccountModel> => {
-  const accountModel: Omit<AccountModel, 'id'> = {
-    name: 'any_name',
-    email: 'any_email',
-    password: 'any_password',
-    accessToken: 'any_token',
-    date: new Date()
-  }
-  const { insertedId } = await surveysCollection.insertOne(accountModel)
+  const { insertedId } = await surveysCollection.insertOne(mockAccountModel())
   return {
-    ...accountModel,
+    ...mockAccountModel(),
     id: insertedId.toString()
   }
 }
 
 const makeSurvey = async (): Promise<SurveyModel> => {
-  const surveyModel: Omit<SurveyModel, 'id'> = {
-    question: 'any_question',
-    answers: [
-      {
-        answer: 'any_answer_1',
-        image: 'any_image'
-      },
-      {
-        answer: 'any_answer_2'
-      }
-    ],
-    date: new Date()
-  }
-  const { insertedId } = await surveysCollection.insertOne(surveyModel)
+  const { insertedId } = await surveysCollection.insertOne(mockSurveyModel())
   return {
-    ...surveyModel,
+    ...mockSurveyModel(),
     id: insertedId.toString()
   }
 }

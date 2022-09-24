@@ -1,27 +1,10 @@
-import { AddTemplateParams } from '@/domain/usecases/template/add-template'
+import { mockAddTemplateParams } from '@/domain/test'
 import env from '@/main/config/env'
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { TemplateMongoRepository } from './template-mongo-repository'
 
 const templateCollection = env.templateCollection
-
-const makeFakeTemplate = (): AddTemplateParams => ({
-  name: 'any_name',
-  text: 'any_text',
-  fields: [
-    {
-      name: 'any_field_name',
-      required: false,
-      defaultValue: ''
-    },
-    {
-      name: 'any_field_name_2',
-      required: true,
-      defaultValue: 'any_default_value'
-    }
-  ]
-})
 
 const makeSut = (): TemplateMongoRepository => {
   const sut = new TemplateMongoRepository(templateCollection)
@@ -46,7 +29,7 @@ describe('Template Mongo Repository', () => {
   describe('add()', () => {
     test('Should return a new template', async () => {
       const sut = makeSut()
-      const newTemplate = await sut.add(makeFakeTemplate())
+      const newTemplate = await sut.add(mockAddTemplateParams())
       expect(newTemplate).toBeDefined()
       expect(newTemplate.id).toBeDefined()
       expect(newTemplate).not.toHaveProperty('_id')
@@ -60,7 +43,7 @@ describe('Template Mongo Repository', () => {
   describe('loadByName()', () => {
     test('Should return an template on success', async () => {
       const sut = makeSut()
-      await collectionTemplates.insertOne({ ...makeFakeTemplate(), date: new Date() })
+      await collectionTemplates.insertOne({ ...mockAddTemplateParams(), date: new Date() })
       const template = await sut.loadByName('any_name')
       expect(template).toBeDefined()
       expect(template?.id).toBeDefined()
@@ -69,14 +52,14 @@ describe('Template Mongo Repository', () => {
       expect(template?.text).toBe('any_text')
       expect(template?.fields.length).toBe(2)
       expect(template?.fields[0]).toEqual({
-        name: 'any_field_name',
-        required: false,
-        defaultValue: ''
+        name: 'any_name_1',
+        required: true,
+        defaultValue: 'default_value_1'
       })
       expect(template?.fields[1]).toEqual({
-        name: 'any_field_name_2',
-        required: true,
-        defaultValue: 'any_default_value'
+        name: 'any_name_2',
+        required: false,
+        defaultValue: 'default_value_2'
       })
       expect(template?.date).toBeInstanceOf(Date)
     })

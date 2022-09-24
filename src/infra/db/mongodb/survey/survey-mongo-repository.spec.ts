@@ -1,19 +1,11 @@
 import { SurveyModel } from '@/domain/models/survey/survey'
-import { AddSurveyParams } from '@/domain/usecases/survey/add-survey'
+import { mockAddSurveyParams, mockSurveyModel } from '@/domain/test'
 import env from '@/main/config/env'
 import { Collection, ObjectId } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { SurveyMongoRepository } from './survey-mongo-repository'
 
 const surveyCollectionName = env.surveyCollection
-
-const makeFakeSurvey = (): AddSurveyParams => ({
-  question: 'any_question',
-  answers: [{
-    answer: 'any_answer',
-    image: 'any_image'
-  }]
-})
 
 const makeSut = (): SurveyMongoRepository => {
   const sut = new SurveyMongoRepository(surveyCollectionName)
@@ -37,7 +29,7 @@ describe('Survey Mongo Repository', () => {
   describe('add()', () => {
     test('Should add a new survey', async () => {
       const sut = makeSut()
-      const newSurvey = await sut.add(makeFakeSurvey())
+      const newSurvey = await sut.add(mockAddSurveyParams())
       expect(newSurvey).toBeUndefined()
 
       const survey = await collectionSurveys.findOne<SurveyModel>({ question: 'any_question' })
@@ -49,7 +41,7 @@ describe('Survey Mongo Repository', () => {
   describe('loadAll()', () => {
     test('Should retun a list of survey', async () => {
       const sut = makeSut()
-      await collectionSurveys.insertMany([makeFakeSurvey(), makeFakeSurvey()])
+      await collectionSurveys.insertMany([mockSurveyModel(), mockSurveyModel()])
       const surveys = await sut.loadAll()
       expect(surveys.length).toBe(2)
       expect(surveys[0]).not.toHaveProperty('_id')
@@ -68,7 +60,7 @@ describe('Survey Mongo Repository', () => {
   describe('loadById()', () => {
     test('Should return the expected survey', async () => {
       const sut = makeSut()
-      const newSurvey = makeFakeSurvey()
+      const newSurvey = mockSurveyModel()
       const insertedSurvey = await collectionSurveys.insertOne(newSurvey)
       const id = insertedSurvey.insertedId.toString()
       const survey = await sut.loadById(id)
