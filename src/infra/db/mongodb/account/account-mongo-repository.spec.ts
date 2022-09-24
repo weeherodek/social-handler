@@ -1,4 +1,4 @@
-import { AddAccountModel } from '@/domain/usecases/account/add-acount'
+import { AddAccountParams } from '@/domain/usecases/account/add-acount'
 import env from '@/main/config/env'
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
@@ -6,7 +6,7 @@ import { AccountMongoRepository } from './account-mongo-repository'
 
 const accountCollection = env.accountCollection
 
-const makeFakeAccount = (): AddAccountModel => ({
+const makeFakeAccount = (): AddAccountParams => ({
   name: 'any_name',
   email: 'any_email',
   password: 'any_password'

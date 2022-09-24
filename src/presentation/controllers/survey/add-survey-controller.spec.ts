@@ -1,9 +1,9 @@
-import { AddSurvey, AddSurveyModel } from '@/domain/usecases/survey/add-survey'
+import { AddSurvey, AddSurveyParams } from '@/domain/usecases/survey/add-survey'
 import { noContent } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { AddSurveyController } from './add-survey-controller'
 
-const makeFakeRequest = (): HttpRequest<AddSurveyModel> => ({
+const makeFakeRequest = (): HttpRequest<AddSurveyParams> => ({
   body: {
     question: 'any_question',
     answers: [
@@ -17,7 +17,7 @@ const makeFakeRequest = (): HttpRequest<AddSurveyModel> => ({
 
 const makeAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
-    async add (survey: AddSurveyModel): Promise<void> {
+    async add (survey: AddSurveyParams): Promise<void> {
       return await Promise.resolve()
     }
   }

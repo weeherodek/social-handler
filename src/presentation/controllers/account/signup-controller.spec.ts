@@ -1,6 +1,6 @@
 import { AccountModel } from '@/domain/models/account/account'
-import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
-import { Authentication, LoginModel } from '@/domain/usecases/account/authentication'
+import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-acount'
+import { Authentication, LoginParams } from '@/domain/usecases/account/authentication'
 import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -10,7 +10,7 @@ jest.useFakeTimers({
   now: new Date('2020-01-01')
 })
 
-const makeFakeRequest = (): HttpRequest<AddAccountModel> => ({
+const makeFakeRequest = (): HttpRequest<AddAccountParams> => ({
   body: {
     name: 'any_text',
     email: 'any_email',
@@ -20,7 +20,7 @@ const makeFakeRequest = (): HttpRequest<AddAccountModel> => ({
 
 const makeAuthenticationStub = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth (authentication: LoginModel): Promise<string> {
+    async auth (authentication: LoginParams): Promise<string> {
       return 'any_token'
     }
   }
@@ -30,7 +30,7 @@ const makeAuthenticationStub = (): Authentication => {
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add (account: AddAccountModel): Promise<Omit<AccountModel, 'accessToken'> | null> {
+    async add (account: AddAccountParams): Promise<Omit<AccountModel, 'accessToken'> | null> {
       return {
         id: 'any_id',
         name: 'any_name',

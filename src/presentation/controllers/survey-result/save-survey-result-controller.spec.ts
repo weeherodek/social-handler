@@ -1,12 +1,12 @@
 import { SurveyResultModel } from '@/domain/models/survey-result/survey-result'
 import { SurveyModel } from '@/domain/models/survey/survey'
-import { SaveSurveyResult, SaveSurveyResultModel } from '@/domain/usecases/survey-result/save-survey-result'
+import { SaveSurveyResult, SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result'
 import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id'
 import { ForbiddenError } from '@/presentation/errors/'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { SaveSurveyResultController } from './save-survey-result-controller'
 
-const makeFakeRequest = (): HttpRequest<Pick<SaveSurveyResultModel, 'answer'>, never, Record<'surveyId', string>> => ({
+const makeFakeRequest = (): HttpRequest<Pick<SaveSurveyResultParams, 'answer'>, never, Record<'surveyId', string>> => ({
   body: {
     answer: 'any_answer'
   },
@@ -18,7 +18,7 @@ const makeFakeRequest = (): HttpRequest<Pick<SaveSurveyResultModel, 'answer'>, n
 
 const makeSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
-    async saveResult (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+    async saveResult (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return {
         id: 'any_id',
         accountId: 'any_acccount_id',

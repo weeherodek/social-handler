@@ -3,10 +3,10 @@ import { Encrypter } from '@/data/protocols/cryptograph/encrypter'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
 import { UpdateAcessTokenRepository } from '@/data/protocols/db/account/update-access-token-repository'
 import { AccountModel } from '@/domain/models/account/account'
-import { LoginModel } from '@/domain/usecases/account/authentication'
+import { LoginParams } from '@/domain/usecases/account/authentication'
 import { DbAuthentication } from './db-authentication'
 
-const makeFakeLoginModel = (): LoginModel => ({
+const makeFakeLoginModel = (): LoginParams => ({
   email: 'any_email',
   password: 'any_password'
 })

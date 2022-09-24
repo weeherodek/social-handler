@@ -1,5 +1,5 @@
 import { SurveyModel } from '@/domain/models/survey/survey'
-import { AddSurveyModel } from '@/domain/usecases/survey/add-survey'
+import { AddSurveyParams } from '@/domain/usecases/survey/add-survey'
 import env from '@/main/config/env'
 import { Collection, ObjectId } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
@@ -7,7 +7,7 @@ import { SurveyMongoRepository } from './survey-mongo-repository'
 
 const surveyCollectionName = env.surveyCollection
 
-const makeFakeSurvey = (): AddSurveyModel => ({
+const makeFakeSurvey = (): AddSurveyParams => ({
   question: 'any_question',
   answers: [{
     answer: 'any_answer',

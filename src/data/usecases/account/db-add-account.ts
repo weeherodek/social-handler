@@ -1,7 +1,7 @@
 import { AddAccountRepository } from '@/data/protocols/db/account/add-account-repository'
 import { Hasher } from '@/data/protocols/cryptograph/hasher'
 import { AccountModel } from '@/domain/models/account/account'
-import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
+import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-acount'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
 
 export class DbAddAccount implements AddAccount {
@@ -13,7 +13,7 @@ export class DbAddAccount implements AddAccount {
 
   }
 
-  async add (accountData: AddAccountModel): Promise<Omit<AccountModel, 'accessToken'> | null> {
+  async add (accountData: AddAccountParams): Promise<Omit<AccountModel, 'accessToken'> | null> {
     const alreadyHasAccount = await this.loadAccountByEmailRepository.loadByEmail(accountData.email)
     if (alreadyHasAccount) return null
     const cryptoPassword = await this.cryptograph.hash(accountData.password)

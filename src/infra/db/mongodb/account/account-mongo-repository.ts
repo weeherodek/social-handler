@@ -3,13 +3,13 @@ import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-a
 import { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository'
 import { UpdateAcessTokenRepository } from '@/data/protocols/db/account/update-access-token-repository'
 import { AccountModel } from '@/domain/models/account/account'
-import { AddAccountModel } from '@/domain/usecases/account/add-acount'
+import { AddAccountParams } from '@/domain/usecases/account/add-acount'
 import { MongoHelper } from '../helpers/mongo-helper'
 
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAcessTokenRepository, LoadAccountByTokenRepository {
   constructor (private readonly accountCollection: string) {}
 
-  async add (account: AddAccountModel): Promise<Omit<AccountModel, 'accessToken'>> {
+  async add (account: AddAccountParams): Promise<Omit<AccountModel, 'accessToken'>> {
     const accountCollection = await MongoHelper.getCollection<Omit<AccountModel, 'id' | 'accessToken'>>(this.accountCollection)
     const accountData = {
       date: new Date(),

@@ -1,7 +1,7 @@
 import { AddTemplateRepository } from '@/data/protocols/db/template/add-template-repository'
 import { LoadTemplateByNameRepository } from '@/data/protocols/db/template/load-template-by-name-repository'
 import { TemplateModel } from '@/domain/models/template/template'
-import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
+import { AddTemplate, AddTemplateParams } from '@/domain/usecases/template/add-template'
 import { DbAddTemplate } from './db-add-template'
 
 jest.useFakeTimers({
@@ -16,7 +16,7 @@ const makeFakeTemplateModel = (): TemplateModel => ({
   date: new Date()
 })
 
-const makeFakeTemplate = (): AddTemplateModel => ({
+const makeFakeTemplate = (): AddTemplateParams => ({
   name: 'any_name',
   text: 'any_text',
   fields: [
@@ -44,7 +44,7 @@ const makeLoadTemplateByNameRepository = (): LoadTemplateByNameRepository => {
 
 const makeAddTemplateRepository = (): AddTemplateRepository => {
   class AddTemplateRepositoryStub implements AddTemplateRepository {
-    async add (template: AddTemplateModel): Promise<TemplateModel> {
+    async add (template: AddTemplateParams): Promise<TemplateModel> {
       return {
         ...makeFakeTemplate(),
         id: 'any_id',

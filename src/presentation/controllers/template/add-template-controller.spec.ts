@@ -1,5 +1,5 @@
 import { TemplateModel } from '@/domain/models/template/template'
-import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
+import { AddTemplate, AddTemplateParams } from '@/domain/usecases/template/add-template'
 import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
@@ -9,7 +9,7 @@ jest.useFakeTimers({
   now: new Date('2020-01-01')
 })
 
-const makeFakeRequest = (): HttpRequest<AddTemplateModel> => ({
+const makeFakeRequest = (): HttpRequest<AddTemplateParams> => ({
   body: {
     name: 'any_name',
     text: 'any_text',
@@ -27,7 +27,7 @@ const makeFakeRequest = (): HttpRequest<AddTemplateModel> => ({
 
 const makeAddTemplate = (): AddTemplate => {
   class AddTemplateStub implements AddTemplate {
-    async add (template: AddTemplateModel): Promise<TemplateModel> {
+    async add (template: AddTemplateParams): Promise<TemplateModel> {
       return {
         id: 'any_id',
         date: new Date(),

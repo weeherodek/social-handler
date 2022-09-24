@@ -1,7 +1,7 @@
 import { AddAccountRepository } from '@/data/protocols/db/account/add-account-repository'
 import { Hasher } from '@/data/protocols/cryptograph/hasher'
 import { AccountModel } from '@/domain/models/account/account'
-import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acount'
+import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-acount'
 import { DbAddAccount } from './db-add-account'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
 
@@ -13,7 +13,7 @@ const makeFakeAccountModel = (): Omit<AccountModel, 'accessToken'> => ({
   date: new Date()
 })
 
-const makeFakeAccount = (): AddAccountModel => ({
+const makeFakeAccount = (): AddAccountParams => ({
   name: 'any_name',
   email: 'any_email',
   password: 'any_password'
@@ -39,7 +39,7 @@ const makeHasher = (): Hasher => {
 
 const makeAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async add (account: AddAccountModel): Promise<Omit<AccountModel, 'accessToken'>> {
+    async add (account: AddAccountParams): Promise<Omit<AccountModel, 'accessToken'>> {
       return {
         id: 'any_id',
         name: 'any_name',

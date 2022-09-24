@@ -1,5 +1,5 @@
 import { SurveyResultModel } from '@/domain/models/survey-result/survey-result'
-import { SaveSurveyResult, SaveSurveyResultModel } from '@/domain/usecases/survey-result/save-survey-result'
+import { SaveSurveyResult, SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result'
 import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id'
 import { ForbiddenError } from '@/presentation/errors'
 import { ok } from '@/presentation/helpers/http/http-helper'
@@ -13,7 +13,7 @@ export class SaveSurveyResultController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest<
-  Pick<SaveSurveyResultModel, 'answer'>,
+  Pick<SaveSurveyResultParams, 'answer'>,
   never,
   Record<'surveyId', string>>): Promise<HttpResponse<Pick<SurveyResultModel, 'answer'>>> {
     const { surveyId } = httpRequest.params

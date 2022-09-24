@@ -1,4 +1,4 @@
-import { Authentication, AuthResponse, LoginModel } from '@/domain/usecases/account/authentication'
+import { Authentication, AuthResponse, LoginParams } from '@/domain/usecases/account/authentication'
 import { UnauthorizedError } from '@/presentation/errors'
 import { ok } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
@@ -9,13 +9,13 @@ export class LoginController implements Controller {
     private readonly authentication: Authentication
   ) {}
 
-  async handle (httpRequest: HttpRequest<LoginModel>): Promise<HttpResponse<AuthResponse>> {
+  async handle (httpRequest: HttpRequest<LoginParams>): Promise<HttpResponse<AuthResponse>> {
     const { email, password } = httpRequest.body
 
     const accessToken = await this.authentication.auth({ email, password })
 
     if (!accessToken) throw new UnauthorizedError()
 
-    return ok<AuthResponse>({ accessToken })
+    return ok({ accessToken })
   }
 }

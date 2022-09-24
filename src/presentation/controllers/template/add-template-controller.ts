@@ -1,5 +1,5 @@
 import { TemplateModel } from '@/domain/models/template/template'
-import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
+import { AddTemplate, AddTemplateParams } from '@/domain/usecases/template/add-template'
 import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
 import { Controller } from '@/presentation/protocols/controller'
@@ -10,7 +10,7 @@ export class AddTemplateController implements Controller {
 
   }
 
-  async handle (httpRequest: HttpRequest<AddTemplateModel>): Promise<HttpResponse<TemplateModel>> {
+  async handle (httpRequest: HttpRequest<AddTemplateParams>): Promise<HttpResponse<TemplateModel>> {
     const newTemplate = await this.addTemplate.add({ ...httpRequest.body })
     if (newTemplate) return created(newTemplate)
     throw new AlreadyExistsError('Template', httpRequest.body.name)

@@ -1,4 +1,4 @@
-import { AddTemplateModel } from '@/domain/usecases/template/add-template'
+import { AddTemplateParams } from '@/domain/usecases/template/add-template'
 import env from '@/main/config/env'
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
@@ -6,7 +6,7 @@ import { TemplateMongoRepository } from './template-mongo-repository'
 
 const templateCollection = env.templateCollection
 
-const makeFakeTemplate = (): AddTemplateModel => ({
+const makeFakeTemplate = (): AddTemplateParams => ({
   name: 'any_name',
   text: 'any_text',
   fields: [

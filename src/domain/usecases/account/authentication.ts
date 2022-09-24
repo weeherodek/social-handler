@@ -1,12 +1,12 @@
 export interface Authentication {
-  auth: (authentication: LoginModel) => Promise<string | null>
+  auth: (authentication: LoginParams) => Promise<string | null>
 }
 
 export type AuthResponse = {
   accessToken: string
 }
 
-export type LoginModel = {
+export type LoginParams = {
   email: string
   password: string
 }
