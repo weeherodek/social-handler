@@ -59,3 +59,13 @@ export const addSurveyParamsSchema = {
     }
   }
 }
+
+export const answerSurveyParamsSchema = {
+  type: 'object',
+  properties: {
+    answer: {
+      type: 'string',
+      example: 'any_answer'
+    }
+  }
+}
