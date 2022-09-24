@@ -1,8 +1,11 @@
-import { loginPath, signupPath, surveyPath, surveyResultPath, surveysPath } from './paths'
-import { badRequestComponent, createdComponent, forbiddenComponent, internalServerErrorComponent, successComponent, unauthorizedComponent, noContentComponent } from './components'
+import { loginPath, signupPath, surveyPath, surveyResultPath, surveysPath, templatePath } from './paths'
+import {
+  badRequestComponent, createdComponent, forbiddenComponent, internalServerErrorComponent,
+  successComponent, unauthorizedComponent, noContentComponent
+} from './components'
 import {
   accessTokenSchema, loginParamsSchema, signupParamsSchema, accountSchema, surveySchema, addSurveyParamsSchema, surveyAnswerSchema, surveysSchema,
-  apiKeyAuthSchema, answerSurveyParamsSchema
+  apiKeyAuthSchema, answerSurveyParamsSchema, templateSchema, templateFieldSchema, addTemplateParamsSchema
 } from './schemas'
 
 export default {
@@ -33,6 +36,12 @@ export default {
   tags: [
     {
       name: 'Login'
+    },
+    {
+      name: 'Survey'
+    },
+    {
+      name: 'Template'
     }
   ],
   paths: {
@@ -40,7 +49,8 @@ export default {
     '/login': loginPath,
     '/survey': surveyPath,
     '/surveys': surveysPath,
-    '/surveys/{surveyId}/results': surveyResultPath
+    '/surveys/{surveyId}/results': surveyResultPath,
+    '/template': templatePath
   },
   schemas: {
     accessToken: accessTokenSchema,
@@ -48,10 +58,13 @@ export default {
     survey: surveySchema,
     surveys: surveysSchema,
     surveyAnswer: surveyAnswerSchema,
+    template: templateSchema,
+    templateField: templateFieldSchema,
     loginParams: loginParamsSchema,
     signupParams: signupParamsSchema,
     addSurveyParams: addSurveyParamsSchema,
-    answerSurveyParams: answerSurveyParamsSchema
+    answerSurveyParams: answerSurveyParamsSchema,
+    addTemplateParams: addTemplateParamsSchema
   },
   components: {
     securitySchemes: {
@@ -60,6 +73,8 @@ export default {
     accessToken: successComponent('accessToken'),
     account: createdComponent('account'),
     surveys: successComponent('surveys'),
+    template: createdComponent('template'),
+    answerSurvey: successComponent('answerSurveyParams'),
     noContent: noContentComponent(),
     badRequest: badRequestComponent,
     unauthorized: unauthorizedComponent,

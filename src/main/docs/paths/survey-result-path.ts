@@ -25,11 +25,11 @@ export const surveyResultPath = {
     },
     responses: {
       200: {
-        description: 'Load surveys',
+        description: 'Survey answered',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/surveys'
+              $ref: '#/components/answerSurvey'
             }
           }
         }
