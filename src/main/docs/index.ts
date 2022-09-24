@@ -1,4 +1,4 @@
-import { loginPath, signupPath, surveyPath, surveyResultPath, surveysPath, templatePath } from './paths'
+import { loginPath, signupPath, surveysPath, surveysResultPath, templatePath } from './paths'
 import {
   badRequestComponent, createdComponent, forbiddenComponent, internalServerErrorComponent,
   successComponent, unauthorizedComponent, noContentComponent
@@ -47,9 +47,8 @@ export default {
   paths: {
     '/signup': signupPath,
     '/login': loginPath,
-    '/survey': surveyPath,
     '/surveys': surveysPath,
-    '/surveys/{surveyId}/results': surveyResultPath,
+    '/surveys/{surveyId}/results': surveysResultPath,
     '/template': templatePath
   },
   schemas: {

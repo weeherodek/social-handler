@@ -2,9 +2,9 @@ export const templatePath = {
   post: {
     security: [{ apiKeyAuth: [] }],
     tags: ['Template'],
-    summary: 'Add a new survey',
+    summary: 'Add a new template',
     requestBody: {
-      description: 'Create new survey params',
+      description: 'Create new template params',
       required: true,
       content: {
         'application/json': {
@@ -16,7 +16,7 @@ export const templatePath = {
     },
     responses: {
       201: {
-        description: 'Survey created with success',
+        description: 'Template created with success',
         content: {
           'application/json': {
             schema: {

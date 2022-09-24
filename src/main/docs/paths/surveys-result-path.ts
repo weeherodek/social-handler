@@ -1,4 +1,4 @@
-export const surveyResultPath = {
+export const surveysResultPath = {
   put: {
     security: [{ apiKeyAuth: [] }],
     tags: ['Survey'],
