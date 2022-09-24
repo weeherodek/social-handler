@@ -2,5 +2,5 @@ import { SurveyResultMongoRepository } from '@/infra/db/mongodb/survey-result/su
 import env from '../../../../config/env'
 
 export const makeSurveyResultRepository = (): SurveyResultMongoRepository => {
-  return new SurveyResultMongoRepository(env.surveyResultCollection, env.surveyCollection, env.accountCollection)
+  return new SurveyResultMongoRepository(env.surveyResultCollection)
 }

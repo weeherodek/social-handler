@@ -50,7 +50,7 @@ const makeSurvey = async (): Promise<SurveyModel> => {
 }
 
 const makeSut = (): SurveyResultMongoRepository => {
-  const sut = new SurveyResultMongoRepository(surveyResultCollectionName, surveyCollectionName, accountCollectionName)
+  const sut = new SurveyResultMongoRepository(surveyResultCollectionName)
   return sut
 }
 
