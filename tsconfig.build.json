@@ -3,6 +3,7 @@
   "exclude": [
     "**/*.spec.ts", 
     "**/*.test.ts",
-    "src/main/server-dev.ts"
+    "src/main/server-dev.ts",
+    "src/**/test"
   ]
 }
