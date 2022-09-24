@@ -3,7 +3,6 @@ import { AddAccount, AddAccountModel } from '@/domain/usecases/account/add-acoun
 import { Authentication, LoginModel } from '@/domain/usecases/account/authentication'
 import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
-import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { SignUpController } from './signup-controller'
 
@@ -11,12 +10,11 @@ jest.useFakeTimers({
   now: new Date('2020-01-01')
 })
 
-const makeFakeRequest = (): HttpRequest => ({
+const makeFakeRequest = (): HttpRequest<AddAccountModel> => ({
   body: {
     name: 'any_text',
     email: 'any_email',
-    password: 'any_password',
-    passwordConfirmation: 'any_password'
+    password: 'any_password'
   }
 })
 
@@ -46,7 +44,7 @@ const makeAddAccount = (): AddAccount => {
 }
 
 type SutTypes = {
-  sut: Controller
+  sut: SignUpController
   addAccountStub: AddAccount
   authenticationStub: Authentication
 }

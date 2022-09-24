@@ -6,6 +6,7 @@ export default {
   messageCollection: process.env.MESSAGE_COLLECTION ?? 'messages',
   errorLogCollection: process.env.ERROR_LOG_COLLECTION ?? 'errorsLog',
   surveyCollection: process.env.SURVEY_COLLECTION ?? 'surveys',
+  surveyResultCollection: process.env.SURVEY_RESULT_COLLECTION ?? 'surveyResults',
   salt: Number(process.env.SALT) ?? 12,
   jwtSecret: process.env.JWT_SECRET ?? 'AjiuAJdijaij$iaijda@i12312CasokPS'
 }

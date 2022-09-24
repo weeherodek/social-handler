@@ -8,7 +8,11 @@ export type HttpResponse<T = any> = {
   }
 }
 
-export type HttpRequest<T = any> = {
+export type HttpRequest<T = any, Headers = never, Params = never> = {
   body: T
-  headers?: Record<string, string>
-}
+  accountId?: string
+} & HttpRequestHeader<Headers> & HttpRequestParam<Params>
+
+type HttpRequestHeader<H> = [H] extends [never] ? {} : { headers: H }
+
+type HttpRequestParam<P> = [P] extends [never] ? {} : { params: P}

@@ -10,7 +10,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
   constructor (private readonly accountCollection: string) {}
 
   async add (account: AddAccountModel): Promise<Omit<AccountModel, 'accessToken'>> {
-    const accountCollection = await MongoHelper.getCollection(this.accountCollection)
+    const accountCollection = await MongoHelper.getCollection<Omit<AccountModel, 'id' | 'accessToken'>>(this.accountCollection)
     const accountData = {
       date: new Date(),
       ...account
@@ -23,13 +23,13 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
   };
 
   async loadByEmail (email: string): Promise<AccountModel | null> {
-    const accountCollection = await MongoHelper.getCollection(this.accountCollection)
+    const accountCollection = await MongoHelper.getCollection<AccountModel>(this.accountCollection)
     const result = await accountCollection.findOne({ email })
     return await (result && MongoHelper.map(result))
   };
 
   async updateAccessToken (id: string, accessToken: string): Promise<void> {
-    const accountCollection = await MongoHelper.getCollection(this.accountCollection)
+    const accountCollection = await MongoHelper.getCollection<AccountModel>(this.accountCollection)
     await accountCollection.updateOne({
       _id: MongoHelper.mapId(id)
     }, {
@@ -40,7 +40,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
   }
 
   async loadByToken (accessToken: string, role?: string | undefined): Promise<AccountModel | null> {
-    const accountCollection = await MongoHelper.getCollection(this.accountCollection)
+    const accountCollection = await MongoHelper.getCollection<AccountModel>(this.accountCollection)
     const result = await accountCollection.findOne({
       accessToken,
       $or: [

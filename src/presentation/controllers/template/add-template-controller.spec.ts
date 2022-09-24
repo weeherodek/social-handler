@@ -2,7 +2,6 @@ import { TemplateModel } from '@/domain/models/template/template'
 import { AddTemplate, AddTemplateModel } from '@/domain/usecases/template/add-template'
 import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
-import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { AddTemplateController } from './add-template-controller'
 
@@ -52,7 +51,7 @@ const makeAddTemplate = (): AddTemplate => {
 }
 
 type SutTypes = {
-  sut: Controller
+  sut: AddTemplateController
   addTemplateStub: AddTemplate
 }
 

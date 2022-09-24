@@ -65,4 +65,11 @@ describe('DbLoadSurveys Usecase', () => {
     const promise = sut.loadAll()
     await expect(promise).rejects.toThrow(new Error('Fake Error'))
   })
+
+  test('Should return a empty array if LoadSurveysRepository return a empty array', async () => {
+    const { sut, loadSurveysRepositoryStub } = makeSut()
+    jest.spyOn(loadSurveysRepositoryStub, 'loadAll').mockResolvedValueOnce([])
+    const list = await sut.loadAll()
+    expect(list).toEqual([])
+  })
 })
