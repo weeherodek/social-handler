@@ -1,4 +1,5 @@
 import { LogErrorRepository } from '@/data/protocols/db/log/log-error-repository'
+import { mockLogErrorRepository } from '@/data/test'
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import { Controller } from '@/presentation/protocols/controller'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
@@ -22,15 +23,6 @@ const makeGenericController = (): Controller => {
   return new GenericControllerStub()
 }
 
-const makeLogErrorRepository = (): LogErrorRepository => {
-  class LogErrorRepositoryStub implements LogErrorRepository {
-    async logError (errorData: { stack: string, params: Record<any, any>, controller: string }): Promise<void> {
-      return await Promise.resolve()
-    }
-  }
-  return new LogErrorRepositoryStub()
-}
-
 type SutTypes = {
   genericControllerStub: Controller
   logErrorRepositoryStub: LogErrorRepository
@@ -39,7 +31,7 @@ type SutTypes = {
 
 const makeSut = (): SutTypes => {
   const genericControllerStub = makeGenericController()
-  const logErrorRepositoryStub = makeLogErrorRepository()
+  const logErrorRepositoryStub = mockLogErrorRepository()
   const sut = new LogHandlerDecorator(genericControllerStub, logErrorRepositoryStub)
   return {
     sut,

@@ -1,15 +1,7 @@
 import { AddSurveyRepository } from '@/data/protocols/db/survey/add-survey-repository'
+import { mockAddSurveyRepository } from '@/data/test'
 import { mockAddSurveyParams } from '@/domain/test'
 import { DbAddSurvey } from './db-add-survey'
-
-const makeAddSurveyRepository = (): AddSurveyRepository => {
-  class AddSurveyRepositoryStub implements AddSurveyRepository {
-    async add (): Promise<void> {
-      return await Promise.resolve()
-    }
-  }
-  return new AddSurveyRepositoryStub()
-}
 
 type SutTypes = {
   addSurveyRepositoryStub: AddSurveyRepository
@@ -17,7 +9,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const addSurveyRepositoryStub = makeAddSurveyRepository()
+  const addSurveyRepositoryStub = mockAddSurveyRepository()
   const sut = new DbAddSurvey(addSurveyRepositoryStub)
   return {
     sut,

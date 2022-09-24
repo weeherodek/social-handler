@@ -1,29 +1,9 @@
 import { AddTemplateRepository } from '@/data/protocols/db/template/add-template-repository'
 import { LoadTemplateByNameRepository } from '@/data/protocols/db/template/load-template-by-name-repository'
-import { TemplateModel } from '@/domain/models/template/template'
+import { mockAddTemplateRepository, mockLoadTemplateByNameRepository } from '@/data/test/'
 import { mockAddTemplateParams, mockTemplateModel } from '@/domain/test'
-import { AddTemplate, AddTemplateParams } from '@/domain/usecases/template/add-template'
+import { AddTemplate } from '@/domain/usecases/template/add-template'
 import { DbAddTemplate } from './db-add-template'
-
-const makeLoadTemplateByNameRepository = (): LoadTemplateByNameRepository => {
-  class LoadTemplateByNameRepositoryStub implements LoadTemplateByNameRepository {
-    async loadByName (name: string): Promise<TemplateModel | null> {
-      return null
-    }
-  }
-
-  return new LoadTemplateByNameRepositoryStub()
-}
-
-const makeAddTemplateRepository = (): AddTemplateRepository => {
-  class AddTemplateRepositoryStub implements AddTemplateRepository {
-    async add (template: AddTemplateParams): Promise<TemplateModel> {
-      return mockTemplateModel()
-    }
-  }
-
-  return new AddTemplateRepositoryStub()
-}
 
 type SutTypes = {
   sut: AddTemplate
@@ -32,8 +12,8 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const loadTemplateByNameRepositoryStub = makeLoadTemplateByNameRepository()
-  const addTemplateRepositoryStub = makeAddTemplateRepository()
+  const loadTemplateByNameRepositoryStub = mockLoadTemplateByNameRepository()
+  const addTemplateRepositoryStub = mockAddTemplateRepository()
   const sut = new DbAddTemplate(addTemplateRepositoryStub, loadTemplateByNameRepositoryStub)
   return {
     sut,
