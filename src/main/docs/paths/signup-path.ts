@@ -1,25 +1,25 @@
-export const loginPath = {
+export const signupPath = {
   post: {
     tags: ['Login'],
-    summary: 'User Login',
+    summary: 'User Signup',
     requestBody: {
-      description: 'Login params',
+      description: 'Signup params',
       required: true,
       content: {
         'application/json': {
           schema: {
-            $ref: '#/schemas/loginParams'
+            $ref: '#/schemas/signupParams'
           }
         }
       }
     },
     responses: {
-      200: {
-        description: 'Login with success',
+      201: {
+        description: 'User created with success',
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/accessToken'
+              $ref: '#/components/account'
             }
           }
         }

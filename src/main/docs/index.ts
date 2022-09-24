@@ -1,5 +1,6 @@
-import { loginPath } from './paths'
-import { accessTokenSchema, loginParamsSchema } from './schemas'
+import { loginPath, signupPath, surveysPath } from './paths'
+import { badRequestComponent, createdComponent, forbiddenComponent, internalServerErrorComponent, successComponent, unauthorizedComponent, noContentComponent } from './components'
+import { accessTokenSchema, loginParamsSchema, signupParamsSchema, accountSchema, surveySchema, addSurveyParamsSchema, surveyAnswerSchema, surveysSchema } from './schemas'
 
 export default {
   openapi: '3.0.0',
@@ -7,6 +8,10 @@ export default {
     title: 'Social Handler',
     description: 'API Social Handler',
     version: '1.5.1'
+  },
+  license: {
+    name: 'GPL-3.0-or-later',
+    url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
   },
   servers: [
     {
@@ -28,10 +33,28 @@ export default {
     }
   ],
   paths: {
-    '/login': loginPath
+    '/signup': signupPath,
+    '/login': loginPath,
+    '/surveys': surveysPath
   },
   schemas: {
     accessToken: accessTokenSchema,
-    loginParams: loginParamsSchema
+    account: accountSchema,
+    survey: surveySchema,
+    surveys: surveysSchema,
+    surveyAnswer: surveyAnswerSchema,
+    loginParams: loginParamsSchema,
+    signupParams: signupParamsSchema,
+    addSurveyParams: addSurveyParamsSchema
+  },
+  components: {
+    accessToken: successComponent('accessToken'),
+    account: createdComponent('account'),
+    surveys: successComponent('surveys'),
+    noContent: noContentComponent(),
+    badRequest: badRequestComponent,
+    unauthorized: unauthorizedComponent,
+    forbidden: forbiddenComponent,
+    internalServerError: internalServerErrorComponent
   }
 }

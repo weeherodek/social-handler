@@ -3,6 +3,11 @@
   "version": "1.5.1",
   "description": "API Social Handler",
   "main": "dist/main/server.js",
+  "licenses": [
+    {
+      "type": "GPL-3.0-or-later",
+       "url": "https://www.gnu.org/licenses/gpl-3.0.en.html"
+    }],
   "scripts": {
     "start": "node dist/main/server.js",
     "dev": "ts-node-dev -r tsconfig-paths/register src/main/server-dev.ts",
