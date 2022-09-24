@@ -1,21 +1,14 @@
+import { mockAddSurveyParams } from '@/domain/test'
 import { AddSurvey, AddSurveyParams } from '@/domain/usecases/survey/add-survey'
 import { noContent } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { AddSurveyController } from './add-survey-controller'
 
-const makeFakeRequest = (): HttpRequest<AddSurveyParams> => ({
-  body: {
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer'
-      }
-    ]
-  }
+const mockRequest = (): HttpRequest<AddSurveyParams> => ({
+  body: mockAddSurveyParams()
 })
 
-const makeAddSurvey = (): AddSurvey => {
+const mockAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
     async add (survey: AddSurveyParams): Promise<void> {
       return await Promise.resolve()
@@ -31,7 +24,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const addSurveyStub = makeAddSurvey()
+  const addSurveyStub = mockAddSurvey()
   const sut = new AddSurveyController(addSurveyStub)
   return {
     sut,
@@ -43,7 +36,7 @@ describe('Add Survey Controller', () => {
   test('Should call AddSurvey with correct values', async () => {
     const { sut, addSurveyStub } = makeSut()
     const spyAdd = jest.spyOn(addSurveyStub, 'add')
-    const request = makeFakeRequest()
+    const request = mockRequest()
     await sut.handle(request)
     expect(spyAdd).toHaveBeenCalledWith(request.body)
   })
@@ -51,13 +44,13 @@ describe('Add Survey Controller', () => {
   test('Should throw if addSurvey throws', async () => {
     const { sut, addSurveyStub } = makeSut()
     jest.spyOn(addSurveyStub, 'add').mockImplementation(async () => await Promise.reject(new Error('Fake Error')))
-    const promise = sut.handle(makeFakeRequest())
+    const promise = sut.handle(mockRequest())
     await expect(promise).rejects.toThrow(new Error('Fake Error'))
   })
 
   test('Should return noContent on success', async () => {
     const { sut } = makeSut()
-    const response = await sut.handle(makeFakeRequest())
+    const response = await sut.handle(mockRequest())
     expect(response).toEqual(noContent())
   })
 })

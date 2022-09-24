@@ -1,50 +1,19 @@
 import { TemplateModel } from '@/domain/models/template/template'
+import { mockAddTemplateParams, mockTemplateModel } from '@/domain/test'
 import { AddTemplate, AddTemplateParams } from '@/domain/usecases/template/add-template'
 import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
 import { AddTemplateController } from './add-template-controller'
 
-jest.useFakeTimers({
-  now: new Date('2020-01-01')
+const mockRequest = (): HttpRequest<AddTemplateParams> => ({
+  body: mockAddTemplateParams()
 })
 
-const makeFakeRequest = (): HttpRequest<AddTemplateParams> => ({
-  body: {
-    name: 'any_name',
-    text: 'any_text',
-    fields: [{
-      name: 'any_name_1',
-      required: false,
-      defaultValue: ''
-    }, {
-      name: 'any_name_2',
-      required: false,
-      defaultValue: '123'
-    }]
-  }
-})
-
-const makeAddTemplate = (): AddTemplate => {
+const mockAddTemplate = (): AddTemplate => {
   class AddTemplateStub implements AddTemplate {
     async add (template: AddTemplateParams): Promise<TemplateModel> {
-      return {
-        id: 'any_id',
-        date: new Date(),
-        name: 'any_name',
-        text: 'any_text',
-        fields: [{
-          name: 'any_name_1',
-          required: true,
-          defaultValue: ''
-        },
-        {
-          name: 'any_name_2',
-          required: false,
-          defaultValue: '123'
-        }
-        ]
-      }
+      return mockTemplateModel()
     }
   }
   return new AddTemplateStub()
@@ -56,7 +25,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const addTemplateStub = makeAddTemplate()
+  const addTemplateStub = mockAddTemplate()
   const sut = new AddTemplateController(addTemplateStub)
   return {
     sut,
@@ -68,11 +37,11 @@ describe('Template Controller', () => {
   test('Should call AddTemplate with correct values', async () => {
     const { sut, addTemplateStub } = makeSut()
     const addAccountSpy = jest.spyOn(addTemplateStub, 'add')
-    const httpRequest = makeFakeRequest()
+    const request = mockRequest()
 
-    const { name, text, fields } = httpRequest.body
+    const { name, text, fields } = request.body
 
-    await sut.handle(httpRequest)
+    await sut.handle(request)
     expect(addAccountSpy).toHaveBeenCalledWith({ name, text, fields })
   })
 
@@ -81,34 +50,24 @@ describe('Template Controller', () => {
     jest.spyOn(addTemplateStub, 'add').mockImplementationOnce(async () => {
       throw new Error()
     })
-    const httpRequest = makeFakeRequest()
+    const request = mockRequest()
 
-    const httpResponse = sut.handle(httpRequest)
+    const httpResponse = sut.handle(request)
     await expect(httpResponse).rejects.toThrow(new Error())
   })
 
   test('Should create template if correct params is provided', async () => {
     const { sut } = makeSut()
 
-    const httpRequest = makeFakeRequest()
+    const request = mockRequest()
 
-    const httpResponse = await sut.handle(httpRequest)
+    const response = await sut.handle(request)
 
-    expect(httpResponse).toEqual(created({
+    expect(response).toEqual(created({
       id: 'any_id',
-      name: 'any_name',
-      text: 'any_text',
-      fields: [{
-        name: 'any_name_1',
-        required: true,
-        defaultValue: ''
-      },
-      {
-        name: 'any_name_2',
-        required: false,
-        defaultValue: '123'
-      }
-      ],
+      name: request.body.name,
+      text: request.body.text,
+      fields: [request.body.fields[0], request.body.fields[1]],
       date: new Date()
     }))
   })
@@ -116,7 +75,7 @@ describe('Template Controller', () => {
   test('Should throw AlreadyExistsError if addTemplate returns null', async () => {
     const { sut, addTemplateStub } = makeSut()
     jest.spyOn(addTemplateStub, 'add').mockResolvedValueOnce(null)
-    const request = makeFakeRequest()
+    const request = mockRequest()
     const promise = sut.handle(request)
     await expect(promise).rejects.toThrow(new AlreadyExistsError('Template', request.body.name))
   })

@@ -1,4 +1,5 @@
 import { AccountModel } from '@/domain/models/account/account'
+import { mockAccountModel } from '@/domain/test'
 import { LoadAccountByToken } from '@/domain/usecases/account/load-account-by-token'
 import { UnauthorizedError } from '../errors'
 import { ForbiddenError } from '../errors/forbidden-error'
@@ -15,19 +16,10 @@ const makeRequestAccessToken = (): HttpRequest<{}, Record<'x-access-token', stri
   }
 }
 
-const makeFakeAccount = (): AccountModel => ({
-  id: 'any_id',
-  name: 'any_name',
-  email: 'any_email',
-  password: 'any_password',
-  accessToken: 'any_token',
-  date: new Date()
-})
-
 const makeLoadAccountByToken = (): LoadAccountByToken => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
     async load (accessToken: string): Promise<AccountModel | null> {
-      return await Promise.resolve(makeFakeAccount())
+      return await Promise.resolve(mockAccountModel())
     }
   }
 
