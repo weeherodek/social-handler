@@ -1,10 +1,8 @@
-import { SurveyResultModel } from '@/domain/models/survey-result/survey-result'
-import { SurveyModel } from '@/domain/models/survey/survey'
-import { mockSurveyModel, mockSurveyResultModel } from '@/domain/test'
 import { SaveSurveyResult, SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result'
 import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id'
 import { ForbiddenError } from '@/presentation/errors/'
 import { HttpRequest } from '@/presentation/protocols/http'
+import { mockLoadSurveyById, mockSaveSurveyResult } from '@/presentation/test/'
 import { SaveSurveyResultController } from './save-survey-result-controller'
 
 const mockRequest = (): HttpRequest<Pick<SaveSurveyResultParams, 'answer'>, never, Record<'surveyId', string>> => ({
@@ -16,25 +14,6 @@ const mockRequest = (): HttpRequest<Pick<SaveSurveyResultParams, 'answer'>, neve
   },
   accountId: 'any_account_id'
 })
-
-const mockSaveSurveyResult = (): SaveSurveyResult => {
-  class SaveSurveyResultStub implements SaveSurveyResult {
-    async saveResult (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
-      return mockSurveyResultModel()
-    }
-  }
-  return new SaveSurveyResultStub()
-}
-
-const mockLoadSurveyById = (): LoadSurveyById => {
-  class LoadSurveyByIdStub implements LoadSurveyById {
-    async loadById (id: string): Promise<SurveyModel | null> {
-      return mockSurveyModel()
-    }
-  }
-
-  return new LoadSurveyByIdStub()
-}
 
 type SutTypes = {
   saveSurveyResultStub: SaveSurveyResult

@@ -1,23 +1,14 @@
-import { TemplateModel } from '@/domain/models/template/template'
-import { mockAddTemplateParams, mockTemplateModel } from '@/domain/test'
+import { mockAddTemplateParams } from '@/domain/test'
 import { AddTemplate, AddTemplateParams } from '@/domain/usecases/template/add-template'
 import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
+import { mockAddTemplate } from '@/presentation/test'
 import { AddTemplateController } from './add-template-controller'
 
 const mockRequest = (): HttpRequest<AddTemplateParams> => ({
   body: mockAddTemplateParams()
 })
-
-const mockAddTemplate = (): AddTemplate => {
-  class AddTemplateStub implements AddTemplate {
-    async add (template: AddTemplateParams): Promise<TemplateModel> {
-      return mockTemplateModel()
-    }
-  }
-  return new AddTemplateStub()
-}
 
 type SutTypes = {
   sut: AddTemplateController

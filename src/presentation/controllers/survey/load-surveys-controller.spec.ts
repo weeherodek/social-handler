@@ -1,17 +1,8 @@
-import { SurveyModel } from '@/domain/models/survey/survey'
 import { mockSurveyModel } from '@/domain/test'
 import { LoadSurveys } from '@/domain/usecases/survey/load-surveys'
 import { noContent, ok } from '@/presentation/helpers/http/http-helper'
+import { mockLoadSurveys } from '@/presentation/test/'
 import { LoadSurveysController } from './load-surveys-controller'
-
-const mockLoadSurveys = (): LoadSurveys => {
-  class LoadSurveysStub implements LoadSurveys {
-    async loadAll (): Promise<SurveyModel[]> {
-      return [mockSurveyModel('1'), mockSurveyModel('2')]
-    }
-  }
-  return new LoadSurveysStub()
-}
 
 type SutTypes = {
   loadSurveysStub: LoadSurveys

@@ -1,34 +1,15 @@
-import { AccountModel } from '@/domain/models/account/account'
-import { mockAccountModelWithoutAccessToken, mockAddAccountParams } from '@/domain/test'
+import { mockAddAccountParams } from '@/domain/test'
 import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-acount'
-import { Authentication, LoginParams } from '@/domain/usecases/account/authentication'
+import { Authentication } from '@/domain/usecases/account/authentication'
 import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
 import { created } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
+import { mockAddAccount, mockAuthentication } from '@/presentation/test'
 import { SignUpController } from './signup-controller'
 
 const mockRequest = (): HttpRequest<AddAccountParams> => ({
   body: mockAddAccountParams()
 })
-
-const mockAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async auth (authentication: LoginParams): Promise<string> {
-      return 'any_token'
-    }
-  }
-
-  return new AuthenticationStub()
-}
-
-const mockAddAccount = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async add (account: AddAccountParams): Promise<Omit<AccountModel, 'accessToken'> | null> {
-      return mockAccountModelWithoutAccessToken()
-    }
-  }
-  return new AddAccountStub()
-}
 
 type SutTypes = {
   sut: SignUpController

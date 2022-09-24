@@ -2,21 +2,12 @@ import { mockAddSurveyParams } from '@/domain/test'
 import { AddSurvey, AddSurveyParams } from '@/domain/usecases/survey/add-survey'
 import { noContent } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
+import { mockAddSurvey } from '@/presentation/test'
 import { AddSurveyController } from './add-survey-controller'
 
 const mockRequest = (): HttpRequest<AddSurveyParams> => ({
   body: mockAddSurveyParams()
 })
-
-const mockAddSurvey = (): AddSurvey => {
-  class AddSurveyStub implements AddSurvey {
-    async add (survey: AddSurveyParams): Promise<void> {
-      return await Promise.resolve()
-    }
-  }
-
-  return new AddSurveyStub()
-}
 
 type SutTypes = {
   addSurveyStub: AddSurvey

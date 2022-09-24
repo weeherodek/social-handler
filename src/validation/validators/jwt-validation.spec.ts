@@ -1,15 +1,7 @@
 import { InvalidParamError } from '@/presentation/errors'
 import { JwtValidator } from '../protocols/jwt-validator'
+import { mockJwtValidator } from '../test'
 import { JwtValidation } from './jwt-validation'
-
-const makeJwtValidator = (): JwtValidator => {
-  class JwtValidatorStub implements JwtValidator {
-    isValid (token: string): boolean {
-      return true
-    }
-  }
-  return new JwtValidatorStub()
-}
 
 type SutTypes = {
   sut: JwtValidation
@@ -17,7 +9,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const jwtValidatorStub = makeJwtValidator()
+  const jwtValidatorStub = mockJwtValidator()
   const sut = new JwtValidation('x-access-token', jwtValidatorStub)
   return {
     sut,

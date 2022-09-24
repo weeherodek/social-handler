@@ -3,21 +3,12 @@ import { Authentication, LoginParams } from '@/domain/usecases/account/authentic
 import { UnauthorizedError } from '@/presentation/errors/unauthorized-error'
 import { ok } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest } from '@/presentation/protocols/http'
+import { mockAuthentication } from '@/presentation/test'
 import { LoginController } from './login-controller'
 
 const mockRequest = (): HttpRequest<LoginParams> => ({
   body: mockLoginParams()
 })
-
-const mockAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async auth (authentication: LoginParams): Promise<string> {
-      return 'any_token'
-    }
-  }
-
-  return new AuthenticationStub()
-}
 
 type SutTypes = {
   authenticationStub: Authentication

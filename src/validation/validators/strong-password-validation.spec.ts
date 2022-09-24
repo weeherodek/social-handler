@@ -1,15 +1,7 @@
 import { StrongPasswordError } from '@/presentation/errors/strong-password-error'
 import { StrongPasswordValidator } from '@/validation/protocols/strong-password-validator'
+import { mockStrongPasswordValidator } from '../test'
 import { StrongPasswordValidation } from './strong-password-validation'
-
-const makeStrongPasswordValidator = (): StrongPasswordValidator => {
-  class StrongPasswordValidatorStub implements StrongPasswordValidator {
-    isStrongPassword (password: string): boolean {
-      return true
-    }
-  }
-  return new StrongPasswordValidatorStub()
-}
 
 type SutTypes = {
   sut: StrongPasswordValidation
@@ -18,7 +10,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const strongPasswordValidatorStub = makeStrongPasswordValidator()
+  const strongPasswordValidatorStub = mockStrongPasswordValidator()
   const sut = new StrongPasswordValidation('password', strongPasswordValidatorStub)
   return {
     sut,
