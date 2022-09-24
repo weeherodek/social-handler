@@ -12,8 +12,9 @@
       "@/*":["*"]
     },
     "noImplicitAny": true,
-    "outDir": "dist"
+    "outDir": "dist",
   },
+  "files": ["src/main/config/custom-modules.d.ts"],
   "include": [
     "src"
   ],

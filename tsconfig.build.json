@@ -4,6 +4,7 @@
     "**/*.spec.ts", 
     "**/*.test.ts",
     "src/main/server-dev.ts",
-    "src/**/test"
+    "src/**/test",
+    "src/**/*.d.ts"
   ]
 }
