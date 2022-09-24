@@ -43,10 +43,10 @@ describe('Survey Routes', () => {
     await accountCollection.deleteMany({})
   })
 
-  describe('POST /survey', () => {
+  describe('POST /surveys', () => {
     test('Should return 401 on create survey missing x-access-token', async () => {
       await request(app)
-        .post('/api/survey')
+        .post('/api/surveys')
         .send({
           question: 'any_question',
           answers: [{
@@ -65,7 +65,7 @@ describe('Survey Routes', () => {
       const accessToken = await makeValidAcessToken()
 
       await request(app)
-        .post('/api/survey')
+        .post('/api/surveys')
         .set('x-access-token', accessToken)
         .send({
           question: 'any_question',
@@ -86,7 +86,7 @@ describe('Survey Routes', () => {
       const invalidAccessToken = sign({ id: '123' }, env.jwtSecret)
 
       await request(app)
-        .post('/api/survey')
+        .post('/api/surveys')
         .set('x-access-token', invalidAccessToken)
         .send({
           question: 'any_question',
@@ -104,7 +104,7 @@ describe('Survey Routes', () => {
 
     test('Should return 400 on create survey with broken jwt', async () => {
       await request(app)
-        .post('/api/survey')
+        .post('/api/surveys')
         .set('x-access-token', '123')
         .send({
           question: 'any_question',
