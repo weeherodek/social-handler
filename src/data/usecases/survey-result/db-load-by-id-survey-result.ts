@@ -2,7 +2,6 @@ import { LoadByIdSurveyResultRepository } from '@/data/protocols/db/survey-resul
 import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository'
 import { SurveyResultResponseModel } from '@/domain/models/survey-result/survey-result'
 import { LoadByIdSurveyResult } from '@/domain/usecases/survey-result/load-survey-result'
-import { ForbiddenError } from '@/presentation/errors'
 
 export class DbLoadByIdSurveyResult implements LoadByIdSurveyResult {
   constructor (
@@ -10,7 +9,7 @@ export class DbLoadByIdSurveyResult implements LoadByIdSurveyResult {
     private readonly loadSurveyById: LoadSurveyByIdRepository
   ) {}
 
-  async loadResult (id: string): Promise<SurveyResultResponseModel> {
+  async loadResult (id: string): Promise<SurveyResultResponseModel | null> {
     const surveyResult = await this.loadByIdSurveyResult.loadByIdSurveyResult(id)
     if (surveyResult) return surveyResult
     const survey = await this.loadSurveyById.loadById(id)
@@ -27,6 +26,6 @@ export class DbLoadByIdSurveyResult implements LoadByIdSurveyResult {
         }))
       }
     }
-    throw new ForbiddenError()
+    return null
   }
 }
