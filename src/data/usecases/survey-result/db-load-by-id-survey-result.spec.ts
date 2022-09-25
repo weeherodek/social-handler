@@ -1,7 +1,7 @@
 import { LoadByIdSurveyResultRepository } from '@/data/protocols/db/survey-result/load-by-id-survey-result-repository'
 import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository'
 import { mockLoadByIdSurveyResultRepository } from '@/data/test'
-import { mockSurveyResultResponseModel } from '@/domain/test'
+import { mockSurveyResultResponseModel, mockSurveyResultResponseModelWithNoAnswers } from '@/domain/test'
 import { ForbiddenError } from '@/presentation/errors'
 import { mockLoadSurveyById } from '@/presentation/test'
 import { DbLoadByIdSurveyResult } from './db-load-by-id-survey-result'
@@ -50,6 +50,21 @@ describe('DbLoadByIdSurveyResult Usecase', () => {
     const spyLoadById = jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById')
     await sut.loadResult('any_survey_id')
     expect(spyLoadById).toHaveBeenCalledWith('any_survey_id')
+  })
+
+  test('Should call LoadSurveyByIdRepository if LoadSurveyResultByIdRepository returns null', async () => {
+    const { sut, loadByIdSurveyResultRepositoryStub, loadSurveyByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadByIdSurveyResultRepositoryStub, 'loadByIdSurveyResult').mockResolvedValueOnce(null)
+    const spyLoadById = jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById')
+    await sut.loadResult('any_survey_id')
+    expect(spyLoadById).toHaveBeenCalledWith('any_survey_id')
+  })
+
+  test('Should return percent 0 and count 0 on all answers if LoadSurveyResultByIdRepository returns null', async () => {
+    const { sut, loadByIdSurveyResultRepositoryStub } = makeSut()
+    jest.spyOn(loadByIdSurveyResultRepositoryStub, 'loadByIdSurveyResult').mockResolvedValueOnce(null)
+    const surveyResult = await sut.loadResult('any_survey_id')
+    expect(surveyResult).toEqual(mockSurveyResultResponseModelWithNoAnswers())
   })
 
   test('Should return ForbiddenError if LoadSurveyByIdRepository returns null', async () => {

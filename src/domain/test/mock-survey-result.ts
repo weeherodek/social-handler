@@ -28,6 +28,24 @@ export const mockSurveyResultResponseModel = (): SurveyResultResponseModel => ({
   date: new Date()
 })
 
+export const mockSurveyResultResponseModelWithNoAnswers = (): SurveyResultResponseModel => ({
+  surveyId: 'any_survey_id',
+  question: 'any_question',
+  date: new Date(),
+  answers: [{
+    answer: 'any_answer_1',
+    image: 'any_image_1',
+    percent: 0,
+    count: 0
+  },
+  {
+    answer: 'any_answer_2',
+    image: 'any_image_2',
+    percent: 0,
+    count: 0
+  }]
+})
+
 export const mockSaveSurveyResultParams = (): SaveSurveyResultParams => ({
   accountId: 'any_account_id',
   answer: 'any_answer',
