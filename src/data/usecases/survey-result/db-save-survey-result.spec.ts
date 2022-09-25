@@ -1,6 +1,6 @@
 import { SaveSurveyResultRepository } from '@/data/protocols/db/survey-result/save-survey-result-repository'
 import { mockSaveSurveyResultRepository } from '@/data/test'
-import { mockSaveSurveyResultParams, mockSurveyResultModel } from '@/domain/test'
+import { mockSaveSurveyResultParams, mockSaveSurveyResultResponse } from '@/domain/test'
 import { DbSaveSurveyResult } from './db-save-survey-result'
 
 type SutTypes = {
@@ -36,6 +36,6 @@ describe('DbSaveSurveyResult Usecase', () => {
   test('Should return a SurveyResult', async () => {
     const { sut } = makeSut()
     const surveyResult = await sut.saveResult(mockSaveSurveyResultParams())
-    expect(surveyResult).toEqual(mockSurveyResultModel())
+    expect(surveyResult).toEqual(mockSaveSurveyResultResponse())
   })
 })

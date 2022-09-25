@@ -2,7 +2,7 @@ import { AccountModel } from '@/domain/models/account/account'
 import { SurveyModel } from '@/domain/models/survey/survey'
 import { mockAccountModel, mockSurveyModel } from '@/domain/test'
 import env from '@/main/config/env'
-import { Collection } from 'mongodb'
+import { Collection, ObjectId } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository'
 
@@ -15,19 +15,15 @@ let surveyResultCollection: Collection
 let accountCollection: Collection
 
 const makeAccount = async (): Promise<AccountModel> => {
-  const { insertedId } = await surveysCollection.insertOne(mockAccountModel())
-  return {
-    ...mockAccountModel(),
-    id: insertedId.toString()
-  }
+  const account = mockAccountModel()
+  const { insertedId } = await surveysCollection.insertOne(account)
+  return mockAccountModel(insertedId.toString())
 }
 
 const makeSurvey = async (): Promise<SurveyModel> => {
-  const { insertedId } = await surveysCollection.insertOne(mockSurveyModel())
-  return {
-    ...mockSurveyModel(),
-    id: insertedId.toString()
-  }
+  const survey = mockSurveyModel()
+  const { insertedId } = await surveysCollection.insertOne(survey)
+  return mockSurveyModel(insertedId.toString())
 }
 
 const makeSut = (): SurveyResultMongoRepository => {
@@ -65,9 +61,10 @@ describe('Survey Result Mongo Repository', () => {
         answer
       })
       expect(surveyResult).toBeDefined()
-      expect(surveyResult.id).toBeDefined()
       expect(surveyResult).not.toHaveProperty('_id')
-      expect(surveyResult.answer).toBe(answer)
+      expect(surveyResult.surveyId).toBe(survey.id)
+      expect(surveyResult.answers[0].count).toBe(1)
+      expect(surveyResult.answers[0].percent).toBe(100)
     })
 
     test('Should update a survey result if its not new', async () => {
@@ -75,10 +72,10 @@ describe('Survey Result Mongo Repository', () => {
       const survey = await makeSurvey()
       const account = await makeAccount()
       const answerOne = survey.answers[0].answer
-      const answerTwo = survey.answers[0].answer
-      const res = await surveyResultCollection.insertOne({
-        accountId: account.id,
-        surveyId: survey.id,
+      const answerTwo = survey.answers[1].answer
+      await surveyResultCollection.insertOne({
+        accountId: new ObjectId(account.id),
+        surveyId: new ObjectId(survey.id),
         answer: answerOne,
         date: new Date()
       })
@@ -88,9 +85,10 @@ describe('Survey Result Mongo Repository', () => {
         answer: answerTwo
       })
       expect(surveyResult).toBeDefined()
-      expect(surveyResult.id).toEqual(res.insertedId.toString())
       expect(surveyResult).not.toHaveProperty('_id')
-      expect(surveyResult.answer).toBe(answerTwo)
+      expect(surveyResult.surveyId).toBe(survey.id)
+      expect(surveyResult.answers[0].count).toBe(1)
+      expect(surveyResult.answers[0].percent).toBe(100)
     })
   })
 })
