@@ -1,5 +1,4 @@
-import { SurveyResultModel } from '@/domain/models/survey-result/survey-result'
-import { SaveSurveyResult, SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result'
+import { SaveSurveyResult, SaveSurveyResultParams, SaveSurveyResultResponse } from '@/domain/usecases/survey-result/save-survey-result'
 import { LoadSurveyById } from '@/domain/usecases/survey/load-survey-by-id'
 import { ForbiddenError } from '@/presentation/errors'
 import { ok } from '@/presentation/helpers/http/http-helper'
@@ -15,7 +14,7 @@ export class SaveSurveyResultController implements Controller {
   async handle (httpRequest: HttpRequest<
   Pick<SaveSurveyResultParams, 'answer'>,
   never,
-  Record<'surveyId', string>>): Promise<HttpResponse<Pick<SurveyResultModel, 'answer'>>> {
+  Record<'surveyId', string>>): Promise<HttpResponse<SaveSurveyResultResponse>> {
     const { surveyId } = httpRequest.params
     const { answer } = httpRequest.body
     const accountId = httpRequest.accountId as string
@@ -27,9 +26,9 @@ export class SaveSurveyResultController implements Controller {
     if (!validAnswer) {
       throw new ForbiddenError()
     }
-    await this.saveSurveyResult.saveResult({
+    const result = await this.saveSurveyResult.saveResult({
       accountId, answer, surveyId
     })
-    return ok({ answer })
+    return ok(result)
   }
 }
