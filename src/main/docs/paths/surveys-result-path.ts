@@ -29,7 +29,7 @@ export const surveysResultPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/answerSurvey'
+              $ref: '#/components/answerSurveyResult'
             }
           }
         }

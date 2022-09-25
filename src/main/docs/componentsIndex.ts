@@ -13,6 +13,7 @@ export default {
   surveys: successComponent('surveys'),
   template: createdComponent('template'),
   answerSurvey: successComponent('answerSurveyParams'),
+  answerSurveyResult: successComponent('answerSurveyResult'),
   noContent: noContentComponent(),
   badRequest: badRequestComponent,
   unauthorized: unauthorizedComponent,

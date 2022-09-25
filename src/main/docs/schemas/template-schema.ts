@@ -20,7 +20,8 @@ export const templateSchema = {
       }
     },
     date: {
-      type: 'date',
+      type: 'string',
+      format: 'date',
       example: '2022-01-01T10:05:28.877Z'
     }
   }

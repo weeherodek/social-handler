@@ -69,3 +69,47 @@ export const answerSurveyParamsSchema = {
     }
   }
 }
+
+export const answerSurveyResultResponse = {
+  type: 'object',
+  properties: {
+    surveyId: {
+      type: 'string',
+      example: 'any_id'
+    },
+    question: {
+      type: 'string',
+      example: 'any_question'
+    },
+    date: {
+      type: 'string',
+      format: 'date',
+      example: '2022-01-01T10:05:28.877Z'
+    },
+    answers: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          answer: {
+            type: 'string',
+            example: 'any_answer'
+          },
+          image: {
+            type: 'string',
+            example: 'any_image'
+          },
+          count: {
+            type: 'integer',
+            example: 1
+          },
+          percent: {
+            type: 'number',
+            format: 'double',
+            example: 100.00
+          }
+        }
+      }
+    }
+  }
+}
