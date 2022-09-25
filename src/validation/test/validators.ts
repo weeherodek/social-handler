@@ -1,6 +1,7 @@
 import { Validation } from '@/presentation/protocols/validation'
 import { EmailValidator } from '../protocols/email-validator'
 import { JwtValidator } from '../protocols/jwt-validator'
+import { MongoIdValidator } from '../protocols/mongo-id-validator'
 import { StrongPasswordValidator } from '../protocols/strong-password-validator'
 
 export const mockEmailValidator = (): EmailValidator => {
@@ -28,6 +29,15 @@ export const mockStrongPasswordValidator = (): StrongPasswordValidator => {
     }
   }
   return new StrongPasswordValidatorStub()
+}
+
+export const mockMongoIdValidator = (): MongoIdValidator => {
+  class MongoIdValidatorStub implements MongoIdValidator {
+    isMongoId (id: string): boolean {
+      return true
+    }
+  }
+  return new MongoIdValidatorStub()
 }
 
 export const mockValidation = (): Validation => {
