@@ -2,7 +2,6 @@ import { LoadByIdSurveyResultRepository } from '@/data/protocols/db/survey-resul
 import { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository'
 import { mockLoadByIdSurveyResultRepository } from '@/data/test'
 import { mockSurveyResultResponseModel, mockSurveyResultResponseModelWithNoAnswers } from '@/domain/test'
-import { ForbiddenError } from '@/presentation/errors'
 import { mockLoadSurveyById } from '@/presentation/test'
 import { DbLoadByIdSurveyResult } from './db-load-by-id-survey-result'
 
@@ -67,12 +66,12 @@ describe('DbLoadByIdSurveyResult Usecase', () => {
     expect(surveyResult).toEqual(mockSurveyResultResponseModelWithNoAnswers())
   })
 
-  test('Should return ForbiddenError if LoadSurveyByIdRepository returns null', async () => {
+  test('Should return null if LoadSurveyByIdRepository returns null', async () => {
     const { sut, loadByIdSurveyResultRepositoryStub, loadSurveyByIdRepositoryStub } = makeSut()
     jest.spyOn(loadByIdSurveyResultRepositoryStub, 'loadByIdSurveyResult').mockResolvedValueOnce(null)
     jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById').mockResolvedValueOnce(null)
-    const promise = sut.loadResult('any_survey_id')
-    await expect(promise).rejects.toThrow(new ForbiddenError())
+    const surveyResult = await sut.loadResult('any_survey_id')
+    expect(surveyResult).toBeNull()
   })
 
   test('Should throw if DbLoadByIdSurveyResultRepository throws', async () => {
