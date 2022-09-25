@@ -1,14 +1,14 @@
 import { RequiredFieldValidation, TypeofValidation, ValidationComposite } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols/validation'
-import { makeSaveSurveyResultValidation } from './save-survey-result-validation-factory'
+import { makeLoadByIdSurveyResultValidation } from './load-by-id-survey-result-validation-factory'
 
 jest.mock('@/validation/validators/validation-composite')
 
-describe('SaveSurveyResultValidation Factory', () => {
+describe('LoadByIdSurveyResultValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
-    makeSaveSurveyResultValidation()
+    makeLoadByIdSurveyResultValidation()
     const validations: Validation[] = []
-    for (const field of ['answer']) {
+    for (const field of ['surveyId']) {
       validations.push(new RequiredFieldValidation(field))
       validations.push(new TypeofValidation(field, 'string'))
     }

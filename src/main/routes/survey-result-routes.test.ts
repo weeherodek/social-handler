@@ -72,4 +72,30 @@ describe('Survey Result Routes', () => {
         .expect(200)
     })
   })
+
+  describe('GET /surveys/:surveyId/results', () => {
+    test('Should return 401 on get survey result missing x-access-token', async () => {
+      await request(app)
+        .get('/api/surveys/123/results')
+        .expect(401)
+    })
+
+    test('Should return 200 on get survey result with valid x-access-token', async () => {
+      const accessToken = await makeValidAcessToken()
+      const insertedSurvey = await surveyCollection.insertOne({
+        question: 'Question',
+        answers: [{
+          answer: 'Answer 1'
+        }, {
+          answer: 'Answer 2'
+        }],
+        date: new Date()
+      })
+      const surveyId = insertedSurvey.insertedId.toString()
+      await request(app)
+        .get(`/api/surveys/${surveyId}/results`)
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
+  })
 })
