@@ -11,6 +11,7 @@ export const mockSurveyResultModel = (id = 'any_id'): SurveyResultModel => ({
 
 export const mockSurveyResultResponseModel = (): SurveyResultResponseModel => ({
   surveyId: 'any_survey_id',
+  question: 'any_question',
   answers: [{
     answer: 'any_answer',
     count: 1,

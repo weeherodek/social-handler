@@ -2,5 +2,6 @@ import { DbSaveSurveyResult } from '@/data/usecases/survey-result/db-save-survey
 import { makeSurveyResultRepository } from '../../adapters/db/survey-result/db-survey-result-repository-factory'
 
 export const makeSaveSurveyResult = (): DbSaveSurveyResult => {
-  return new DbSaveSurveyResult(makeSurveyResultRepository())
+  const surveyResultRepository = makeSurveyResultRepository()
+  return new DbSaveSurveyResult(surveyResultRepository, surveyResultRepository)
 }

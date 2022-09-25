@@ -8,6 +8,7 @@ export type SurveyResultModel = {
 
 export type SurveyResultResponseModel = {
   surveyId: string
+  question: string
   answers: SurveyResultAnswerModel[]
   date: Date
 }
