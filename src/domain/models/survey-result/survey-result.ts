@@ -5,3 +5,16 @@ export type SurveyResultModel = {
   answer: string
   date: Date
 }
+
+export type SurveyResultResponseModel = {
+  surveyId: string
+  answers: SurveyResultAnswerModel[]
+  date: Date
+}
+
+type SurveyResultAnswerModel = {
+  image?: string
+  answer: string
+  count: number
+  percent: number
+}
