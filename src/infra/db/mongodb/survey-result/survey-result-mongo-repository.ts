@@ -1,6 +1,6 @@
 import { LoadByIdSurveyResultRepository } from '@/data/protocols/db/survey-result/load-by-id-survey-result-repository'
 import { SaveSurveyResultRepository } from '@/data/protocols/db/survey-result/save-survey-result-repository'
-import { SurveyResultResponseModel } from '@/domain/models/survey-result/survey-result'
+import { SurveyResultModel, SurveyResultResponseModel } from '@/domain/models/survey-result/survey-result'
 import { SaveSurveyResultParams } from '@/domain/usecases/survey-result/save-survey-result'
 import { ObjectId } from 'mongodb'
 import { MongoHelper, MongoQueryBuilder } from '../helpers/'
@@ -11,9 +11,9 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
     private readonly surveyResultCollection: string
   ) {}
 
-  async saveResult (data: SaveSurveyResultParams): Promise<SurveyResultResponseModel> {
+  async saveResult (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
     const surveyResultCollection = await MongoHelper.getCollection<SurveyResultModelMongo>(this.surveyResultCollection)
-    await surveyResultCollection.findOneAndUpdate({
+    const surveyResult = await surveyResultCollection.findOneAndUpdate({
       surveyId: new ObjectId(data.surveyId),
       accountId: new ObjectId(data.accountId)
     },
@@ -23,11 +23,18 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
         date: new Date()
       }
     }, {
-      upsert: true
+      upsert: true,
+      returnDocument: 'after'
     })
 
-    const surveyResult = await this.loadByIdSurveyResult(data.surveyId)
-    return surveyResult
+    const value = surveyResult.value as SurveyResultModelMongo
+    const valueWithoutObjectId = MongoHelper.map<SurveyResultModel>(surveyResult.value as SurveyResultModelMongo)
+    return {
+      ...valueWithoutObjectId,
+      id: value._id.toString(),
+      accountId: value.accountId.toString(),
+      surveyId: value.surveyId.toString()
+    }
   }
 
   async loadByIdSurveyResult (surveyId: string): Promise<SurveyResultResponseModel> {

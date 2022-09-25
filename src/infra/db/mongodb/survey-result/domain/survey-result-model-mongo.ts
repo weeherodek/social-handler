@@ -2,9 +2,10 @@ import { SurveyResultModel, SurveyResultResponseModel } from '@/domain/models/su
 import { ObjectId } from 'mongodb'
 
 export type SurveyResultModelMongo = {
+  _id: ObjectId
   accountId: ObjectId
   surveyId: ObjectId
-} & Omit<SurveyResultModel, 'accountId' | 'surveyId'>
+} & Omit<SurveyResultModel, 'accountId' | 'surveyId' | 'id'>
 
 export type SurveyResultResponseMongo = {
   surveyId: ObjectId
