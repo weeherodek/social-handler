@@ -1,6 +1,7 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { mockAccountModel, mockAccountModelWithoutAccessToken } from '@/domain/test'
 import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-acount'
+import { AddPhoneNumberAccount, AddPhoneNumberAccountParams } from '@/domain/usecases/account/add-phone-number-account'
 import { Authentication, LoginParams } from '@/domain/usecases/account/authentication'
 import { LoadAccountByToken } from '@/domain/usecases/account/load-account-by-token'
 
@@ -31,4 +32,13 @@ export const mockLoadAccountByToken = (): LoadAccountByToken => {
   }
 
   return new LoadAccountByTokenStub()
+}
+
+export const mockAddPhoneNumberAccount = (): AddPhoneNumberAccount => {
+  class AddPhoneNumberAccountStub implements AddPhoneNumberAccount {
+    async addPhoneNumber (data: AddPhoneNumberAccountParams): Promise<void> {
+      return await Promise.resolve()
+    }
+  }
+  return new AddPhoneNumberAccountStub()
 }
