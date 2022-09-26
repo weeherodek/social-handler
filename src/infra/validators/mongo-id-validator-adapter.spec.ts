@@ -12,7 +12,7 @@ const makeSut = (): MongoIdValidator => {
   return new MongoIdValidatorAdapter()
 }
 
-describe('JwtValidator Adapter', () => {
+describe('MongoIdValidator Adapter', () => {
   test('Should return false if validator returns false', () => {
     const sut = makeSut()
     jest.spyOn(validator, 'isMongoId').mockReturnValueOnce(false)
@@ -28,8 +28,8 @@ describe('JwtValidator Adapter', () => {
 
   test('Should call validator with correct id', () => {
     const sut = makeSut()
-    const isJwtSpy = jest.spyOn(validator, 'isMongoId')
+    const spyIsMongoId = jest.spyOn(validator, 'isMongoId')
     sut.isMongoId('any_id')
-    expect(isJwtSpy).toHaveBeenCalledWith('any_id')
+    expect(spyIsMongoId).toHaveBeenCalledWith('any_id')
   })
 })
