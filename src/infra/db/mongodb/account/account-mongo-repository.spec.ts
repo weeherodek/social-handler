@@ -148,4 +148,34 @@ describe('Account Mongo Repository', () => {
       expect(result).toBeNull()
     })
   })
+
+  describe('addPhoneNumber()', () => {
+    test('Should insert phone number on array', async () => {
+      const account = await collectionAccounts.insertOne(mockAddAccountParams())
+      const accountId = account.insertedId.toString()
+      const sut = makeSut()
+      await sut.addPhoneNumber({ accountId, phoneNumber: 'any_phone_number' })
+      const res = await collectionAccounts.find({ _id: account.insertedId }).toArray()
+      expect(res.length).toBe(1)
+      expect(res[0].phoneNumbers[0].number).toBe('any_phone_number')
+    })
+
+    test('Should add phone number on array if already has phone number', async () => {
+      const account = await collectionAccounts.insertOne(
+        {
+          ...mockAddAccountParams(),
+          phoneNumbers: [{
+            number: 'any_phone_number_1',
+            date: new Date()
+          }]
+        })
+      const accountId = account.insertedId.toString()
+      const sut = makeSut()
+      await sut.addPhoneNumber({ accountId, phoneNumber: 'any_phone_number_2' })
+      const res = await collectionAccounts.find({ _id: account.insertedId }).toArray()
+      expect(res.length).toBe(1)
+      expect(res[0].phoneNumbers[0].number).toBe('any_phone_number_1')
+      expect(res[0].phoneNumbers[1].number).toBe('any_phone_number_2')
+    })
+  })
 })
