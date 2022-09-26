@@ -1,6 +1,6 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { mockAccountModel, mockAccountModelWithoutAccessToken } from '@/domain/test'
-import { AddPhoneNumberAccountParams } from '@/domain/usecases/account/add-account-number'
+import { AddPhoneNumberAccountParams } from '@/domain/usecases/account/add-phone-number-account'
 import { AddAccountParams } from '@/domain/usecases/account/add-acount'
 import { AddAccountRepository } from '../protocols/db/account/add-account-repository'
 import { AddPhoneNumberAccountRepository } from '../protocols/db/account/add-phone-number-account-repository'

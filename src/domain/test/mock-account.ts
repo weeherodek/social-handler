@@ -1,5 +1,5 @@
 import { AccountModel } from '../models/account/account'
-import { AddPhoneNumberAccountParams } from '../usecases/account/add-account-number'
+import { AddPhoneNumberAccountParams } from '../usecases/account/add-phone-number-account'
 import { AddAccountParams } from '../usecases/account/add-acount'
 import { LoginParams } from '../usecases/account/authentication'
 

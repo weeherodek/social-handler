@@ -1,12 +1,17 @@
 import { AddAccountRepository } from '@/data/protocols/db/account/add-account-repository'
+import { AddPhoneNumberAccountRepository } from '@/data/protocols/db/account/add-phone-number-account-repository'
 import { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-account-by-email-repository'
 import { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository'
 import { UpdateAcessTokenRepository } from '@/data/protocols/db/account/update-access-token-repository'
 import { AccountModel } from '@/domain/models/account/account'
+import { AddPhoneNumberAccountParams } from '@/domain/usecases/account/add-phone-number-account'
 import { AddAccountParams } from '@/domain/usecases/account/add-acount'
+import { ObjectId } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
+import { AccountModelMongo } from './domain/account-model-mongo'
 
-export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAcessTokenRepository, LoadAccountByTokenRepository {
+export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository,
+UpdateAcessTokenRepository, LoadAccountByTokenRepository, AddPhoneNumberAccountRepository {
   constructor (private readonly accountCollection: string) {}
 
   async add (account: AddAccountParams): Promise<Omit<AccountModel, 'accessToken'>> {
@@ -51,5 +56,19 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
         }]
     })
     return await (result && MongoHelper.map(result))
+  }
+
+  async addPhoneNumber (account: AddPhoneNumberAccountParams): Promise<void> {
+    const accountCollection = await MongoHelper.getCollection<AccountModelMongo>(this.accountCollection)
+    await accountCollection.findOneAndUpdate({
+      _id: new ObjectId(account.accountId)
+    }, {
+      $push: {
+        phoneNumbers: {
+          number: account.phoneNumber,
+          date: new Date()
+        }
+      }
+    })
   }
 }
