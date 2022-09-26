@@ -2,6 +2,7 @@ import { Validation } from '@/presentation/protocols/validation'
 import { EmailValidator } from '../protocols/email-validator'
 import { JwtValidator } from '../protocols/jwt-validator'
 import { MongoIdValidator } from '../protocols/mongo-id-validator'
+import { PhoneNumberValidator } from '../protocols/phone-number-validator'
 import { StrongPasswordValidator } from '../protocols/strong-password-validator'
 
 export const mockEmailValidator = (): EmailValidator => {
@@ -38,6 +39,15 @@ export const mockMongoIdValidator = (): MongoIdValidator => {
     }
   }
   return new MongoIdValidatorStub()
+}
+
+export const mockPhoneNumberValidator = (): PhoneNumberValidator => {
+  class PhoneNumberValidatorStub implements PhoneNumberValidator {
+    isPhoneNumber (phoneNumber: string): boolean {
+      return true
+    }
+  }
+  return new PhoneNumberValidatorStub()
 }
 
 export const mockValidation = (): Validation => {
