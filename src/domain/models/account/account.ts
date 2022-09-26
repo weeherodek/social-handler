@@ -5,4 +5,10 @@ export type AccountModel = {
   name: string
   email: string
   password: string
+  phoneNumbers?: phoneNumber[]
+}
+
+export type phoneNumber = {
+  number: string
+  date: Date
 }

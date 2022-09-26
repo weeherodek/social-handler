@@ -1,7 +1,9 @@
 import { AccountModel } from '@/domain/models/account/account'
 import { mockAccountModel, mockAccountModelWithoutAccessToken } from '@/domain/test'
+import { AddPhoneNumberAccountParams } from '@/domain/usecases/account/add-account-number'
 import { AddAccountParams } from '@/domain/usecases/account/add-acount'
 import { AddAccountRepository } from '../protocols/db/account/add-account-repository'
+import { AddPhoneNumberAccountRepository } from '../protocols/db/account/add-phone-number-account-repository'
 import { LoadAccountByEmailRepository } from '../protocols/db/account/load-account-by-email-repository'
 import { LoadAccountByTokenRepository } from '../protocols/db/account/load-account-by-token-repository'
 import { UpdateAcessTokenRepository } from '../protocols/db/account/update-access-token-repository'
@@ -38,4 +40,13 @@ export const mockLoadAccountByTokenRepository = (): LoadAccountByTokenRepository
     }
   }
   return new LoadAccountByTokenRepositoryStub()
+}
+
+export const mockAddPhoneNumberAccountRepository = (): AddPhoneNumberAccountRepository => {
+  class AddPhoneNumberAccountRepositoryStub implements AddPhoneNumberAccountRepository {
+    async addPhoneNumber (account: AddPhoneNumberAccountParams): Promise<void> {
+      return await Promise.resolve()
+    }
+  }
+  return new AddPhoneNumberAccountRepositoryStub()
 }

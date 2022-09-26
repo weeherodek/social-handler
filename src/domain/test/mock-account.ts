@@ -1,4 +1,5 @@
 import { AccountModel } from '../models/account/account'
+import { AddPhoneNumberAccountParams } from '../usecases/account/add-account-number'
 import { AddAccountParams } from '../usecases/account/add-acount'
 import { LoginParams } from '../usecases/account/authentication'
 
@@ -28,4 +29,9 @@ export const mockAddAccountParams = (): AddAccountParams => ({
 export const mockLoginParams = (): LoginParams => ({
   email: 'any_email@mail.com',
   password: 'any_password'
+})
+
+export const mockAddPhoneNumberAccountParams = (): AddPhoneNumberAccountParams => ({
+  accountId: 'any_account_id',
+  phoneNumber: 'any_phone_number'
 })
