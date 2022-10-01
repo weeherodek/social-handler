@@ -71,8 +71,8 @@ describe('Db Authentication UseCase', () => {
   test('Should return null if HashComparer returns false', async () => {
     const { sut, hashComparerStub } = makeSut()
     jest.spyOn(hashComparerStub, 'compare').mockResolvedValueOnce(false)
-    const accessToken = await sut.auth(mockLoginParams())
-    expect(accessToken).toBeNull()
+    const authResponse = await sut.auth(mockLoginParams())
+    expect(authResponse).toBeNull()
   })
 
   test('Should call Encrypter with correct id', async () => {
@@ -93,8 +93,8 @@ describe('Db Authentication UseCase', () => {
 
   test('Should return a token', async () => {
     const { sut } = makeSut()
-    const accessToken = await sut.auth(mockLoginParams())
-    expect(accessToken).toBe('encrypted_value')
+    const authResponse = await sut.auth(mockLoginParams())
+    expect(authResponse).toEqual({ accessToken: 'encrypted_value', name: 'any_name' })
   })
 
   test('Should call UpdateAcessTokenRepository with correct values', async () => {

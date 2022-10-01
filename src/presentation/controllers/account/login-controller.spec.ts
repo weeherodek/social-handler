@@ -1,4 +1,4 @@
-import { mockLoginParams } from '@/domain/test'
+import { mockAuthResponse, mockLoginParams } from '@/domain/test'
 import { Authentication, LoginParams } from '@/domain/usecases/account/authentication'
 import { UnauthorizedError } from '@/presentation/errors/unauthorized-error'
 import { ok } from '@/presentation/helpers/http/http-helper'
@@ -50,6 +50,6 @@ describe('Login Controller', () => {
   test('Should return the access token', async () => {
     const { sut } = makeSut()
     const response = await sut.handle(mockRequest())
-    expect(response).toEqual(ok({ accessToken: 'any_token' }))
+    expect(response).toEqual(ok(mockAuthResponse()))
   })
 })

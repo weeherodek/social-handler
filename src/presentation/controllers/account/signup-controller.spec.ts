@@ -1,4 +1,4 @@
-import { mockAddAccountParams } from '@/domain/test'
+import { mockAccountModel, mockAddAccountParams } from '@/domain/test'
 import { AddAccount, AddAccountParams } from '@/domain/usecases/account/add-acount'
 import { Authentication } from '@/domain/usecases/account/authentication'
 import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
@@ -51,14 +51,7 @@ describe('Template Controller', () => {
     const { sut } = makeSut()
     const request = mockRequest()
     const response = await sut.handle(request)
-    expect(response).toEqual(created({
-      id: 'any_id',
-      name: request.body.name,
-      email: request.body.email,
-      password: request.body.password,
-      date: new Date(),
-      accessToken: 'any_token'
-    }))
+    expect(response).toEqual(created(mockAccountModel()))
   })
 
   test('Should throw UserAlreadyExists if AddAccount returns null', async () => {
