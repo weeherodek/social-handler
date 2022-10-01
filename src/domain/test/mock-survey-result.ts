@@ -16,12 +16,14 @@ export const mockSurveyResultResponseModel = (): SurveyResultResponseModel => ({
     answer: 'any_answer',
     count: 1,
     percent: 50,
+    isCurrentAnswer: true,
     image: 'any_image'
   },
   {
     answer: 'any_answer_2',
     count: 2,
     percent: 50,
+    isCurrentAnswer: true,
     image: 'any_image'
   }
   ],
@@ -36,11 +38,13 @@ export const mockSurveyResultResponseModelWithNoAnswers = (): SurveyResultRespon
     answer: 'any_answer_1',
     image: 'any_image_1',
     percent: 0,
+    isCurrentAnswer: false,
     count: 0
   },
   {
     answer: 'any_answer_2',
     image: 'any_image_2',
+    isCurrentAnswer: false,
     percent: 0,
     count: 0
   }]

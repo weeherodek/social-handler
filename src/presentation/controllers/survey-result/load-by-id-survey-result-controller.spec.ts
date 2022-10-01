@@ -6,11 +6,12 @@ import { HttpRequest } from '@/presentation/protocols/http'
 import { mockLoadByIdSurveyResult } from '@/presentation/test'
 import { LoadByIdSurveyResultController } from './load-by-id-survey-result-controller'
 
-const mockRequest = (): HttpRequest<any, never, Record<'surveyId', string>> => ({
+const mockRequest = (): HttpRequest<{}, never, Record<'surveyId', string>> => ({
   body: {},
   params: {
     surveyId: 'any_survey_id'
-  }
+  },
+  accountId: 'any_account_id'
 })
 
 type SutTypes = {
@@ -31,8 +32,9 @@ describe('Load By Id Survey Result Controller', () => {
   test('Should call LoadByIdSurveyResult with correct value', async () => {
     const { sut, loadByIdSurveyResultStub } = makeSut()
     const spyLoadById = jest.spyOn(loadByIdSurveyResultStub, 'loadResult')
-    await sut.handle(mockRequest())
-    expect(spyLoadById).toHaveBeenCalledWith('any_survey_id')
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(spyLoadById).toHaveBeenCalledWith(request.params.surveyId, request.accountId)
   })
 
   test('Should return ForbiddenError if LoadByIdSurveyResult returns null', async () => {
