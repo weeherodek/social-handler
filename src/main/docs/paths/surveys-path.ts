@@ -1,5 +1,6 @@
 export const surveysPath = {
   get: {
+    security: [{ apiKeyAuth: [] }],
     tags: ['Survey'],
     summary: 'List all Surveys',
     responses: {
@@ -8,7 +9,7 @@ export const surveysPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/account'
+              $ref: '#/components/surveys'
             }
           }
         }

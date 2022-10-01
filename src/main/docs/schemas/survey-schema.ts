@@ -15,6 +15,10 @@ export const surveySchema = {
         $ref: '#/schemas/surveyAnswer'
       }
     },
+    didAnswer: {
+      type: 'boolean',
+      example: true
+    },
     date: {
       type: 'date',
       example: '2022-01-01T10:05:28.877Z'
