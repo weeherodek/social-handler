@@ -1,9 +1,13 @@
-export const accessTokenSchema = {
+export const loginSchema = {
   type: 'object',
   properties: {
     accessToken: {
       type: 'string',
       example: 'any_token'
+    },
+    name: {
+      type: 'string',
+      example: 'any_name'
     }
   }
 }

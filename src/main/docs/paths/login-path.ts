@@ -19,7 +19,7 @@ export const loginPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/accessToken'
+              $ref: '#/components/login'
             }
           }
         }

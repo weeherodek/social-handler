@@ -8,7 +8,7 @@ export default {
   securitySchemes: {
     apiKeyAuth: apiKeyAuthSchema
   },
-  accessToken: successComponent('accessToken'),
+  login: successComponent('login'),
   account: createdComponent('account'),
   surveys: successComponent('surveys'),
   template: createdComponent('template'),
