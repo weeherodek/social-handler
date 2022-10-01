@@ -16,7 +16,7 @@ let accountCollection: Collection
 
 const makeAccount = async (): Promise<AccountModel> => {
   const account = mockAccountModel()
-  const { insertedId } = await surveysCollection.insertOne(account)
+  const { insertedId } = await accountCollection.insertOne(account)
   return mockAccountModel(insertedId.toString())
 }
 
