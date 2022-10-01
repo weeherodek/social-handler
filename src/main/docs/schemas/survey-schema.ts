@@ -108,9 +108,14 @@ export const answerSurveyResultResponse = {
             example: 1
           },
           percent: {
-            type: 'number',
-            format: 'double',
-            example: 100.00
+            type: 'integer',
+            minimum: 0,
+            maximum: 100,
+            example: 100
+          },
+          isCurrentAnswer: {
+            type: 'boolean',
+            example: true
           }
         }
       }
