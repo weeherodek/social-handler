@@ -9,20 +9,21 @@ export class DbLoadByIdSurveyResult implements LoadByIdSurveyResult {
     private readonly loadSurveyById: LoadSurveyByIdRepository
   ) {}
 
-  async loadResult (id: string): Promise<SurveyResultResponseModel | null> {
-    const surveyResult = await this.loadByIdSurveyResult.loadByIdSurveyResult(id)
+  async loadResult (surveyId: string, accountId: string): Promise<SurveyResultResponseModel | null> {
+    const surveyResult = await this.loadByIdSurveyResult.loadByIdSurveyResult(surveyId, accountId)
     if (surveyResult) return surveyResult
-    const survey = await this.loadSurveyById.loadById(id)
+    const survey = await this.loadSurveyById.loadById(surveyId)
     if (survey) {
       return {
-        surveyId: id,
+        surveyId,
         date: survey.date,
         question: survey.question,
         answers: survey.answers.map(({ answer, image }) => ({
           answer,
           image,
           count: 0,
-          percent: 0
+          percent: 0,
+          isCurrentAnswer: false
         }))
       }
     }

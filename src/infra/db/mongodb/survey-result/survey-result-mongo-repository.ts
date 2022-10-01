@@ -37,7 +37,7 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
     }
   }
 
-  async loadByIdSurveyResult (surveyId: string): Promise<SurveyResultResponseModel | null> {
+  async loadByIdSurveyResult (surveyId: string, accountId: string): Promise<SurveyResultResponseModel | null> {
     const surveyResultCollection = await MongoHelper.getCollection<SurveyResultModelMongo>(this.surveyResultCollection)
 
     const query = new MongoQueryBuilder()
@@ -52,8 +52,8 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
         total: {
           $sum: 1
         }
-      }
-      ).unwind({
+      })
+      .unwind({
         path: '$data'
       })
       .lookup({
@@ -76,6 +76,11 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
         },
         count: {
           $sum: 1
+        },
+        currentAccountAnswer: {
+          $push: {
+            $cond: [{ $eq: ['$data.accountId', new ObjectId(accountId)] }, '$data.answer', '$invalid']
+          }
         }
       })
       .project({
@@ -119,6 +124,11 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
                       },
                       else: 0
                     }
+                  },
+                  isCurrentAnswerCount: {
+                    $cond: [{
+                      $eq: ['$$item.answer', { $arrayElemAt: ['$currentAccountAnswer', 0] }]
+                    }, 1, 0]
                   }
                 }
               ]
@@ -169,6 +179,9 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
         },
         percent: {
           $sum: '$answers.percent'
+        },
+        isCurrentAnswerCount: {
+          $sum: '$answers.isCurrentAnswerCount'
         }
       })
       .project({
@@ -179,8 +192,11 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
         answer: {
           answer: '$_id.answer',
           image: '$_id.image',
-          count: '$count',
-          percent: '$percent'
+          count: { $round: ['$count'] },
+          percent: { $round: ['$percent'] },
+          isCurrentAnswer: {
+            $eq: ['$isCurrentAnswerCount', 1]
+          }
         }
       })
       .sort({

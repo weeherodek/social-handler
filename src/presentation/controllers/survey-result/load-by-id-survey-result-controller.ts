@@ -7,8 +7,9 @@ import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 
 export class LoadByIdSurveyResultController implements Controller {
   constructor (private readonly loadByIdSurveyResult: LoadByIdSurveyResult) {}
-  async handle (httpRequest: HttpRequest<any, never, Record<'surveyId', string>>): Promise<HttpResponse<SurveyResultResponseModel>> {
-    const surveyResult = await this.loadByIdSurveyResult.loadResult(httpRequest.params.surveyId)
+  async handle (httpRequest: HttpRequest<{}, never, Record<'surveyId', string>>): Promise<HttpResponse<SurveyResultResponseModel>> {
+    const accountId = httpRequest.accountId as string
+    const surveyResult = await this.loadByIdSurveyResult.loadResult(httpRequest.params.surveyId, accountId)
     if (!surveyResult) throw new ForbiddenError()
     return ok(surveyResult)
   }
