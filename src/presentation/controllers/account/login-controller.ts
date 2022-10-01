@@ -12,10 +12,10 @@ export class LoginController implements Controller {
   async handle (httpRequest: HttpRequest<LoginParams>): Promise<HttpResponse<AuthResponse>> {
     const { email, password } = httpRequest.body
 
-    const accessToken = await this.authentication.auth({ email, password })
+    const auth = await this.authentication.auth({ email, password })
 
-    if (!accessToken) throw new UnauthorizedError()
+    if (!auth) throw new UnauthorizedError()
 
-    return ok({ accessToken })
+    return ok(auth)
   }
 }

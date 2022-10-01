@@ -4,7 +4,7 @@ import { created } from '@/presentation/helpers/http/http-helper'
 import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 import { Controller } from '@/presentation/protocols/controller'
 import { AlreadyExistsError } from '@/presentation/errors/already-exists-error'
-import { Authentication } from '@/domain/usecases/account/authentication'
+import { Authentication, AuthResponse } from '@/domain/usecases/account/authentication'
 
 export class SignUpController implements Controller {
   constructor (
@@ -16,7 +16,7 @@ export class SignUpController implements Controller {
     const { email, password, name } = httpRequest.body
     const account = await this.addAccount.add({ name, email, password })
     if (account) {
-      const accessToken = await this.authentication.auth({ email, password }) as string
+      const { accessToken } = await this.authentication.auth({ email, password }) as AuthResponse
       return created({ ...account, accessToken })
     }
     throw new AlreadyExistsError('User', email)
