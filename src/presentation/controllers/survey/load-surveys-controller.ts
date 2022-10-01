@@ -7,7 +7,7 @@ import { HttpRequest, HttpResponse } from '@/presentation/protocols/http'
 export class LoadSurveysController implements Controller {
   constructor (private readonly loadSurveys: LoadSurveys) {}
   async handle (httpRequest: HttpRequest<{}>): Promise<HttpResponse<SurveyModel[] | null>> {
-    const surveys = await this.loadSurveys.loadAll()
+    const surveys = await this.loadSurveys.loadAll(httpRequest.accountId as string)
     if (!surveys.length) return noContent()
     return ok(surveys)
   }
